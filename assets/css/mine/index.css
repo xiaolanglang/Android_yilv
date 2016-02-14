@@ -1,0 +1,47 @@
+.top {
+	position: relative;
+	display: table;
+}
+.top .bk {
+	max-height: 200px;
+}
+.top .head {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	color: #fff;
+	text-align: center;
+	display: inherit;
+	line-height: 3;
+}
+.top .head .img {
+	display: block;
+	margin: 0 auto;
+	width: 20%;
+}
+.head, .column {
+	font-size: 15px;
+}
+.column li{height:40px;}
+.column li img {
+	height: 30px;
+	float: left;
+	margin-top: 5px;
+	padding-left: 20px;
+}
+.column li a {margin-left: 50px;}
+.column li a img{width: 40px;}
+.loginout {
+	font-size: 15px;
+	background-color: #FF5B45;
+	padding: 10px  0px;
+	text-align: center;
+	margin: 20px 0px;
+	color: #fff;
+	font-weight: bolder;
+}

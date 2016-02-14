@@ -1,0 +1,24 @@
+.content-bottom { margin-top: 10px; }
+
+.content { padding-bottom: 10px; }
+
+name { color: #474747; font-weight: bolder; }
+
+time { color: #B2B2B2; font-size: 14px; }
+
+.pinglun-column { padding-bottom: 30px; }
+
+.pinglun { padding: 0px 40px; }
+.pinglun p { padding-bottom: 10px; }
+
+.pre-bottom { height: 83px; text-align: center; color: #ccc; padding-top: 10px; }
+
+.huifu { padding: 5px 10px; border: 1px solid #ccc; border-radius: 5px; margin-top: 16px; }
+
+.child-pinglun { background-color: #F1F1F1; }
+.child-pinglun .row { background-color: transparent; }
+.child-pinglun a { color: #3879D9; }
+
+.bottom { text-align: center; position: fixed; bottom: 0px; left: 0px; font-size: 15px; padding: 10px 0px; }
+
+/*# sourceMappingURL=detail.css.map */

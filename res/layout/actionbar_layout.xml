@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbarLayoutId"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/action_bar_bk" >
+
+    <RelativeLayout
+        android:id="@+id/back"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:orientation="vertical" 
+        android:onClick="onClick"
+        android:background="@drawable/action_bar_image_btn_press"
+        >
+         <ImageView
+            android:layout_width="16dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/action_bar_image_btn_press"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/arrow_left"
+             />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" 
+        android:textSize="18sp"/>
+    
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/ccc"
+        android:layout_below="@+id/back"
+         >
+    </LinearLayout>
+
+</RelativeLayout>
