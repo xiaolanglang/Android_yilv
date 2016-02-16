@@ -42,38 +42,55 @@
                     android:src="@drawable/skin_tabbar_icon_index_select" />
             </FrameLayout>
 
-            <!-- 分类 -->
+            <!-- 资讯 -->
 
             <FrameLayout
-                android:id="@+id/layout_sort"
+                android:id="@+id/layout_zixun"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" >
 
                 <ImageView
-                    android:id="@+id/image_sort"
+                    android:id="@+id/image_zixun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
-                    android:contentDescription="@string/icon_home_sort"
-                    android:src="@drawable/skin_tabbar_icon_sort_select" />
+                    android:contentDescription="@string/icon_home_zixun"
+                    android:src="@drawable/skin_tabbar_icon_zixun_select" />
+            </FrameLayout>
+            
+            <!-- 快捷按钮 -->
+
+            <FrameLayout
+                android:id="@+id/layout_fast"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/image_fast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center"
+                    android:contentDescription="@string/icon_home_fast"
+                    android:src="@drawable/icon_home_fast" />
             </FrameLayout>
 
-            <!-- 发现 -->
+            <!-- 消息 -->
 
             <FrameLayout
-                android:id="@+id/layout_find"
+                android:id="@+id/layout_news"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" >
 
                 <ImageView
-                    android:id="@+id/image_find"
+                    android:id="@+id/image_news"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
-                    android:contentDescription="@string/icon_home_find"
-                    android:src="@drawable/skin_tabbar_icon_find_select" />
+                    android:contentDescription="@string/icon_home_news"
+                    android:src="@drawable/skin_tabbar_icon_msg_select" />
             </FrameLayout>
 
             <!-- 我的 -->
@@ -101,5 +118,14 @@
         </LinearLayout>
 
     </FrameLayout>
+    
+    <LinearLayout
+            android:id="@+id/home_container_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#999999"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+    </LinearLayout>
 
 </RelativeLayout>

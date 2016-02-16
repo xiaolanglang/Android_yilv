@@ -1,6 +1,9 @@
 package com.itravel.main;
 
+import java.util.List;
+
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,21 +22,23 @@ import com.itravel.fragments.FragmentIndex;
 import com.itravel.fragments.FragmentMine;
 import com.itravel.fragments.FragmentNews;
 import com.itravel.fragments.FragmentZiXun;
+import com.itravel.popup.PopupWindowView;
 import com.itravel.util.ClassManagerUtil;
+import com.itravel.util.PhotoGalleryUtil;
 import com.yilvtzj.R;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	// 定义Fragment页面
 	private FragmentIndex fragmentIndex = ClassManagerUtil.newInstance(FragmentIndex.class);
-	private FragmentZiXun fragmentSort = ClassManagerUtil.newInstance(FragmentZiXun.class);
-	private FragmentNews fragmentFind = ClassManagerUtil.newInstance(FragmentNews.class);
+	private FragmentZiXun fragmentZiXun = ClassManagerUtil.newInstance(FragmentZiXun.class);
+	private FragmentNews fragmentNews = ClassManagerUtil.newInstance(FragmentNews.class);
 	private FragmentMine fragmentMine = ClassManagerUtil.newInstance(FragmentMine.class);
 	private Fragment currentFragment = null;
 	// 定义布局对象
-	private FrameLayout indexFl, sortFl, findFl, mineFl;
+	private FrameLayout indexFl, ziXunFl, fastFl, newsFl, mineFl;
 
 	// 定义图片组件对象
-	private ImageView indexIv, sortIv, findIv, mineIv;
+	private ImageView indexIv, ziXunIv, newsIv, mineIv;
 
 	// 定义一个变量，来标识是否退出
 	private static boolean isExit = false;
@@ -53,9 +58,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		registerReceiver(mReceiver, baiduMap.getIntentFilter());
 		baiduMap.onStart();
 
-		initView();
+		initModules();
 
-		initData();
+		new PopupWindowView(this, fastFl, findViewById(R.id.home_container_top));
+
+		initListener();
 
 		clickIndexBtn();
 	}
@@ -95,11 +102,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		case R.id.layout_index:
 			clickIndexBtn();
 			break;
-		case R.id.layout_sort:
-			clickSortBtn();
+		case R.id.layout_zixun:
+			clickZiXunBtn();
 			break;
-		case R.id.layout_find:
-			clickFindBtn();
+		case R.id.layout_news:
+			clickNewsBtn();
 			break;
 		case R.id.layout_mine:
 			clickMineBtn();
@@ -110,31 +117,31 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	/**
 	 * 初始化组件
 	 */
-	private void initView() {
+	private void initModules() {
 		// 实例化布局对象
 		indexFl = (FrameLayout) findViewById(R.id.layout_index);
-		sortFl = (FrameLayout) findViewById(R.id.layout_sort);
-		findFl = (FrameLayout) findViewById(R.id.layout_find);
+		ziXunFl = (FrameLayout) findViewById(R.id.layout_zixun);
+		fastFl = (FrameLayout) findViewById(R.id.layout_fast);
+		newsFl = (FrameLayout) findViewById(R.id.layout_news);
 		mineFl = (FrameLayout) findViewById(R.id.layout_mine);
 
 		// 实例化图片组件对象
 		indexIv = (ImageView) findViewById(R.id.image_index);
-		sortIv = (ImageView) findViewById(R.id.image_sort);
-		findIv = (ImageView) findViewById(R.id.image_find);
+		ziXunIv = (ImageView) findViewById(R.id.image_zixun);
+		newsIv = (ImageView) findViewById(R.id.image_news);
 		mineIv = (ImageView) findViewById(R.id.image_mine);
 
 	}
 
 	/**
-	 * 初始化数据
+	 * 初始监听
 	 */
-	private void initData() {
+	private void initListener() {
 		// 给布局对象设置监听
 		indexFl.setOnClickListener(this);
-		sortFl.setOnClickListener(this);
-		findFl.setOnClickListener(this);
+		ziXunFl.setOnClickListener(this);
+		newsFl.setOnClickListener(this);
 		mineFl.setOnClickListener(this);
-
 	}
 
 	/**
@@ -149,26 +156,26 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	/**
-	 * 点击了“分类”按钮
+	 * 点击了“资讯”按钮
 	 */
-	private void clickSortBtn() {
-		switchFragment(fragmentSort);
+	private void clickZiXunBtn() {
+		switchFragment(fragmentZiXun);
 
 		changeSelected();
-		sortFl.setSelected(true);
-		sortIv.setSelected(true);
+		ziXunFl.setSelected(true);
+		ziXunIv.setSelected(true);
 
 	}
 
 	/**
-	 * 点击了“发现”按钮
+	 * 点击了“消息”按钮
 	 */
-	private void clickFindBtn() {
-		switchFragment(fragmentFind);
+	private void clickNewsBtn() {
+		switchFragment(fragmentNews);
 
 		changeSelected();
-		findFl.setSelected(true);
-		findIv.setSelected(true);
+		newsFl.setSelected(true);
+		newsIv.setSelected(true);
 	}
 
 	/**
@@ -186,14 +193,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		indexFl.setSelected(false);
 		indexIv.setSelected(false);
 
-		sortFl.setSelected(false);
-		sortIv.setSelected(false);
+		ziXunFl.setSelected(false);
+		ziXunIv.setSelected(false);
 
-		findFl.setSelected(false);
-		findIv.setSelected(false);
+		newsFl.setSelected(false);
+		newsIv.setSelected(false);
 
 		mineFl.setSelected(false);
 		mineIv.setSelected(false);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		List<String> list = PhotoGalleryUtil
+				.getImagePaths(requestCode, resultCode, data, RESULT_OK);
+		System.out.println(list);
 	}
 
 	// --------------- 切换fragment

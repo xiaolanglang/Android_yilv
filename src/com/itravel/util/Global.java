@@ -2,6 +2,7 @@ package com.itravel.util;
 
 public class Global {
 	public static final String urlContent = "static/mobile/";
+	public static final String urlContentLocalImage = "lImage";
 	public static final String urlCss = ".css";
 	public static final String urlJs = ".js";
 	public static final String urlPng = ".png";

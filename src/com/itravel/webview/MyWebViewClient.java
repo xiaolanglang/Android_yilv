@@ -1,5 +1,7 @@
 package com.itravel.webview;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -156,8 +158,19 @@ public class MyWebViewClient extends WebViewClient {
 			InputStream inputStream = null;
 			String type = getMimeType(url);
 			String path = getFilePath(url);
+
+			if (url.contains(Global.urlContentLocalImage)) {
+				try {
+					inputStream = new FileInputStream(path);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+
 			try {
-				inputStream = assetManager.open(path, AssetManager.ACCESS_BUFFER);
+				if (inputStream == null) {
+					inputStream = assetManager.open(path, AssetManager.ACCESS_BUFFER);
+				}
 				response = new WebResourceResponse(type, Global.character, inputStream);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -173,12 +186,10 @@ public class MyWebViewClient extends WebViewClient {
 	}
 
 	private static boolean checkUrlForIntercept(String url) {
-		boolean flag = false;
-		if (!url.contains(Global.urlContent)) {
-			return flag;
+		if (url.contains(Global.urlContent) || url.contains(Global.urlContentLocalImage)) {
+			return true;
 		}
-		flag = true;
-		return flag;
+		return false;
 	}
 
 	private static String getMimeType(String url) {
@@ -192,15 +203,16 @@ public class MyWebViewClient extends WebViewClient {
 		} else if (urlpng != -1) {
 			return Global.mimeTypeImg;
 		}
-		return "text/html;charset=UTF-8";
+		return "text/html,application/xhtml+xml,application/xml";
 	}
 
 	private static String getFilePath(String url) {
-
-		int start = url.indexOf(Global.urlContent) + Global.urlContent.length();
-		int end = url.length();
-
+		int start = 0, end = url.length();
+		if (url.contains(Global.urlContent)) {
+			start = url.indexOf(Global.urlContent) + Global.urlContent.length();
+		} else if (url.contains(Global.urlContentLocalImage)) {
+			start = url.indexOf(Global.urlContentLocalImage) + Global.urlContentLocalImage.length();
+		}
 		return url.substring(start, end);
 	}
-
 }

@@ -57,6 +57,7 @@
 		}
 
 		mj.extend({
+			isEmpty : isEmpty,
 			getBasePath : function(type) {
 				return basePath("travel/");
 			},
@@ -200,6 +201,27 @@
 	});
 	w.lt = mj;
 })(window)
+
+// 让textarea高度自适应
+$.fn.autoHeight = function(max_height) {
+
+	function autoHeight(elem) {
+		if (elem.scrollHeight >= max_height) {
+			return;
+		}
+		elem.style.height = 'auto';
+		elem.scrollTop = 0; // 防抖动
+		elem.style.height = elem.scrollHeight + 'px';
+	}
+
+	this.each(function() {
+		autoHeight(this);
+		$(this).on('keyup', function() {
+			autoHeight(this);
+		});
+	});
+
+}
 
 $(function() {
 	try {

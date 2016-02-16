@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
+      	android:theme="@style/Theme.AppCompat"
         android:name="com.itravel.baidumap.LocationApplication">
         
         <!-- 公司测试用 -->
@@ -30,8 +30,8 @@
         <activity
             android:name="com.itravel.main.WelcomeActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +47,19 @@
         <activity
             android:name="com.itravel.activity.WebViewActivity"
             android:screenOrientation="portrait" >
+        </activity>
+         <activity
+            android:name="com.itravel.activity.DongTaiWriteActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.wq.photo.MediaChoseActivity"
+            android:label="@string/title_activity_media_chose" >
+        </activity>
+        <activity
+            android:name="com.wq.photo.CropImageActivity"
+            android:label="@string/title_activity_crop_image" >
         </activity>
 
         <service
