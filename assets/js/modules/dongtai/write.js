@@ -55,30 +55,9 @@ $(function() {
 		var url = lt.getBasePath() + "dongtai/save";
 		var data = {};
 		jsMethod.setContent($("#content").val());
-		jsMethod.setRange($("#range").attr("range"))
+		jsMethod.setRange($("#range").attr("range"));
 		data = jsMethod.getData();
-		// console.log(JSON.stringify(data));
-		var a = $.post(url, data, function(data) {
-			if (!lt.isEmpty(data.message)) {
-				new jBox("Notice", {
-					content: data.message,
-					position: {
-						x: "center",
-						y: "center"
-					},
-					autoClose: 2000
-				});
-			} else {
-				new jBox("Notice", {
-					content: "上传失败",
-					position: {
-						x: "center",
-						y: "center"
-					},
-					autoClose: 2000
-				});
-			}
-		});
+		jsInterface.setParams(data.content, data.range);
 	});
 
 	new jBox('Modal', {
