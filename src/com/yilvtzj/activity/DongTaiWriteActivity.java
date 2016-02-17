@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -91,30 +93,6 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			map.put("range", params[0]);
 		}
 
-		FormFile[] formFiles = null;
-		if (list != null && list.size() > 0) {
-			int l = list.size();
-			formFiles = new FormFile[l];
-			for (int i = 0; i < l; i++) {
-				String path = list.get(i);
-				String ext = path.substring(path.lastIndexOf("."), path.length());
-				String filename = i + ext;
-				formFiles[i] = new FormFile(filename, new File(path), String.valueOf(i), null);
-			}
-		}
-		try {
-			boolean flag = SocketHttpRequester.post(url, map, formFiles);
-			String content = "";
-			if (flag) {
-				content = "上传成功";
-			} else {
-				content = "上传失败";
-			}
-			Toast.makeText(this, content, Toast.LENGTH_LONG).show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void initModules() {
@@ -146,5 +124,43 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 		}
 		imageView.setSelected(flag);
 	}
+
+	Thread postThread = new Thread(new Runnable() {
+
+		@Override
+		public void run() {
+			FormFile[] formFiles = null;
+			if (list != null && list.size() > 0) {
+				int l = list.size();
+				formFiles = new FormFile[l];
+				for (int i = 0; i < l; i++) {
+					String path = list.get(i);
+					String ext = path.substring(path.lastIndexOf("."), path.length());
+					String filename = i + ext;
+					formFiles[i] = new FormFile(filename, new File(path), String.valueOf(i), null);
+				}
+			}
+			try {
+				boolean flag = SocketHttpRequester.post(url, map, formFiles);
+				String content = "";
+				if (flag) {
+					content = "上传成功";
+				} else {
+					content = "上传失败";
+				}
+				Message msg = handler.obtainMessage();
+				msg.obj = content;
+				handler.sendMessage(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	});
+
+	Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			Toast.makeText(DongTaiWriteActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+		};
+	};
 
 }
