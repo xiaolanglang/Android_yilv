@@ -92,6 +92,7 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			map.put("content", params[0]);
 			map.put("range", params[0]);
 		}
+		postThread.run();
 
 	}
 
