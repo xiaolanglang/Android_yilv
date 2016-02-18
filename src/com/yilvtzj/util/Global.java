@@ -10,7 +10,7 @@ public class Global {
 	public static final String mimeTypeCss = "text/css";
 	public static final String mimeTypeImg = "image/png";
 	public static final String character = "UTF-8";
-	private static final String SERVLETNAME = "192.168.191.1:8080/yilv";
+	private static final String SERVLETNAME = "192.168.0.102:8080/yilv";
 	public static final String JSINTERFACE = "jsInterface";
 
 	/**

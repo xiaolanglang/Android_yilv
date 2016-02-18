@@ -45,8 +45,8 @@ public class FragmentIndex extends MyFragment {
 				webView.loadUrl(webView.getUrl());
 			}
 		});
-		swipeLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light,
-				R.color.holo_orange_light, R.color.holo_red_light);
+		swipeLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light,
+				R.color.holo_red_light);
 
 		webView = (WebView) view.findViewById(R.id.webView);
 
@@ -78,7 +78,7 @@ public class FragmentIndex extends MyFragment {
 			return;
 		}
 		webView = (WebView) getView().findViewById(R.id.webView);
-		webView.setWebViewClient(new MyWebViewClient(false, getActivity(), webView, jsInterface));
+		webView.setWebViewClient(new MyWebViewClient(false, getActivity(), webView, jsInterface, null));
 		webView.loadUrl(Global.getServletUrl("/"));
 		isload = false;
 	}

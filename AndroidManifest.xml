@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="23" />
 
     <application
@@ -51,6 +51,10 @@
          <activity
             android:name="com.yilvtzj.activity.DongTaiWriteActivity"
             android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.yilvtzj.activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity

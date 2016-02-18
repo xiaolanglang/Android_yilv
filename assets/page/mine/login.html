@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+	<title>用户登录</title>
+		
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+	<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+	<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+	<meta content="no-cache" http-equiv="pragma">
+	<meta content="0" http-equiv="expires">
+	<meta content="telephone=no, address=no" name="format-detection">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<link rel="stylesheet" type="text/css" href="/yilv/static/mobile/css/common/style.css">
+	<link rel="stylesheet" type="text/css" href="/yilv/static/mobile/js/common/jBox/jBox.css">
+	<link rel="stylesheet" type="text/css" href="/yilv/static/mobile/css/mine/login.css">
+</head>
+<body>
+	<div class="contain width">
+		<div id="top" class="select width">
+			<div class="width zhanghao selected col-5">帐号登录</div>
+			<div class="col-5 dongtai" id="dongtai">动态密码登录</div>
+		</div>
+		<div class="form">
+			<form id="form1" action="http://192.168.0.102:8080/yilv/travel/login" method="post">
+				<input type="hidden" name="rememberMe" value="true">
+				<div class="form-bk">
+					<div class="form-group row">
+						<input type="text" class="form-control input-border-none" placeholder="手机号" name="username">
+						<span class="glyphicon glyphicon-user icon"></span>
+					</div>
+					<div class="line-top width"></div>
+					<div class="form-group row">
+						<input type="password" class="form-control input-border-none" placeholder="密码" name="password">
+						<span class="icon-lock icon"></span>
+					</div>
+				</div>
+				<div class="form-group row">
+					<a href="##" class="find">找回密码</a>
+				</div>
+				<div class="form-group row">
+					<input id="submit" type="submit" class="form-control input-border-none" value="登录">
+				</div>
+				<div class="form-group row">
+					<input id="add" type="button" class="form-control input-border-none add" value="注册新用户">
+				</div>
+			</form>
+			<form id="form2" action="/yilv/travel/register" method="post" style="display: none">
+				<div class="form-bk">
+					<div class="form-group row">
+						<input id="username" type="text" class="form-control input-border-none" placeholder="请输入用户名,登录时使用" name="username">
+						<span class="glyphicon glyphicon-user icon"></span>
+					</div>
+					<div class="line-top width"></div>
+					<div class="form-group row">
+						<input id="password" type="password" class="form-control input-border-none" placeholder="请输入密码" name="password">
+						<span class="glyphicon glyphicon-lock icon"></span>
+					</div>
+					<div class="line-top width"></div>
+					<div class="form-group row">
+						<input id="confirmpassword" type="password" class="form-control input-border-none" placeholder="请确认密码">
+						<span class="glyphicon glyphicon-lock icon"></span>
+					</div>
+					<div class="line-top width"></div>
+					<div class="form-group row">
+						<input id="phone" type="text" class="form-control input-border-none" placeholder="请输入手机号" name="phone">
+						<span class="glyphicon glyphicon-phone icon"></span>
+					</div>
+					<div class="line-top width"></div>
+					<div class="form-group row">
+						<input id="nickname" type="text" class="form-control input-border-none" placeholder="昵称" name="nickname">
+						<span class="glyphicon glyphicon-heart icon"></span>
+					</div>
+					<div class="line-top width"></div>
+				</div>
+				<div class="form-group row" style="margin-top: 60px;">
+					<input id="register" type="submit" class="form-control input-border-none add" value="注册并登录">
+					<input id="back" type="button" class="form-control input-border-none add" value="返回">
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		document.body.addEventListener('touchstart', function() {
+		});
+	</script>
+	<script type="text/javascript" src="/yilv/static/mobile/js/common/jquery_1.11.js"></script>
+	<script type="text/javascript" src="/yilv/static/mobile/js/common/jquery.imglazyload.js"></script>
+	<script type="text/javascript" src="/yilv/static/mobile/js/modules/common/lt.js"></script>
+	<script type="text/javascript" src="/yilv/static/mobile/js/common/jBox/jBox.min.js"></script>
+	<script type="text/javascript" src="/yilv/static/mobile/js/common/jquery.form.min.js"></script>
+	<script type="text/javascript" src="/yilv/static/mobile/js/modules/mine/login/login.js"></script>
+</body>
+</html>

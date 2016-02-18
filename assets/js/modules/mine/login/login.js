@@ -1,7 +1,18 @@
 $(function() {
+	function showError(message) {
+		$("#submit").removeAttr("disabled").removeAttr("style");
+		new jBox("Notice", {
+			content: message,
+			position: {
+				x: "center",
+				y: "center"
+			},
+			autoClose: 2000
+		});
+	}
+
 	$("#form1").submit(function() {
-		var $submit = $("#submit");
-		$submit.attr("disabled", "disabled").css("background-color", "#ccc");
+		$("#submit").attr("disabled", "disabled").css("background-color", "#ccc");
 		$(this).ajaxSubmit(function(data) {
 			if (data.code == 200) {
 				jsInterface.setMineRefresh();
@@ -9,22 +20,15 @@ $(function() {
 				window.opener = null;
 				window.open('', '_self');
 				window.close();
-			} else{
-				$submit.removeAttr("disabled").removeAttr("style");
-				new jBox("Notice", {
-					content: data.message,
-					position: {
-						x: "center",
-						y: "center"
-					},
-					autoClose: 2000
-				});
+			} else {
+				showError(data.message);
 			}
 		});
 		return false;
 	});
-	
-	$("#dongtai").click(function(){
+
+
+	$("#dongtai").click(function() {
 		new jBox("Notice", {
 			content: "敬请期待",
 			position: {
@@ -40,7 +44,7 @@ $(function() {
 		$("#top").hide();
 		$("#form2").show();
 	});
-	
+
 	$("#back").click(function() {
 		$("#form1").show();
 		$("#top").show();
@@ -49,13 +53,13 @@ $(function() {
 
 	$("#form2").submit(function() {
 		var $register = $("#form2 #register");
-		var username=$("#form2 #username").val();
-		var phone=$("#form2 #phone").val();
-		var password=$("#form2 #password").val();
-		var confirmpassword=$("#confirmpassword").val();
-		var nickname=$("#nickname").val();
+		var username = $("#form2 #username").val();
+		var phone = $("#form2 #phone").val();
+		var password = $("#form2 #password").val();
+		var confirmpassword = $("#confirmpassword").val();
+		var nickname = $("#nickname").val();
 		//------------用户名
-		if(username==null||username==""){
+		if (username == null || username == "") {
 			$("#form2 #username").addClass("error");
 			new jBox("Notice", {
 				content: "用户名不能为空",
@@ -66,11 +70,11 @@ $(function() {
 				autoClose: 2000
 			});
 			return false;
-		}else{
+		} else {
 			$("#form2 #username").removeClass("error");
 		}
 		//------------密码
-		if(password==""){
+		if (password == "") {
 			$("#form2 #password").addClass("error");
 			new jBox("Notice", {
 				content: "输入密码",
@@ -81,10 +85,10 @@ $(function() {
 				autoClose: 2000
 			});
 			return false;
-		}else{
+		} else {
 			$("#form2 #password").removeClass("error");
 		}
-		if(password!=confirmpassword){
+		if (password != confirmpassword) {
 			$("#confirmpassword").addClass("error");
 			new jBox("Notice", {
 				content: "两次输入的密码不一样",
@@ -95,7 +99,7 @@ $(function() {
 				autoClose: 2000
 			});
 			return false;
-		}else{
+		} else {
 			$("#confirmpassword").removeClass("error");
 		}
 		//------------手机
@@ -110,11 +114,11 @@ $(function() {
 				autoClose: 2000
 			});
 			return false;
-		}else{
+		} else {
 			$("#form2 #phone").removeClass("error");
 		}
 		//------------昵称
-		if(nickname==null||nickname==""){
+		if (nickname == null || nickname == "") {
 			$("#form2 #nickname").addClass("error");
 			new jBox("Notice", {
 				content: "昵称不能为空",
@@ -125,12 +129,12 @@ $(function() {
 				autoClose: 2000
 			});
 			return false;
-		}else{
+		} else {
 			$("#form2 #nickname").removeClass("error");
 		}
-		
+
 		$register.attr("disabled", "disabled").css("background-color", "#ccc");
-		
+
 		$(this).ajaxSubmit(function(data) {
 			if (data.code == 200) {
 				jsInterface.setMineRefresh();
