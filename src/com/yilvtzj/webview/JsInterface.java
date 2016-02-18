@@ -8,6 +8,18 @@ import com.yilvtzj.util.ClassManagerUtil;
 public class JsInterface {
 	private JsInterfaceMethod method;
 
+	public interface JsInterfaceMethod {
+		void runMethod(String... params);
+	}
+
+	public void setJsInterfaceListener(JsInterfaceMethod method) {
+		this.method = method;
+
+	}
+
+	/**
+	 * 让页面刷新
+	 */
 	@JavascriptInterface
 	public void pageReload() {
 		if (method != null) {
@@ -15,6 +27,12 @@ public class JsInterface {
 		}
 	}
 
+	/**
+	 * 发送动态的时候要用
+	 * 
+	 * @param content
+	 * @param range
+	 */
 	@JavascriptInterface
 	public void setParams(String content, String range) {
 		if (method != null) {
@@ -31,13 +49,11 @@ public class JsInterface {
 		fragmentMine.setIsload(true);
 	}
 
-	public interface JsInterfaceMethod {
-		void runMethod(String... params);
-	}
-
-	public void setJsInterfaceListener(JsInterfaceMethod method) {
-		this.method = method;
-
+	@JavascriptInterface
+	public void setCookie(String cookie) {
+		if (method != null) {
+			method.runMethod(cookie);
+		}
 	}
 
 }

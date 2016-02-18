@@ -12,7 +12,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 
 import com.yilvtzj.R;
+import com.yilvtzj.util.AccountUtil;
 import com.yilvtzj.webview.JsInterface;
+import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
@@ -27,13 +29,7 @@ public class WebViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setActionBarLayout(R.layout.actionbar_layout);
 
-		Intent intent = getIntent();
-		webView = (WebView) findViewById(R.id.webView);
-
-		webView.setWebViewClient(new MyWebViewClient(this, webView, jsInterface));
-		webView.setWebChromeClient(new MyWebChromeClient(this));
-		webView.loadUrl(intent.getStringExtra("url"));
-
+		initWebView();
 	}
 
 	@Override
@@ -52,6 +48,27 @@ public class WebViewActivity extends Activity {
 	}
 
 	/**
+	 * 初始化webview
+	 */
+	private void initWebView() {
+		Intent intent = getIntent();
+		webView = (WebView) findViewById(R.id.webView);
+
+		webView.setWebViewClient(new MyWebViewClient(this, webView, jsInterface));
+		webView.setWebChromeClient(new MyWebChromeClient(this));
+		webView.loadUrl(intent.getStringExtra("url"));
+		jsInterface.setJsInterfaceListener(new JsInterfaceMethod() {
+
+			@Override
+			public void runMethod(String... params) {
+				String cookie = params[0];
+				AccountUtil.setCookie(WebViewActivity.this, cookie);
+			}
+		});
+
+	}
+
+	/**
 	 * 设置ActionBar的布局
 	 * 
 	 * @param layoutId
@@ -64,12 +81,10 @@ public class WebViewActivity extends Activity {
 			actionBar.setDisplayShowHomeEnabled(false);
 			actionBar.setDisplayShowCustomEnabled(true);
 
-			LayoutInflater inflator = (LayoutInflater) this
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View v = inflator.inflate(layoutId, null);
 			@SuppressWarnings("deprecation")
-			ActionBar.LayoutParams layout = new ActionBar.LayoutParams(LayoutParams.FILL_PARENT,
-					LayoutParams.FILL_PARENT);
+			ActionBar.LayoutParams layout = new ActionBar.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 			actionBar.setCustomView(v, layout);
 		}
 	}

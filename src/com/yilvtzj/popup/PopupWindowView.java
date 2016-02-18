@@ -2,6 +2,7 @@ package com.yilvtzj.popup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,7 +13,6 @@ import android.widget.PopupWindow;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.DongTaiWriteActivity;
-import com.yilvtzj.util.PhotoGalleryUtil;
 
 public class PopupWindowView implements OnClickListener {
 
@@ -111,10 +111,15 @@ public class PopupWindowView implements OnClickListener {
 	private void faWenZi() {
 		Intent intent = new Intent(activity, DongTaiWriteActivity.class);
 		activity.startActivity(intent);
+		activity.overridePendingTransition(R.anim.my_slide_in_bottom, 0);
 	}
 
 	private void faiImage() {
-		PhotoGalleryUtil.pickBuilder(activity);
+		Intent intent = new Intent(activity, DongTaiWriteActivity.class);
+		Bundle b = new Bundle();
+		b.putString("imgFlag", "true");
+		intent.putExtras(b);
+		activity.startActivity(intent);
 	}
 
 }

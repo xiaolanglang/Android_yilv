@@ -5,6 +5,7 @@ $(function() {
 		$(this).ajaxSubmit(function(data) {
 			if (data.code == 200) {
 				jsInterface.setMineRefresh();
+				jsInterface.setCookie(data.message);
 				window.opener = null;
 				window.open('', '_self');
 				window.close();

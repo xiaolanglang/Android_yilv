@@ -18,7 +18,7 @@ public class MyWebChromeClient extends WebChromeClient {
 	private boolean ifTitle;
 
 	public MyWebChromeClient(Activity activity) {
-		myWebChromeClient(activity, true);
+		myWebChromeClient(activity, false);
 	}
 
 	public MyWebChromeClient(Activity activity, boolean ifTitle) {
@@ -43,8 +43,7 @@ public class MyWebChromeClient extends WebChromeClient {
 	}
 
 	@Override
-	public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture,
-			Message resultMsg) {
+	public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
 		System.out.println(">>>>>>>>>>>>>>>onCreateWindow");
 		return super.onCreateWindow(view, false, isUserGesture, resultMsg);
 	}
@@ -63,8 +62,7 @@ public class MyWebChromeClient extends WebChromeClient {
 
 	@Override
 	public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-		AlertDialog.Builder b2 = new AlertDialog.Builder(activity)
-				.setTitle("onConsoleMessage1提示信息").setMessage(consoleMessage.message())
+		AlertDialog.Builder b2 = new AlertDialog.Builder(activity).setTitle("onConsoleMessage1提示信息").setMessage(consoleMessage.message())
 				.setPositiveButton("ok", new AlertDialog.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

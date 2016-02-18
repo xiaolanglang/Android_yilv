@@ -36,14 +36,6 @@ function Method() {
 			content += '<li><div style="background-image:url(\'' + v + '\')"></div></li>';
 		});
 		$(".figure-list").empty().append(content);
-		new jBox("Notice", {
-			content: "努力加载中...",
-			position: {
-				x: "center",
-				y: "center"
-			},
-			autoClose: 2000
-		});
 		return this;
 	}
 }

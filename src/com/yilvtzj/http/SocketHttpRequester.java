@@ -8,6 +8,10 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.Map;
 
+import android.content.Context;
+
+import com.yilvtzj.util.AccountUtil;
+
 public class SocketHttpRequester {
 	/**
 	 * 
@@ -29,9 +33,10 @@ public class SocketHttpRequester {
 	 * @param file
 	 *            上传文件
 	 */
-	public static boolean post(String path, Map<String, String> params, FormFile[] files) throws Exception {
+	public static boolean post(Context context, String path, Map<String, String> params, FormFile[] files) throws Exception {
 		final String BOUNDARY = "---------------------------7da2137580612"; // 数据分隔线
 		final String endline = "--" + BOUNDARY + "--\r\n";// 数据结束标志
+		boolean resultFlag = true;
 
 		int fileDataLength = 0;
 		if (files != null) {
@@ -81,6 +86,8 @@ public class SocketHttpRequester {
 		outStream.write(contentlength.getBytes());
 		String alive = "Connection: Keep-Alive\r\n";
 		outStream.write(alive.getBytes());
+		String cookie = "Cookie: " + AccountUtil.getCookie(context) + "\r\n";
+		outStream.write(cookie.getBytes());
 		String host = "Host: " + url.getHost() + ":" + port + "\r\n";
 		outStream.write(host.getBytes());
 		// 写完HTTP请求头后根据HTTP协议再写一个回车换行
@@ -116,13 +123,15 @@ public class SocketHttpRequester {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		if (reader.readLine().indexOf("200") == -1) {// 读取web服务器返回的数据，判断请求码是否为200，如果不是200，代表请求失败
-			return false;
+			resultFlag = false;
 		}
+
 		outStream.flush();
 		outStream.close();
 		socket.close();
 		reader.close();
-		return true;
+
+		return resultFlag;
 	}
 
 	/**
@@ -136,7 +145,7 @@ public class SocketHttpRequester {
 	 * @param file
 	 *            上传文件
 	 */
-	public static boolean post(String path, Map<String, String> params, FormFile file) throws Exception {
-		return post(path, params, new FormFile[] { file });
+	public static boolean post(Context context, String path, Map<String, String> params, FormFile file) throws Exception {
+		return post(context, path, params, new FormFile[] { file });
 	}
 }

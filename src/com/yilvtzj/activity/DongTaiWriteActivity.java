@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -21,10 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
+import com.yilvtzj.dialog.LoadingDialog;
 import com.yilvtzj.http.FormFile;
 import com.yilvtzj.http.SocketHttpRequester;
 import com.yilvtzj.util.Global;
+import com.yilvtzj.util.LoadingDialogUtil;
 import com.yilvtzj.util.PhotoGalleryUtil;
+import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.webview.JsInterface;
 import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebChromeClient;
@@ -36,14 +37,22 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 	private FrameLayout flImage, flPisition;
 	private TextView tv;
 	private ImageView imageView;
-	boolean flag = true;
+	boolean positionFlag = true, sendFlag = true;
 	private JsInterface jsInterface = new JsInterface();
 	private Map<String, String> map = new HashMap<String, String>();
 	private static String url = Global.getServletUrl("/travel/dongtai/save");
-	List<String> list = null;
+	private List<String> list = null;
+	private Toast toast;
+
+	public static final int MESSAGE_UPLOAD_SUCCESS = 0;
+	public static final int MESSAGE_UPLOAD_FAILED = 1;
+	public static final int MESSAGE_UPLOAD_ING = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+		pickBuilder();
+
 		setContentView(R.layout.activity_dongtai_write);
 		super.onCreate(savedInstanceState);
 
@@ -51,7 +60,7 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 
 		webView.setWebViewClient(new MyWebViewClient(this, webView, jsInterface));
 		webView.setWebChromeClient(new MyWebChromeClient(this, false));
-		webView.loadUrl(Global.getServletUrl("/travel/dongtai/local/page/dongtai/write"));
+		webView.loadUrl("file:///android_asset/page/dongtai/write.html");
 
 		jsInterface.setJsInterfaceListener(this);
 	}
@@ -71,12 +80,11 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		list = PhotoGalleryUtil.getImagePaths(requestCode, resultCode, data, RESULT_OK);
-		if (list == null) {
-			map.put("images", null);
+		List<String> listTemp = PhotoGalleryUtil.getImagePaths(requestCode, resultCode, data, RESULT_OK);
+		if (listTemp == null) {
 			return;
 		}
-		map.put("images", new JSONArray(list).toString());
+		list = listTemp;
 		webView.loadUrl("javascript:jsMethod.clearImgs()");
 		for (String url : list) {
 			url = Global.urlContentLocalImage + url;
@@ -88,12 +96,23 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 
 	@Override
 	public void runMethod(String... params) {
+		if (!sendFlag) {
+			return;
+		}
+		sendFlag = false;
 		if (params != null) {
 			map.put("content", params[0]);
 			map.put("range", params[0]);
 		}
 		postThread.run();
+	}
 
+	private void pickBuilder() {
+		Intent intent = getIntent();
+		String imgFlag = intent.getStringExtra("imgFlag");
+		if ("true".equals(imgFlag)) {
+			PhotoGalleryUtil.pickBuilder(this);
+		}
 	}
 
 	private void initModules() {
@@ -106,7 +125,7 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 		flImage.setOnClickListener(this);
 		flPisition.setOnClickListener(this);
 
-		imageView.setSelected(flag);
+		imageView.setSelected(positionFlag);
 	}
 
 	private void selectImage() {
@@ -114,19 +133,19 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 	}
 
 	private void selectPosition() {
-		if (flag) {
-			flag = false;
+		if (positionFlag) {
+			positionFlag = false;
 			tv.setText("不显示位置");
 			tv.setTextColor(getResources().getColor(R.color.ccc));
 		} else {
-			flag = true;
+			positionFlag = true;
 			tv.setText("显示位置");
 			tv.setTextColor(getResources().getColor(android.R.color.black));
 		}
-		imageView.setSelected(flag);
+		imageView.setSelected(positionFlag);
 	}
 
-	Thread postThread = new Thread(new Runnable() {
+	private Thread postThread = new Thread(new Runnable() {
 
 		@Override
 		public void run() {
@@ -142,25 +161,40 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 				}
 			}
 			try {
-				boolean flag = SocketHttpRequester.post(url, map, formFiles);
-				String content = "";
+				handler.sendEmptyMessage(MESSAGE_UPLOAD_ING);
+				boolean flag = SocketHttpRequester.post(DongTaiWriteActivity.this, url, map, formFiles);
 				if (flag) {
-					content = "上传成功";
+					handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
 				} else {
-					content = "上传失败";
+					handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
 				}
-				Message msg = handler.obtainMessage();
-				msg.obj = content;
-				handler.sendMessage(msg);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	});
 
-	Handler handler = new Handler() {
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler() {
+		private LoadingDialog dialog;
+
 		public void handleMessage(android.os.Message msg) {
-			Toast.makeText(DongTaiWriteActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+			switch (msg.what) {
+			case MESSAGE_UPLOAD_SUCCESS:
+				dialog.cancel();
+				toast = ToastUtil.show(DongTaiWriteActivity.this, "上传成功", toast);
+				finish();
+				break;
+			case MESSAGE_UPLOAD_FAILED:
+				dialog.cancel();
+				toast = ToastUtil.show(DongTaiWriteActivity.this, "上传失败", toast);
+				break;
+			case MESSAGE_UPLOAD_ING:
+				dialog = LoadingDialogUtil.show(DongTaiWriteActivity.this, dialog);
+				toast = ToastUtil.show(DongTaiWriteActivity.this, "上传中...", toast);
+				break;
+			}
 		};
 	};
 

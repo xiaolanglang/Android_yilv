@@ -72,13 +72,6 @@ public class MyWebViewClient extends WebViewClient {
 	public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 		super.shouldOverrideUrlLoading(webView, url);
 
-		System.out.println("shouldOverrideUrlLoading>>>>>>>>>>>>>" + url);
-
-		// 这一段是在演示模式下要添加的，正式的时候不需要这一段
-		if (url.contains("iframepage")) {// iframepage里面的页面是iframe引用的页面
-			return false;
-		}
-
 		if (!currentActivity) {
 			Intent intent = new Intent();
 			// 第一参数取的是这个应用程序的activity，生命周期是整个应用
@@ -173,9 +166,8 @@ public class MyWebViewClient extends WebViewClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				System.out.println("shouldInterceptRequest>>>>>>>>>>>" + path);
 				if (response == null) {
-					System.out.println("拦截但是没有找到的文件：" + path);
+					System.out.println(">>>>>>>>>>>拦截但是没有找到的文件：" + path);
 				}
 			}
 		}

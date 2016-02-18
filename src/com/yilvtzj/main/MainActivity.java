@@ -1,9 +1,6 @@
 package com.yilvtzj.main;
 
-import java.util.List;
-
 import android.content.BroadcastReceiver;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,7 +22,6 @@ import com.yilvtzj.fragments.FragmentNews;
 import com.yilvtzj.fragments.FragmentZiXun;
 import com.yilvtzj.popup.PopupWindowView;
 import com.yilvtzj.util.ClassManagerUtil;
-import com.yilvtzj.util.PhotoGalleryUtil;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	// 定义Fragment页面
@@ -203,14 +199,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		mineIv.setSelected(false);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		List<String> list = PhotoGalleryUtil
-				.getImagePaths(requestCode, resultCode, data, RESULT_OK);
-		System.out.println(list);
-	}
-
 	// --------------- 切换fragment
 
 	/**
@@ -223,8 +211,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			return;
 		}
 		// 得到Fragment事务管理器
-		FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()
-				.beginTransaction();
+		FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
 		// 替换当前的页面
 		if (currentFragment != null) {
 			fragmentTransaction.hide(currentFragment);
