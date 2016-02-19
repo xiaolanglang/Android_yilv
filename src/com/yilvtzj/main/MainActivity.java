@@ -25,10 +25,10 @@ import com.yilvtzj.util.ClassManagerUtil;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	// 定义Fragment页面
-	private FragmentIndex fragmentIndex = ClassManagerUtil.newInstance(FragmentIndex.class);
-	private FragmentZiXun fragmentZiXun = ClassManagerUtil.newInstance(FragmentZiXun.class);
-	private FragmentNews fragmentNews = ClassManagerUtil.newInstance(FragmentNews.class);
-	private FragmentMine fragmentMine = ClassManagerUtil.newInstance(FragmentMine.class);
+	private Fragment fragmentIndex = ClassManagerUtil.newInstance(FragmentIndex.class);
+	private Fragment fragmentZiXun = ClassManagerUtil.newInstance(FragmentZiXun.class);
+	private Fragment fragmentNews = ClassManagerUtil.newInstance(FragmentNews.class);
+	private Fragment fragmentMine = ClassManagerUtil.newInstance(FragmentMine.class);
 	private Fragment currentFragment = null;
 	// 定义布局对象
 	private FrameLayout indexFl, ziXunFl, fastFl, newsFl, mineFl;

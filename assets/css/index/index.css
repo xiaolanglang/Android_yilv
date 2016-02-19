@@ -1,31 +1,133 @@
 @charset "UTF-8";
-.row { background-color: #fff; }
 
-.user { color: #4C96C7; display: block; float: left; height: 70px; padding: 10px 0px 10px 0px; }
-.user .img { width: 50px; float: left; }
-.user .nickname { height: 100%; padding-left: 5px; float: left; font-size: 15px; }
-.user .nickname:before { content: ''; display: inline-block; vertical-align: middle; height: 100%; }
-.user .nickname time { color: #B2B2B2; }
-.user .nickname span { display: inline-block; vertical-align: middle; }
+.row {
+	background-color: #fff;
+}
+.user {
+	color: #4C96C7;
+	display: block;
+	float: left;
+	height: 70px;
+	padding: 10px 0px 10px 0px;
+}
+.user .img {
+	width: 50px;
+	float: left;
+}
+.user .nickname {
+	height: 100%;
+	padding-left: 5px;
+	float: left;
+	font-size: 15px;
+}
+.user .nickname:before {
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+}
+.user .nickname time {
+	color: #B2B2B2;
+}
+.user .nickname span {
+	display: inline-block;
+	vertical-align: middle;
+}
+.content {
+	margin-bottom: 20px;
+}
+.content2 {
+	margin-top: 5px;
+}
+.content2 .img {
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.content3, .content2, .content1, .content4 {
+	padding: 0px 8px 0px 8px;
+}
+.content3 {
+	margin-top: 10px;
+}
+.figure-list:after {
+	content: "";
+	display: block;
+	clear: both;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+.figure-list li {
+	list-style: none;
+	float: left;
+	width: 33.3%;
+	padding: 2px;
+}
+.figure-list div {
+	position: relative;
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+	margin: 0;
+	padding-bottom: 100%; /* 关键就在这里 */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.content4 {
+	color: #9C9C9C;
+	height: 50px;
+	margin-top: 10px;
+}
+.content4 .icon {
+	font-size: 20px;
+	padding-right: 3px;
+}
+.content4 a {
+	padding-right: 20px;
+}
+.content4 .number {
+	margin-left: -2px;
+}
 
-.content { margin-bottom: 20px; }
-
-.content2 { margin-top: 5px; }
-.content2 .img { background-repeat: no-repeat; background-size: cover; }
-
-.content3, .content2, .content1, .content4 { padding: 0px 8px 0px 8px; }
-
-.content3 { margin-top: 10px; }
-
-.figure-list:after { content: ""; display: block; clear: both; height: 0; overflow: hidden; visibility: hidden; }
-
-.figure-list li { list-style: none; float: left; width: 33.3%; padding: 2px; }
-
-.figure-list div { position: relative; width: 100%; height: 0; overflow: hidden; margin: 0; padding-bottom: 100%; /* 关键就在这里 */ background-position: center; background-repeat: no-repeat; background-size: cover; }
-
-.content4 { color: #9C9C9C; height: 50px; margin-top: 10px; }
-.content4 .icon { font-size: 20px; padding-right: 3px; }
-.content4 a { padding-right: 20px; }
-.content4 .number { margin-left: -2px; }
-
-/*# sourceMappingURL=index.css.map */
+/*swiper css*/
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	width: 100%;
+	display: table;
+}
+.swipe-body {
+	overflow: hidden;
+}
+.swiper-container {
+	width: 100%;
+	text-align: center;
+	position: relative;
+}
+.swiper-slide {
+	height: 100%;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.swiper-pagination span {
+	background-color: #fff;
+}
+#swiperView {
+	display: none
+}
+.center {
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	display: inherit;
+	background-color: black;
+}
+.swiper-show {
+	position: relative;
+}

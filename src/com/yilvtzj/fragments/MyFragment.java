@@ -9,6 +9,7 @@ import android.webkit.WebView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.webview.JsInterface;
+import com.yilvtzj.webview.MyWebViewClient;
 
 public abstract class MyFragment extends Fragment {
 	protected WebView webView;
@@ -29,7 +30,15 @@ public abstract class MyFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_sort, container, false);
+		return inflater.inflate(R.layout.fragment_web, container, false);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		webView = (WebView) getView().findViewById(R.id.webView);
+		webView.setWebViewClient(new MyWebViewClient(getActivity(), webView, jsInterface));
+		initWebView();
 	}
 
 	@Override
@@ -37,5 +46,18 @@ public abstract class MyFragment extends Fragment {
 		super.onDestroy();
 		webView.destroy();
 	}
+
+	private void initWebView() {
+		if (!isload) {
+			return;
+		}
+
+		hookOnStart();
+
+		isload = false;
+
+	}
+
+	protected abstract void hookOnStart();
 
 }

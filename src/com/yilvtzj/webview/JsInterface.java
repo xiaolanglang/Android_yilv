@@ -56,4 +56,11 @@ public class JsInterface {
 		}
 	}
 
+	@JavascriptInterface
+	public void imageFullPage(String select) {
+		if (method != null) {
+			method.runMethod(select);
+		}
+	}
+
 }

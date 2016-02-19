@@ -222,11 +222,3 @@ $.fn.autoHeight = function(max_height) {
 	});
 
 }
-
-$(function() {
-	try {
-		$("img.imglazy").lazyload();
-	} catch (e) {
-		// 捕捉异常，可能有某个页面没有加图片的延迟加载
-	}
-})
