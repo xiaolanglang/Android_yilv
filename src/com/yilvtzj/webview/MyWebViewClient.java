@@ -42,13 +42,12 @@ public class MyWebViewClient extends WebViewClient {
 		myWebViewClient(activity, false, true, webView, jsInterface, null);
 	}
 
-	public MyWebViewClient(Activity activity, boolean currentActivity, WebView webView, JsInterface jsInterface,
-			String jumpTo) {
-		myWebViewClient(activity, currentActivity, true, webView, jsInterface, null);
+	public MyWebViewClient(Activity activity, boolean currentActivity, WebView webView, JsInterface jsInterface, String jumpTo) {
+		myWebViewClient(activity, currentActivity, true, webView, jsInterface, jumpTo);
 	}
 
 	public MyWebViewClient(boolean ifDialog, Activity activity, WebView webView, JsInterface jsInterface, String jumpTo) {
-		myWebViewClient(activity, false, ifDialog, webView, jsInterface, null);
+		myWebViewClient(activity, false, ifDialog, webView, jsInterface, jumpTo);
 	}
 
 	/**
@@ -60,8 +59,8 @@ public class MyWebViewClient extends WebViewClient {
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
-	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
-			JsInterface jsInterface, String jumpTo) {
+	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView, JsInterface jsInterface,
+			String jumpTo) {
 		this.activity = activity;
 		this.currentActivity = currentActivity;
 		this.ifDialog = ifDialog;
@@ -136,21 +135,6 @@ public class MyWebViewClient extends WebViewClient {
 		});
 	}
 
-	private void showDialog(boolean ifDialog) {
-		if (ifDialog) {
-			dialog = new LoadingDialog(activity);
-			dialog.setCanceledOnTouchOutside(false);
-			dialog.show();
-
-		}
-	}
-
-	private void cancleDialog() {
-		if (dialog != null) {
-			dialog.cancel();
-		}
-	}
-
 	// 拦截请求，加载本地静态文件，例如加载本地js文件或者css文件，加快页面加载速度
 	@Override
 	public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
@@ -188,8 +172,23 @@ public class MyWebViewClient extends WebViewClient {
 		return response;
 	}
 
+	private void showDialog(boolean ifDialog) {
+		if (ifDialog) {
+			dialog = new LoadingDialog(activity);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.show();
+
+		}
+	}
+
+	private void cancleDialog() {
+		if (dialog != null) {
+			dialog.cancel();
+		}
+	}
+
 	private static boolean checkUrlForIntercept(String url) {
-		if (url.contains(Global.urlContent) || url.contains(Global.urlContentLocalImage)) {
+		if (url.contains(Global.urlContent)) {
 			return true;
 		}
 		return false;
@@ -213,8 +212,6 @@ public class MyWebViewClient extends WebViewClient {
 		int start = 0, end = url.length();
 		if (url.contains(Global.urlContent)) {
 			start = url.indexOf(Global.urlContent) + Global.urlContent.length();
-		} else if (url.contains(Global.urlContentLocalImage)) {
-			start = url.indexOf(Global.urlContentLocalImage) + Global.urlContentLocalImage.length();
 		}
 		return url.substring(start, end);
 	}

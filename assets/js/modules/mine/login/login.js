@@ -1,42 +1,44 @@
 $(function() {
-	function showError(message) {
-		$("#submit").removeAttr("disabled").removeAttr("style");
+
+	function showMessage(str) {
 		new jBox("Notice", {
-			content: message,
-			position: {
-				x: "center",
-				y: "center"
+			content : str,
+			position : {
+				x : "center",
+				y : "center"
 			},
-			autoClose: 2000
+			autoClose : 2000
 		});
 	}
 
 	$("#form1").submit(function() {
-		$("#submit").attr("disabled", "disabled").css("background-color", "#ccc");
-		$(this).ajaxSubmit(function(data) {
-			if (data.code == 200) {
-				jsInterface.setMineRefresh();
-				jsInterface.setCookie(data.message);
-				window.opener = null;
-				window.open('', '_self');
-				window.close();
-			} else {
-				showError(data.message);
+		var $submit = $("#submit");
+		$submit.attr("disabled", "disabled").css("background-color", "#ccc");
+		var a = $(this).ajaxSubmit({
+			success : function(data) {
+				if (data.code == 200) {
+					jsInterface.setMineRefresh();
+					jsInterface.setCookie(data.message);
+					window.opener = null;
+					window.open('', '_self');
+					window.close();
+				} else {
+					$submit.removeAttr("disabled").removeAttr("style");
+					showMessage(data.message);
+				}
+			},
+			complete : function(xhr, status) {
+				if (status == "error") {
+					$submit.removeAttr("disabled").removeAttr("style");
+					showMessage("登录失败，稍后再试");
+				}
 			}
 		});
 		return false;
 	});
 
-
 	$("#dongtai").click(function() {
-		new jBox("Notice", {
-			content: "敬请期待",
-			position: {
-				x: "center",
-				y: "center"
-			},
-			autoClose: 2000
-		});
+		showMessage("敬请期待");
 	});
 
 	$("#add").click(function() {
@@ -58,76 +60,41 @@ $(function() {
 		var password = $("#form2 #password").val();
 		var confirmpassword = $("#confirmpassword").val();
 		var nickname = $("#nickname").val();
-		//------------用户名
+		// ------------用户名
 		if (username == null || username == "") {
 			$("#form2 #username").addClass("error");
-			new jBox("Notice", {
-				content: "用户名不能为空",
-				position: {
-					x: "center",
-					y: "center"
-				},
-				autoClose: 2000
-			});
+			showMessage("用户名不能为空");
 			return false;
 		} else {
 			$("#form2 #username").removeClass("error");
 		}
-		//------------密码
+		// ------------密码
 		if (password == "") {
 			$("#form2 #password").addClass("error");
-			new jBox("Notice", {
-				content: "输入密码",
-				position: {
-					x: "center",
-					y: "center"
-				},
-				autoClose: 2000
-			});
+			showMessage("输入密码");
 			return false;
 		} else {
 			$("#form2 #password").removeClass("error");
 		}
 		if (password != confirmpassword) {
 			$("#confirmpassword").addClass("error");
-			new jBox("Notice", {
-				content: "两次输入的密码不一样",
-				position: {
-					x: "center",
-					y: "center"
-				},
-				autoClose: 2000
-			});
+			showMessage("两次输入的密码不一样");
 			return false;
 		} else {
 			$("#confirmpassword").removeClass("error");
 		}
-		//------------手机
+		// ------------手机
 		if (!(/^1[3|4|5|7|8]\d{9}$/.test(phone))) {
 			$("#form2 #phone").addClass("error");
-			new jBox("Notice", {
-				content: "请输入正确的手机号码",
-				position: {
-					x: "center",
-					y: "center"
-				},
-				autoClose: 2000
-			});
+			showMessage("请输入正确的手机号码");
 			return false;
 		} else {
 			$("#form2 #phone").removeClass("error");
 		}
-		//------------昵称
+		// ------------昵称
 		if (nickname == null || nickname == "") {
 			$("#form2 #nickname").addClass("error");
-			new jBox("Notice", {
-				content: "昵称不能为空",
-				position: {
-					x: "center",
-					y: "center"
-				},
-				autoClose: 2000
-			});
+			showMessage("昵称不能为空");
 			return false;
 		} else {
 			$("#form2 #nickname").removeClass("error");
@@ -135,22 +102,23 @@ $(function() {
 
 		$register.attr("disabled", "disabled").css("background-color", "#ccc");
 
-		$(this).ajaxSubmit(function(data) {
-			if (data.code == 200) {
-				jsInterface.setMineRefresh();
-				window.opener = null;
-				window.open('', '_self');
-				window.close();
-			} else {
-				new jBox("Notice", {
-					content: data.message,
-					position: {
-						x: "center",
-						y: "center"
-					},
-					autoClose: 2000
-				});
-				$register.removeAttr("disabled").removeAttr("style");
+		$(this).ajaxSubmit({
+			success : function(data) {
+				if (data.code == 200) {
+					jsInterface.setMineRefresh();
+					window.opener = null;
+					window.open('', '_self');
+					window.close();
+				} else {
+					showMessage(data.message);
+					$register.removeAttr("disabled").removeAttr("style");
+				}
+			},
+			complete : function(xhr, status) {
+				if (status == "error") {
+					showMessage("登录失败，稍后再试");
+					$register.removeAttr("disabled").removeAttr("style");
+				}
 			}
 		});
 		return false;

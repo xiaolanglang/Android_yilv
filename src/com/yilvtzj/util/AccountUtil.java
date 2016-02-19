@@ -8,7 +8,7 @@ public class AccountUtil {
 
 	public static String getCookie(Context context) {
 		SharedPreferences preferences = context.getSharedPreferences("cookie", 0);
-		String cookie = preferences.getString("cookie", null);
+		String cookie = preferences.getString("cookie", "");
 		return cookie;
 	}
 

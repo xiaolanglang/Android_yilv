@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
+import com.yilvtzj.baidumap.MyAddress;
 import com.yilvtzj.dialog.LoadingDialog;
 import com.yilvtzj.http.FormFile;
 import com.yilvtzj.http.SocketHttpRequester;
@@ -58,9 +59,10 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 
 		initModules();
 
-		webView.setWebViewClient(new MyWebViewClient(this, webView, jsInterface));
+		webView.setWebViewClient(new MyWebViewClient(false, this, webView, jsInterface, null));
 		webView.setWebChromeClient(new MyWebChromeClient(this, false));
 		webView.loadUrl("file:///android_asset/page/dongtai/write.html");
+		webView.getSettings().setAllowFileAccess(true);
 
 		jsInterface.setJsInterfaceListener(this);
 	}
@@ -102,7 +104,7 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 		sendFlag = false;
 		if (params != null) {
 			map.put("content", params[0]);
-			map.put("range", params[0]);
+			map.put("range", params[1]);
 		}
 		postThread.run();
 	}
@@ -160,6 +162,10 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 					formFiles[i] = new FormFile(filename, new File(path), String.valueOf(i), null);
 				}
 			}
+
+			if (positionFlag) {
+				map.put("position", MyAddress.getAddrStr());
+			}
 			try {
 				handler.sendEmptyMessage(MESSAGE_UPLOAD_ING);
 				boolean flag = SocketHttpRequester.post(DongTaiWriteActivity.this, url, map, formFiles);
@@ -167,6 +173,7 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 					handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
 				} else {
 					handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
+					sendFlag = true;
 				}
 
 			} catch (Exception e) {

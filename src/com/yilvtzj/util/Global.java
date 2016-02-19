@@ -2,7 +2,7 @@ package com.yilvtzj.util;
 
 public class Global {
 	public static final String urlContent = "static/mobile/";
-	public static final String urlContentLocalImage = "lImage";
+	public static final String urlContentLocalImage = "file://";
 	public static final String urlCss = ".css";
 	public static final String urlJs = ".js";
 	public static final String urlPng = ".png";
@@ -10,7 +10,7 @@ public class Global {
 	public static final String mimeTypeCss = "text/css";
 	public static final String mimeTypeImg = "image/png";
 	public static final String character = "UTF-8";
-	private static final String SERVLETNAME = "192.168.0.102:8080/yilv";
+	private static final String SERVLETNAME = "192.168.0.100:8080/yilv";
 	public static final String JSINTERFACE = "jsInterface";
 
 	/**

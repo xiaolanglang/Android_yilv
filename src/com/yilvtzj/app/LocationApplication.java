@@ -1,4 +1,4 @@
-package com.yilvtzj.baidumap;
+package com.yilvtzj.app;
 
 import android.app.Application;
 
