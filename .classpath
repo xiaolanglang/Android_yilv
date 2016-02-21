@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/baidumapapi_base_v3_6_1.jar"/>
@@ -13,5 +12,6 @@
 	<classpathentry kind="lib" path="libs/baidumapapi_util_v3_6_1.jar"/>
 	<classpathentry kind="lib" path="libs/locSDK_6.13.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PhotoGallery_library"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

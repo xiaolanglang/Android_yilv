@@ -57,6 +57,7 @@ public class MyBaiduMap {
 
 	};
 
+	@SuppressWarnings("unused")
 	private void detailInfo(BDLocation location) {
 		if (null != location && location.getLocType() != BDLocation.TypeServerError) {
 			StringBuffer sb = new StringBuffer(256);

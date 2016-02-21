@@ -18,7 +18,7 @@ public class LoginActivity extends MyActivity {
 
 	protected void initWebView() {
 		super.initWebView();
-		webView.setWebViewClient(new MyWebViewClient(false, this, webView, jsInterface, null));
+		webView.setWebViewClient(new MyWebViewClient(this, false, false, webView, jsInterface, null));
 		webView.loadUrl("file:///android_asset/page/mine/login.html");
 		webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
 		jsInterface.setJsInterfaceListener(new JsInterfaceMethod() {

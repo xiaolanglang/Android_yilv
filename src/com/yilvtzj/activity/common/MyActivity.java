@@ -32,7 +32,7 @@ public class MyActivity extends Activity {
 	 */
 	protected void initWebView() {
 		webView = (WebView) findViewById(R.id.webView);
-		webView.setWebViewClient(new MyWebViewClient(this, webView, jsInterface));
+		webView.setWebViewClient(new MyWebViewClient(this, false, true, webView, jsInterface, null));
 		webView.setWebChromeClient(new MyWebChromeClient(this));
 	}
 

@@ -59,7 +59,7 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 
 		initModules();
 
-		webView.setWebViewClient(new MyWebViewClient(false, this, webView, jsInterface, null));
+		webView.setWebViewClient(new MyWebViewClient(this, false, false, webView, jsInterface, null));
 		webView.setWebChromeClient(new MyWebChromeClient(this, false));
 		webView.loadUrl("file:///android_asset/page/dongtai/write.html");
 		webView.getSettings().setAllowFileAccess(true);

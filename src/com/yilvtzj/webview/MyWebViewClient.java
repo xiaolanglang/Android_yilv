@@ -34,20 +34,9 @@ public class MyWebViewClient extends WebViewClient {
 	private JsInterface jsInterface;
 	private String jumpTo;
 
-	public MyWebViewClient(Activity activity, WebView webView, JsInterface jsInterface, String jumpTo) {
-		myWebViewClient(activity, false, true, webView, jsInterface, jumpTo);
-	}
-
-	public MyWebViewClient(Activity activity, WebView webView, JsInterface jsInterface) {
-		myWebViewClient(activity, false, true, webView, jsInterface, null);
-	}
-
-	public MyWebViewClient(Activity activity, boolean currentActivity, WebView webView, JsInterface jsInterface, String jumpTo) {
-		myWebViewClient(activity, currentActivity, true, webView, jsInterface, jumpTo);
-	}
-
-	public MyWebViewClient(boolean ifDialog, Activity activity, WebView webView, JsInterface jsInterface, String jumpTo) {
-		myWebViewClient(activity, false, ifDialog, webView, jsInterface, jumpTo);
+	public MyWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
+			JsInterface jsInterface, String jumpTo) {
+		myWebViewClient(activity, currentActivity, ifDialog, webView, jsInterface, jumpTo);
 	}
 
 	/**
@@ -59,8 +48,8 @@ public class MyWebViewClient extends WebViewClient {
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
-	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView, JsInterface jsInterface,
-			String jumpTo) {
+	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
+			JsInterface jsInterface, String jumpTo) {
 		this.activity = activity;
 		this.currentActivity = currentActivity;
 		this.ifDialog = ifDialog;

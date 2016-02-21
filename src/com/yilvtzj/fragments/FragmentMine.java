@@ -9,8 +9,8 @@ public class FragmentMine extends MyFragment {
 	@Override
 	protected void hookOnStart() {
 		webView.loadUrl(Global.getServletUrl("/travel/mine"));
-		webView.setWebViewClient(new MyWebViewClient(false, getActivity(), webView, jsInterface, LoginActivity.class
-				.getName()));
+		webView.setWebViewClient(new MyWebViewClient(getActivity(), false, false, webView, jsInterface,
+				LoginActivity.class.getName()));
 	}
 
 }

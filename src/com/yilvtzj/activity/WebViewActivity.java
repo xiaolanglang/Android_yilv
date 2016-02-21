@@ -23,7 +23,7 @@ public class WebViewActivity extends MyActivity {
 		super.initWebView();
 
 		Intent intent = getIntent();
-		webView.setWebViewClient(new MyWebViewClient(this, webView, jsInterface));
+		webView.setWebViewClient(new MyWebViewClient(this, false, true, webView, jsInterface, null));
 		webView.setWebChromeClient(new MyWebChromeClient(this));
 		webView.loadUrl(intent.getStringExtra("url"));
 	}

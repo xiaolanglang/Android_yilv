@@ -25,9 +25,11 @@ public class FragmentIndex extends MyFragment implements JsInterfaceMethod {
 			int what = msg.what;
 			if (0 == what) {
 				getActivity().findViewById(R.id.frameMenu).setVisibility(View.VISIBLE);
+				swipeLayout.setEnabled(true);
 			} else if (1 == what) {
 				View v = getActivity().findViewById(R.id.frameMenu);
 				v.setVisibility(View.GONE);
+				swipeLayout.setEnabled(false);
 			}
 		}
 	};
