@@ -10,9 +10,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -34,8 +36,8 @@ public class MyWebViewClient extends WebViewClient {
 	private JsInterface jsInterface;
 	private String jumpTo;
 
-	public MyWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
-			JsInterface jsInterface, String jumpTo) {
+	public MyWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView, JsInterface jsInterface,
+			String jumpTo) {
 		myWebViewClient(activity, currentActivity, ifDialog, webView, jsInterface, jumpTo);
 	}
 
@@ -48,8 +50,8 @@ public class MyWebViewClient extends WebViewClient {
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
-	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
-			JsInterface jsInterface, String jumpTo) {
+	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView, JsInterface jsInterface,
+			String jumpTo) {
 		this.activity = activity;
 		this.currentActivity = currentActivity;
 		this.ifDialog = ifDialog;
@@ -61,12 +63,18 @@ public class MyWebViewClient extends WebViewClient {
 		}
 		WebSettings setting = webView.getSettings();
 		setting.setJavaScriptEnabled(true);
-		setting.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		// setting.setCacheMode(WebSettings.LOAD_NO_CACHE);//关闭缓存
+		setting.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 		setting.setSaveFormData(false);
 		setting.setSavePassword(false);
 		setting.setSupportZoom(false);
-		setting.setSupportZoom(false);
+		setting.setRenderPriority(RenderPriority.HIGH);
 		webView.addJavascriptInterface(jsInterface, Global.JSINTERFACE);
+		if (Build.VERSION.SDK_INT >= 19) {
+			setting.setLoadsImagesAutomatically(true);
+		} else {
+			setting.setLoadsImagesAutomatically(false);
+		}
 	}
 
 	public boolean shouldOverrideUrlLoading(WebView webView, String url) {
@@ -93,18 +101,22 @@ public class MyWebViewClient extends WebViewClient {
 
 	// 开始加载网页时要做的工作
 	public void onPageStarted(WebView webView, String url, Bitmap favicon) {
-		System.out.println("onPageStarted>>>>>>>>>>>>>>>url:>>>" + url);
+		// System.out.println("onPageStarted>>>>>>>>>>>>>>>url:>>>" + url);
 		showDialog(ifDialog);
 	}
 
 	// 加载完成时要做的工作
 	public void onPageFinished(WebView view, String url) {
-		System.out.println("onPageFinished>>>>>>>>>>>>>>>url:>>>" + url);
+		// System.out.println("onPageFinished>>>>>>>>>>>>>>>url:>>>" + url);
+		if (!view.getSettings().getLoadsImagesAutomatically()) {
+			view.getSettings().setLoadsImagesAutomatically(true);
+		}
 		cancleDialog();
 	}
 
 	// 加载错误时要做的工作
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+		super.onReceivedError(view, errorCode, description, failingUrl);
 		cancleDialog();
 		Toast.makeText(activity, "哎呀!页面没打开,刷新一下试试", Toast.LENGTH_LONG).show();
 		view.loadUrl("file:///android_asset/page/error/index.html");

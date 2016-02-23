@@ -13,26 +13,26 @@
     if (typeof define === 'function' && define.amd) { // AMD
         // you may need to change `define([------>'jquery'<------], factory)` 
         // if you use zepto, change it rely name, such as `define(['zepto'], factory)`
-        define(['jquery'], factory)
+        define(['Zepto'], factory)
             // define(['zepto'], factory)
     } else { // Global
         factory(window.jQuery || window.Zepto)
     }
-})(function($, undefined) {
+})(function(Zepto, undefined) {
     var w = window,
         $window = $(w),
         defaultOptions = {
             // 默认情况下，图像会在出现在屏幕上时被加载。如果你想的图像更早地加载，
             //可以使用threshold参数。设置threshold为200，
             //将导致图像在它离视窗边缘还有200px时开始加载。
-            threshold: 0,
+            threshold: 1000,
             // 在页面滚动后，该插件将所有未加载的图像循环一遍。并在循环检查图像是否在视窗中。
             //默认情况下，发现第一个位于视窗外的图片时，循环停止。
             //这是基于以下的假设：页面上图像的顺序与它们在HTML代码中的顺序是一致的。
             //然而对于某些布局，这可能是错误的。
             //你可以通过设置failure_limit参数来控制循环终止的行为（failure_limit参数的数值为最多允许多少张图片被检查出位于视窗外后停止检查循环中剩余未检查的图片）
             //当你将它设置为一个比较大的数值，显著多余总的图片数量（如9999）时，则可以认为会检测到每一张图片。
-            failure_limit: 0,
+            failure_limit: 3,
             // 指定触发什么事件时，开始加载真实的图片。
             //你可以使用jQuery中已有的事件，如click或mouseover。
             //你也可以使用自定义的事件如sporty或foobar。

@@ -6,11 +6,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.webview.JsInterface;
+import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
 public abstract class MyFragment extends Fragment {
@@ -55,13 +55,25 @@ public abstract class MyFragment extends Fragment {
 				webView.reload();
 			}
 		});
-		swipeLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light,
-				R.color.holo_red_light);
+		swipeLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light, R.color.holo_red_light);
 
 		webView = (WebView) view.findViewById(R.id.webView);
 
 		// 设置进度条
-		webView.setWebChromeClient(new MyWebChromeClient());
+		webView.setWebChromeClient(new MyWebChromeClient(getActivity(), false) {
+			@Override
+			public void onProgressChanged(WebView view, int newProgress) {
+				if (newProgress == 100) {
+					// 隐藏进度条
+					swipeLayout.setRefreshing(false);
+				} else {
+					if (!swipeLayout.isRefreshing())
+						swipeLayout.setRefreshing(true);
+				}
+
+				super.onProgressChanged(view, newProgress);
+			}
+		});
 
 		return view;
 
@@ -94,18 +106,4 @@ public abstract class MyFragment extends Fragment {
 
 	protected abstract void hookOnStart();
 
-	private class MyWebChromeClient extends WebChromeClient {
-		@Override
-		public void onProgressChanged(WebView view, int newProgress) {
-			if (newProgress == 100) {
-				// 隐藏进度条
-				swipeLayout.setRefreshing(false);
-			} else {
-				if (!swipeLayout.isRefreshing())
-					swipeLayout.setRefreshing(true);
-			}
-
-			super.onProgressChanged(view, newProgress);
-		}
-	}
 }

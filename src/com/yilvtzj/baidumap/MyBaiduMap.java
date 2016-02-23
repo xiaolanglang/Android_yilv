@@ -50,14 +50,12 @@ public class MyBaiduMap {
 
 		@Override
 		public void onReceiveLocation(BDLocation location) {
-			// detailInfo(location);
-			String addrStr = location.getAddrStr();
+			String addrStr = location.getCity() + location.getDistrict() + location.getStreet();
 			MyAddress.setAddrStr(addrStr);
 		}
 
 	};
 
-	@SuppressWarnings("unused")
 	private void detailInfo(BDLocation location) {
 		if (null != location && location.getLocType() != BDLocation.TypeServerError) {
 			StringBuffer sb = new StringBuffer(256);
