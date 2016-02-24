@@ -1,10 +1,106 @@
 package com.yilvtzj.fragments;
 
-public class FragmentIndex extends MyFragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.yilvtzj.R;
+import com.yilvtzj.adapter.HomeAdapter;
+import com.yilvtzj.pojo.DongTai;
+import com.yilvtzj.view.MySwipeRefreshLayout;
+import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
+
+public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoadListener {
+
+	private MySwipeRefreshLayout myRefreshListView;
+	private ListView listView;
+	private List<DongTai> list = new ArrayList<>();
+	private HomeAdapter homeAdapter;
+	private String str = "广播接收者和activity间如何传递消息，我想显示到activity上：通过接口，但是具体的流程和方式还是不懂。"
+			+ "activity和服务之间如何传递消息,我想显示到activity上.activity之间又是怎么传递数据ude.fragment和activity之间的。"
+			+ "交互也是一个问题，这里都涉及了回调，待再继续的深入的学习";
 
 	@Override
-	protected void hookOnStart() {
-		webView.loadUrl("file:///android_asset/page/dongtai/index.html");
-		webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_home, container, false);
 	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		listView = (ListView) getActivity().findViewById(R.id.home);
+		myRefreshListView = (MySwipeRefreshLayout) getActivity().findViewById(R.id.swipe_container);
+		// 构造适配器
+		homeAdapter = new HomeAdapter(getActivity(), list);
+		a();
+	}
+
+	// @Override
+	// protected void hookOnStart() {
+	// webView.loadUrl("file:///android_asset/page/dongtai/index.html");
+	// webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+	// }
+
+	public void a() {
+		// 模拟一些数据
+		list.add(new DongTai("天心月圆", str));
+		list.add(new DongTai("水月洞天", str));
+		list.add(new DongTai("四海为家", str));
+		list.add(new DongTai("冰心玉壶", str));
+
+		listView.setAdapter(homeAdapter);
+
+		// 设置下拉刷新时的颜色值,颜色值需要定义在xml中
+		myRefreshListView.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light,
+				R.color.holo_red_light);
+		myRefreshListView.setOnRefreshListener(this);
+		myRefreshListView.setOnLoadListener(this);
+
+	}
+
+	// 设置下拉刷新监听器
+	@Override
+	public void onRefresh() {
+		Toast.makeText(FragmentIndex.this.getActivity(), "refresh", Toast.LENGTH_SHORT).show();
+
+		myRefreshListView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// 更新数据
+				list.add(new DongTai("天心月圆", str));
+				homeAdapter.notifyDataSetChanged();
+				// 更新完后调用该方法结束刷新
+				myRefreshListView.setRefreshing(false);
+			}
+		}, 1000);
+
+	}
+
+	// 加载监听器
+	@Override
+	public void onLoad() {
+		Toast.makeText(FragmentIndex.this.getActivity(), "load", Toast.LENGTH_SHORT).show();
+
+		myRefreshListView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				list.add(new DongTai("天心月圆", str));
+				homeAdapter.notifyDataSetChanged();
+				// 加载完后调用该方法
+				myRefreshListView.setLoading(false);
+			}
+		}, 1500);
+
+	}
+
 }
