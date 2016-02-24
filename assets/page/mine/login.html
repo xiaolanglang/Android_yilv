@@ -22,7 +22,7 @@
 			<div class="col-5 dongtai" id="dongtai">动态密码登录</div>
 		</div>
 		<div class="form">
-			<form id="form1" action="http://192.168.42.230:8080/yilv/travel/login" method="post">
+			<form id="form1" method="post">
 				<input type="hidden" name="rememberMe" value="true">
 				<div class="form-bk">
 					<div class="form-group row">
@@ -45,7 +45,7 @@
 					<input id="add" type="button" class="form-control input-border-none add" value="注册新用户">
 				</div>
 			</form>
-			<form id="form2" action="/yilv/travel/register" method="post" style="display: none">
+			<form id="form2" method="post" style="display: none">
 				<div class="form-bk">
 					<div class="form-group row">
 						<input id="username" type="text" class="form-control input-border-none" placeholder="请输入用户名,登录时使用" name="username">
@@ -85,7 +85,7 @@
 		});
 	</script>
 	<script type="text/javascript" src="/yilv/static/mobile/js/common/jquery_1.11.js"></script>
-	<script type="text/javascript" src="/yilv/static/mobile/js/common/jquery.imglazyload.js"></script>
+	<script type="text/javascript">window.$=jQuery;</script>
 	<script type="text/javascript" src="/yilv/static/mobile/js/modules/common/lt.js"></script>
 	<script type="text/javascript" src="/yilv/static/mobile/js/common/jBox/jBox.min.js"></script>
 	<script type="text/javascript" src="/yilv/static/mobile/js/common/jquery.form.js"></script>

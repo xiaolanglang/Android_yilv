@@ -2,30 +2,33 @@
 	var w = window;
 	var mj = (function() {
 		var mj = function(selector, rootmj) {
-			return mj.fn.init(selector, rootmj);
-		}, rootmj;
+				return mj.fn.init(selector, rootmj);
+			},
+			rootmj;
 
 		mj.fn = mj.prototype = {
-			constructor : mj,
-			init : function(selector, rootmj) {
+			constructor: mj,
+			init: function(selector, rootmj) {
 				if (selector != null) {
 					this.selector = selector;
 				}
 				return this;
 			},
-			mj : "1.0",
-			selector : "",
-			size : function() {
+			mj: "1.0",
+			selector: "",
+			size: function() {
 				return this.length;
 			},
-			each : function() {
+			each: function() {
 				return mj.each(callback, args);
 			}
 		};
 		mj.fn.init.protorype = mj.fn;
 
 		mj.extend = mj.fn.extend = function() {
-			var options, src, copy, target = arguments[0] || {}, i = 1, length = arguments.length;
+			var options, src, copy, target = arguments[0] || {},
+				i = 1,
+				length = arguments.length;
 
 			// 只有一个参数，就是对jQuery自身的扩展处理
 			// extend,fn.extend
@@ -57,32 +60,31 @@
 		}
 
 		mj.extend({
-			isEmpty : isEmpty,
-			getBasePath : function(type) {
+			isEmpty: isEmpty,
+			getBasePath: function() {
 				return basePath("travel/");
 			},
-			getCssPath : function() {
+			getCssPath: function() {
 				return basePath("static/mobile/css/");
 			},
-			getJsPath : function() {
+			getJsPath: function() {
 				return basePath("static/mobile/js/");
 			},
-			getImgPath : function() {
+			getImgPath: function() {
 				mj.getJsPath();
 				return basePath("static/mobile/img/");
 			},
-			isArray : function(o) {
+			isArray: function(o) {
 				return type(o);
 			},
-			type : function(o) {
-				return o == null ? String(o) : clazz[toString.call(o)]
-						|| "object";
+			type: function(o) {
+				return o == null ? String(o) : clazz[toString.call(o)] || "object";
 			},
-			initParam : function(a) {
-				var s = [], add = function(key, value) {
-					s[s.length] = encodeURIComponent(key) + "="
-							+ encodeURIComponent(value);
-				};
+			initParam: function(a) {
+				var s = [],
+					add = function(key, value) {
+						s[s.length] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
+					};
 
 				// If an array was passed in, assume that it is an array of form
 				// elements.
@@ -95,7 +97,7 @@
 				// });
 				//
 				// } else {
-				for ( var prefix in a) {
+				for (var prefix in a) {
 					buildParams(prefix, a[prefix], add);
 				}
 				// }
@@ -106,17 +108,7 @@
 		});
 
 		function basePath(type) {
-			var location = (window.location + '').split('/');
-			var basePath;
-			if (location[2].indexOf("8080") > 0) {
-				basePath = location[0] + '//' + location[2] + '/' + location[3]
-						+ "/";
-			} else {
-				basePath = location[0] + '//' + location[2] + '/';
-			}
-			if (!isEmpty(type)) {
-				basePath += type;
-			}
+			var basePath = "http://192.168.0.102:8080/yilv/" + type;
 			return basePath;
 		}
 
@@ -149,7 +141,7 @@
 			// } else
 			if (mj.type(obj) === "object") {
 				// Serialize object item.
-				for ( var name in obj) {
+				for (var name in obj) {
 					buildParams(prefix + "[" + name + "]", obj[name], add);
 				}
 
@@ -159,40 +151,41 @@
 			}
 		}
 
-		var r20 = /%20/g, clazz = {
-			"[object Object]" : "object",
-			"[object String]" : "string",
-			"[object Number]" : "number",
-			"[object Array]" : "array",
-			"[object Function]" : "function",
-			"[object Boolean]" : "boolan"
-		};
+		var r20 = /%20/g,
+			clazz = {
+				"[object Object]": "object",
+				"[object String]": "string",
+				"[object Number]": "number",
+				"[object Array]": "array",
+				"[object Function]": "function",
+				"[object Boolean]": "boolan"
+			};
 
 		return mj;
 	})();
 
 	mj.extend({
-		getPaths : function() {
+		getPaths: function() {
 			var jsPath = mj.getJsPath();
 			return {
-				"jquery" : [ jsPath + "common/jquery_1.7.2" ],
-				"angular" : [ jsPath + "common/angular" ],
-				"ui-router" : [ jsPath + "common/angular-ui-router" ]
+				"jquery": [jsPath + "common/jquery_1.7.2"],
+				"angular": [jsPath + "common/angular"],
+				"ui-router": [jsPath + "common/angular-ui-router"]
 			};
 		},
-		shim : {
-			"angular" : {
-				exports : "angular"
+		shim: {
+			"angular": {
+				exports: "angular"
 			},
-			"jquery" : {
-				exports : "jquery"
+			"jquery": {
+				exports: "jquery"
 			},
-			'ui-router' : {
-				deps : [ "angular" ],
-				exports : 'ui-router'
+			'ui-router': {
+				deps: ["angular"],
+				exports: 'ui-router'
 			}
 		},
-		page : function page(pageNum) {
+		page: function page(pageNum) {
 			var form = document.getElementById("form");
 			var input = document.getElementById("pageNum");
 			input.setAttribute("value", pageNum);
@@ -201,24 +194,3 @@
 	});
 	w.lt = mj;
 })(window)
-
-// 让textarea高度自适应
-$.fn.autoHeight = function(max_height) {
-
-	function autoHeight(elem) {
-		if (elem.scrollHeight >= max_height) {
-			return;
-		}
-		elem.style.height = 'auto';
-		elem.scrollTop = 0; // 防抖动
-		elem.style.height = elem.scrollHeight + 'px';
-	}
-
-	this.each(function() {
-		autoHeight(this);
-		$(this).on('keyup', function() {
-			autoHeight(this);
-		});
-	});
-
-}

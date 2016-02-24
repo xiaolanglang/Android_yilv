@@ -1,3 +1,23 @@
+// 让textarea高度自适应
+$.fn.autoHeight = function(max_height) {
+
+	function autoHeight(elem) {
+		if (elem.scrollHeight >= max_height) {
+			return;
+		}
+		elem.style.height = 'auto';
+		elem.scrollTop = 0; // 防抖动
+		elem.style.height = elem.scrollHeight + 'px';
+	}
+
+	this.each(function() {
+		autoHeight(this);
+		$(this).on('keyup', function() {
+			autoHeight(this);
+		});
+	});
+
+}
 $('textarea').autoHeight(70);
 
 function Method() {
@@ -53,8 +73,8 @@ $(function() {
 	});
 
 	new jBox('Modal', {
-		attach: $('#range'),
-		content: $("#modal-content"),
+		attach: jQuery('#range'),
+		content: jQuery("#modal-content"),
 		closeButton: "none"
 	});
 

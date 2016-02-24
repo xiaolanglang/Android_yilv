@@ -36,8 +36,8 @@ public class MyWebViewClient extends WebViewClient {
 	private JsInterface jsInterface;
 	private String jumpTo;
 
-	public MyWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView, JsInterface jsInterface,
-			String jumpTo) {
+	public MyWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
+			JsInterface jsInterface, String jumpTo) {
 		myWebViewClient(activity, currentActivity, ifDialog, webView, jsInterface, jumpTo);
 	}
 
@@ -50,8 +50,8 @@ public class MyWebViewClient extends WebViewClient {
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
-	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView, JsInterface jsInterface,
-			String jumpTo) {
+	private void myWebViewClient(Activity activity, boolean currentActivity, boolean ifDialog, WebView webView,
+			JsInterface jsInterface, String jumpTo) {
 		this.activity = activity;
 		this.currentActivity = currentActivity;
 		this.ifDialog = ifDialog;
@@ -63,8 +63,8 @@ public class MyWebViewClient extends WebViewClient {
 		}
 		WebSettings setting = webView.getSettings();
 		setting.setJavaScriptEnabled(true);
-		// setting.setCacheMode(WebSettings.LOAD_NO_CACHE);//关闭缓存
-		setting.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+		setting.setCacheMode(WebSettings.LOAD_NO_CACHE);// 关闭缓存
+		// setting.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 		setting.setSaveFormData(false);
 		setting.setSavePassword(false);
 		setting.setSupportZoom(false);

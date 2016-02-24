@@ -4,7 +4,7 @@
 	var templateHtml = jQuery('#template')[0].innerHTML;
 	jQuery.template('templateHtml', templateHtml);
 
-	var url = "http://192.168.42.230:8080/yilv/travel/dongtai/list";
+	var url = lt.getBasePath() + "dongtai/list";
 	jQuery.post(url, null, function(data) {
 		createHtml(data);
 	});
@@ -19,7 +19,12 @@
 				var diff = dateTo.valueOf() - dateFrom.valueOf();
 
 				var diff_day = parseInt(diff / (1000 * 60 * 60 * 24));
-				diff_day += "天前 " + this.data.createTime.split(" ")[1];
+				var time = this.data.createTime.split(" ")[1]
+				if (diff_day != 0) {
+					diff_day += "天前 " + time;
+				} else {
+					diff_day = "今天 " + time;
+				}
 				return diff_day;
 			}
 		}).appendTo('#wrapper');

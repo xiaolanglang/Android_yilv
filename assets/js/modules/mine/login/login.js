@@ -1,13 +1,15 @@
 $(function() {
+	$("#form1").attr("action", lt.getBasePath() + "login");
+	$("#form2").attr("action", lt.getBasePath() + "register");
 
 	function showMessage(str) {
 		new jBox("Notice", {
-			content : str,
-			position : {
-				x : "center",
-				y : "center"
+			content: str,
+			position: {
+				x: "center",
+				y: "center"
 			},
-			autoClose : 2000
+			autoClose: 2000
 		});
 	}
 
@@ -15,7 +17,7 @@ $(function() {
 		var $submit = $("#submit");
 		$submit.attr("disabled", "disabled").css("background-color", "#ccc");
 		var a = $(this).ajaxSubmit({
-			success : function(data) {
+			success: function(data) {
 				if (data.code == 200) {
 					jsInterface.setMineRefresh();
 					jsInterface.setCookie(data.message);
@@ -27,7 +29,7 @@ $(function() {
 					showMessage(data.message);
 				}
 			},
-			complete : function(xhr, status) {
+			complete: function(xhr, status) {
 				if (status == "error") {
 					$submit.removeAttr("disabled").removeAttr("style");
 					showMessage("登录失败，稍后再试");
@@ -103,7 +105,7 @@ $(function() {
 		$register.attr("disabled", "disabled").css("background-color", "#ccc");
 
 		$(this).ajaxSubmit({
-			success : function(data) {
+			success: function(data) {
 				if (data.code == 200) {
 					jsInterface.setMineRefresh();
 					window.opener = null;
@@ -114,7 +116,7 @@ $(function() {
 					$register.removeAttr("disabled").removeAttr("style");
 				}
 			},
-			complete : function(xhr, status) {
+			complete: function(xhr, status) {
 				if (status == "error") {
 					showMessage("登录失败，稍后再试");
 					$register.removeAttr("disabled").removeAttr("style");
