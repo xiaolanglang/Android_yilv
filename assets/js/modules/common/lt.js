@@ -194,3 +194,16 @@
 	});
 	w.lt = mj;
 })(window)
+
+lt.extend({
+	showMessage: function showMessage(str) {
+		new jBox("Notice", {
+			content: str,
+			position: {
+				x: "center",
+				y: "center"
+			},
+			autoClose: 2000
+		});
+	}
+});

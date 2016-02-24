@@ -13,6 +13,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<link rel="stylesheet" type="text/css" href="../../css/common/style.css">
 	<link rel="stylesheet" type="text/css" href="../../css/index/index.css">
+	<link rel="stylesheet" type="text/css" href="../../js/common/jBox/jBox.css">
 	<script type="text/x-jquery-tmpl" id="template">
 		<div class="row line-top content">
 			<div class="content1 row">
@@ -46,11 +47,11 @@
 					</div>
 				{{/if}}
 				<div class="text-center right">
-					<a href="javascript:void(0)" class="good">
+					<a href="javascript:void(0)" class="good {{if isGood =='1'}}active{{/if}}" data-id="${id}">
 						<span class="text glyphicon glyphicon-thumbs-up icon"></span>
 						<span class="text number">${attitudesCount}</span>
 					</a>
-					<a href="http://localhost:8080/yilv/travel/dongtai/detail">
+					<a href="http://192.168.0.102:8080/yilv/travel/dongtai/comment?id=${id}">
 						<span class="text icon-bubble2 icon"></span>
 						<span class="text number">${commentCount}</span>
 					</a>
@@ -62,62 +63,11 @@
 </head>
 <body style="background-color: rgb(242, 242, 242);">
 	<div id="wrapper">
-		<div class="row line-top content">
-			<div class="content1 row">
-				<a class="user left">
-					<img src="../../img/index/cache/human.png" class="img round">
-					<div class="nickname">
-						<span>
-							<name>游山玩水</name>
-							<br>
-							<time>16-10-01&nbsp;12:12:10</time>
-						</span>
-					</div>
-				</a>
-			</div>
-			<div class="content2">
-				<p>
-					今天和朋友去了巴厘岛，这里风景非常好，品尝了当地的特产，东西特别美味。猜猜我们下一站去哪儿。今天和朋友去了巴厘岛，这里风景非常好，品尝了当地的特产，东西特别美味。猜猜我们下一站去哪儿。今天和朋友去了巴厘岛，这里风景非常好，品尝了当地的特产，东西特别美味。猜猜我们下一站去哪儿。
-				</p>
-			</div>
-			<div class="content3">
-				<ul class="figure-list">
-					<li>
-						<div data-original="../../img/index/cache/1.png" style="background-image: url(../../img/common/lazy_img.png);" class="imglazy"></div>
-					</li>
-					<li>
-						<div data-original="../../img/index/cache/4.png" style="background-image: url(../../img/common/lazy_img.png);" class="imglazy"></div>
-					</li>
-					<li>
-						<div data-original="../../img/index/cache/8.png" style="background-image: url(../../img/common/lazy_img.png);" class="imglazy"></div>
-					</li>
-				</ul>
-			</div>
-			<div class="row content4 line-top">
-				<div class="left text-center">
-					<span class="text">15分钟之前</span>
-				</div>
-				<div class="text-center right">
-					<a href="javascript:void(0)" class="good">
-						<span class="text glyphicon glyphicon-thumbs-up icon"></span>
-						<span class="text number">127</span>
-					</a>
-					<a href="http://localhost:8080/yilv/travel/dongtai/detail">
-						<span class="text icon-bubble2 icon"></span>
-						<span class="text number">32</span>
-					</a>
-				</div>
-			</div>
-			<div class="line-top"></div>
-		</div>
 	</div>
-
-	<!-- swiperView -->
-	<div class="center" id="swiperView">
-		<div class="swiper-container" id="swiper-container-image">
-			<div class="swiper-wrapper"></div>
-			<div class="swiper-pagination"></div>
-		</div>
+	<!-- loading -->
+	<div class="loading" id="loading" style="display: none;">
+		<span class="load1">正在加载....</span>
+		<span class="load2">点击重试</span>
 	</div>
 
 	<script type="text/javascript">
@@ -125,9 +75,10 @@
 		});
 	</script>
 	<script type="text/javascript" src="../../js/common/jquery_1.11.js"></script>
+	<script type="text/javascript" src="../../js/common/jBox/jBox.min.js"></script>
+	<script type="text/javascript" src="../../js/common/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../js/common/zepto.js"></script>
 	<script type="text/javascript" src="../../js/common/jquery.imglazyload.js"></script>
-	<script type="text/javascript" src="../../js/common/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../js/modules/common/lt.js"></script>
 	<script type="text/javascript" src="../../js/modules/dongtai/index.js"></script>
 </body>

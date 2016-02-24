@@ -18,7 +18,13 @@
 .content4 .icon { font-size: 20px; padding-right: 3px; }
 .content4 a { padding-right: 20px; }
 .content4 .number { margin-left: -2px; }
-.good.activity{color: orange;}
+.good.active{color: orange;}
+.loading{text-align: center;}
+/* loading */
+.loading span{padding-bottom: 5px;}
+.load2{display: none;}
+.failed .load1{display: none;}
+.failed .load2{display: inline-block;}
 
 /*swiper css*/
 html { height: 100%; }
