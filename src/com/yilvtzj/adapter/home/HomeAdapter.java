@@ -1,4 +1,4 @@
-package com.yilvtzj.adapter;
+package com.yilvtzj.adapter.home;
 
 import java.util.List;
 
@@ -6,10 +6,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.FullPageImageViewActivity;
 import com.yilvtzj.pojo.DongTai;
 
 /**
@@ -48,6 +52,15 @@ public class HomeAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.name = (TextView) view.findViewById(R.id.name);
 			viewHolder.content = (TextView) view.findViewById(R.id.content);
+			GridView gridview = (GridView) view.findViewById(R.id.gridview);
+			gridview.setAdapter(new GridAdapter(context, mThumbIds));
+			gridview.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					FullPageImageViewActivity.actionStart(context, mThumbIds, position);
+				}
+			});
 			view.setTag(viewHolder);
 		} else
 			viewHolder = (ViewHolder) view.getTag();
@@ -60,4 +73,8 @@ public class HomeAdapter extends BaseAdapter {
 		private TextView name;
 		private TextView content;
 	}
+
+	// Keep all Images in array
+	private int[] mThumbIds = { R.drawable.c2, R.drawable.c3, R.drawable.c4, R.drawable.c5, R.drawable.c6, R.drawable.c7, R.drawable.c1,
+			R.drawable.c8, R.drawable.c9, };
 }

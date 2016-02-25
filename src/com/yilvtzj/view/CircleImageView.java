@@ -94,7 +94,6 @@ public class CircleImageView extends ImageView {
 		// DEFAULT_BORDER_OVERLAY);
 		// 调用 recycle() 回收TypedArray,以便后面重用
 		// a.recycle();
-		System.out.println("CircleImageView -- 构造函数");
 		init();
 	}
 
@@ -267,8 +266,7 @@ public class CircleImageView extends ImageView {
 			if (drawable instanceof ColorDrawable) {
 				bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
 			} else {
-				bitmap = Bitmap
-						.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+				bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
 			}
 
 			Canvas canvas = new Canvas(bitmap);

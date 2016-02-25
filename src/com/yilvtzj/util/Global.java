@@ -12,6 +12,7 @@ public class Global {
 	public static final String character = "UTF-8";
 	private static final String SERVLETNAME = "192.168.0.102:8080/yilv";
 	public static final String JSINTERFACE = "jsInterface";
+	public static final String TIANGOU_SERVICE = "";
 
 	/**
 	 * 获得请求路径

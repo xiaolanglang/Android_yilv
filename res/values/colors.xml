@@ -11,6 +11,8 @@
     <drawable name="clr_normal">#F8F8F8</drawable>
     <drawable name="clr_pressed">#ccc</drawable>
     
+    <color name="focus_color">#aa000000</color>
+    
     <!-- 下拉刷新颜色 -->
     <!-- A light Holo shade of blue -->  
     <color name="holo_blue_light">#ff33b5e5</color>  

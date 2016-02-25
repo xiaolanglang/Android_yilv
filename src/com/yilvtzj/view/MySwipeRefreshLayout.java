@@ -172,12 +172,11 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 	 */
 	public void setLoading(boolean loading) {
 		isLoading = loading;
-		if (isLoading) {
-			mListView.addFooterView(mListViewFooter);
-		} else {
-			mListView.removeFooterView(mListViewFooter);
+		mListView.addFooterView(mListViewFooter);
+		if (!isLoading) {
 			mYDown = 0;
 			mLastY = 0;
+		} else {
 		}
 	}
 

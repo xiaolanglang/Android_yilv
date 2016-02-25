@@ -73,15 +73,28 @@
                     android:textSize="14sp"
                     />
 
-            <ImageView
+            <com.yilvtzj.view.NoScrolGridView
+                android:id="@+id/gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/content"
+                android:numColumns="3"
+                android:gravity="center"
+                android:horizontalSpacing="4dp"
+                android:verticalSpacing="4dp" 
+                android:listSelector="@android:color/transparent"
+                />
+
+            <!-- <ImageView
                     android:id="@+id/peitu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
                     android:src="@drawable/neirong"
                     android:layout_below="@id/content"
+                    android:scaleType="centerInside"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    />
+                    /> -->
         </RelativeLayout>
 
 

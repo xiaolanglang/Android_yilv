@@ -84,6 +84,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.yilvtzj.activity.FullPageImageViewActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.wq.photo.MediaChoseActivity"
             android:label="@string/title_activity_media_chose" >
         </activity>
