@@ -162,9 +162,25 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 		if (mOnLoadListener != null) {
 			// 设置状态
 			setLoading(true);
-			//
+			scrollBottom();
 			mOnLoadListener.onLoad();
 		}
+	}
+
+	private void scrollBottom() {
+		if (isListViewReachBottomEdge(mListView)) {
+			mListView.setSelection(mListView.getCount() - 1);
+		}
+	}
+
+	public boolean isListViewReachBottomEdge(ListView listView) {
+		boolean result = false;
+		if (listView.getLastVisiblePosition() == (listView.getCount() - 2)) {
+			final View bottomChildView = listView.getChildAt(listView.getLastVisiblePosition()
+					- listView.getFirstVisiblePosition());
+			result = (listView.getHeight() >= bottomChildView.getBottom());
+		}
+		return result;
 	}
 
 	/**
@@ -172,11 +188,12 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 	 */
 	public void setLoading(boolean loading) {
 		isLoading = loading;
-		mListView.addFooterView(mListViewFooter);
-		if (!isLoading) {
+		if (isLoading) {
+			mListView.addFooterView(mListViewFooter);
+		} else {
+			mListView.removeFooterView(mListViewFooter);
 			mYDown = 0;
 			mLastY = 0;
-		} else {
 		}
 	}
 

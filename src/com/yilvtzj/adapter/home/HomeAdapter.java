@@ -55,7 +55,6 @@ public class HomeAdapter extends BaseAdapter {
 			GridView gridview = (GridView) view.findViewById(R.id.gridview);
 			gridview.setAdapter(new GridAdapter(context, mThumbIds));
 			gridview.setOnItemClickListener(new OnItemClickListener() {
-
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					FullPageImageViewActivity.actionStart(context, mThumbIds, position);
@@ -75,6 +74,6 @@ public class HomeAdapter extends BaseAdapter {
 	}
 
 	// Keep all Images in array
-	private int[] mThumbIds = { R.drawable.c2, R.drawable.c3, R.drawable.c4, R.drawable.c5, R.drawable.c6, R.drawable.c7, R.drawable.c1,
-			R.drawable.c8, R.drawable.c9, };
+	private int[] mThumbIds = { R.drawable.c2, R.drawable.c3, R.drawable.c4, R.drawable.c5, R.drawable.c6,
+			R.drawable.c7, R.drawable.c1, R.drawable.c8, R.drawable.c9, };
 }
