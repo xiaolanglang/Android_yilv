@@ -54,7 +54,7 @@
             android:value="@string/baiduMapAK" />
 
         <activity
-            android:name="com.yilvtzj.main.WelcomeActivity"
+            android:name="com.yilvtzj.activity.main.WelcomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
@@ -65,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yilvtzj.main.MainActivity"
+            android:name="com.yilvtzj.activity.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustPan" >

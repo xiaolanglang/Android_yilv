@@ -1,6 +1,7 @@
-package com.yilvtzj.fragments;
+package com.yilvtzj.activity.fragment;
 
 import com.yilvtzj.activity.LoginActivity;
+import com.yilvtzj.activity.common.MyFragment;
 import com.yilvtzj.util.Global;
 import com.yilvtzj.webview.MyWebViewClient;
 

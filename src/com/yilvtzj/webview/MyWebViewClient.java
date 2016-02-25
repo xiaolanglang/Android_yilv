@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.WebViewActivity;
-import com.yilvtzj.dialog.LoadingDialog;
 import com.yilvtzj.util.Global;
+import com.yilvtzj.view.LoadingDialog;
 import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 
 public class MyWebViewClient extends WebViewClient {

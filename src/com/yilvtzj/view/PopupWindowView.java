@@ -1,4 +1,4 @@
-package com.yilvtzj.popup;
+package com.yilvtzj.view;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.yilvtzj.dialog;
+package com.yilvtzj.view;
 
 import android.app.Dialog;
 import android.content.Context;

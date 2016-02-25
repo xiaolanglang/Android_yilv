@@ -1,4 +1,4 @@
-package com.yilvtzj.main;
+package com.yilvtzj.activity.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,10 +9,10 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.yilvtzj.R;
-import com.yilvtzj.fragments.FragmentIndex;
-import com.yilvtzj.fragments.FragmentMine;
-import com.yilvtzj.fragments.FragmentNews;
-import com.yilvtzj.fragments.FragmentZiXun;
+import com.yilvtzj.activity.fragment.FragmentIndex;
+import com.yilvtzj.activity.fragment.FragmentMine;
+import com.yilvtzj.activity.fragment.FragmentNews;
+import com.yilvtzj.activity.fragment.FragmentZiXun;
 import com.yilvtzj.util.ClassManagerUtil;
 
 public class WelcomeActivity extends Activity {

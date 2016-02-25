@@ -1,4 +1,4 @@
-package com.yilvtzj.main;
+package com.yilvtzj.activity.main;
 
 import android.content.BroadcastReceiver;
 import android.os.Bundle;
@@ -15,13 +15,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.fragment.FragmentIndex;
+import com.yilvtzj.activity.fragment.FragmentMine;
+import com.yilvtzj.activity.fragment.FragmentNews;
+import com.yilvtzj.activity.fragment.FragmentZiXun;
 import com.yilvtzj.baidumap.MyBaiduMap;
-import com.yilvtzj.fragments.FragmentIndex;
-import com.yilvtzj.fragments.FragmentMine;
-import com.yilvtzj.fragments.FragmentNews;
-import com.yilvtzj.fragments.FragmentZiXun;
-import com.yilvtzj.popup.PopupWindowView;
 import com.yilvtzj.util.ClassManagerUtil;
+import com.yilvtzj.view.PopupWindowView;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	// 定义Fragment页面

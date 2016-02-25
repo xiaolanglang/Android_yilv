@@ -1,4 +1,4 @@
-package com.yilvtzj.fragments;
+package com.yilvtzj.activity.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_home, container, false);
+		View view = inflater.inflate(R.layout.fragment_index, container, false);
 		init(view);
 		myRefreshListView.post(new Thread(new Runnable() {
 

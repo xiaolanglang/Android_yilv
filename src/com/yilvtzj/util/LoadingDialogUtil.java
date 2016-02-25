@@ -2,7 +2,7 @@ package com.yilvtzj.util;
 
 import android.content.Context;
 
-import com.yilvtzj.dialog.LoadingDialog;
+import com.yilvtzj.view.LoadingDialog;
 
 public class LoadingDialogUtil {
 	public static LoadingDialog show(Context context, LoadingDialog dialog) {

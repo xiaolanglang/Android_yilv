@@ -20,13 +20,13 @@ import android.widget.Toast;
 
 import com.yilvtzj.R;
 import com.yilvtzj.baidumap.MyAddress;
-import com.yilvtzj.dialog.LoadingDialog;
 import com.yilvtzj.http.FormFile;
 import com.yilvtzj.http.SocketHttpRequester;
 import com.yilvtzj.util.Global;
 import com.yilvtzj.util.LoadingDialogUtil;
 import com.yilvtzj.util.PhotoGalleryUtil;
 import com.yilvtzj.util.ToastUtil;
+import com.yilvtzj.view.LoadingDialog;
 import com.yilvtzj.webview.JsInterface;
 import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebChromeClient;

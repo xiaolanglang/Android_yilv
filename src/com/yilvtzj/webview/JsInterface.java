@@ -2,7 +2,7 @@ package com.yilvtzj.webview;
 
 import android.webkit.JavascriptInterface;
 
-import com.yilvtzj.fragments.FragmentMine;
+import com.yilvtzj.activity.fragment.FragmentMine;
 import com.yilvtzj.util.ClassManagerUtil;
 
 public class JsInterface {

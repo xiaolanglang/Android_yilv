@@ -1,4 +1,4 @@
-package com.yilvtzj.fragments;
+package com.yilvtzj.activity.common;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
