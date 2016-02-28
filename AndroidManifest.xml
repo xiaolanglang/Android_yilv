@@ -34,6 +34,14 @@
 
     <!-- SD卡读取权限，用户写入离线定位数据 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    
+    <!-- 相机 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <!-- 相机 -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <supports-screens
         android:anyDensity="true"
@@ -41,6 +49,7 @@
         android:normalScreens="false"
         android:resizeable="true"
         android:smallScreens="true" />
+    <instrumentation android:targetPackage="com.yilvtzj" android:name="android.test.InstrumentationTestRunner"></instrumentation>
 
     <application
         android:name="com.yilvtzj.app.LocationApplication"
@@ -49,6 +58,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat" >
+        <!-- 单元测试用 -->
+        <uses-library android:name="android.test.runner"/>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="@string/baiduMapAK" />
@@ -87,6 +98,8 @@
             android:name="com.yilvtzj.activity.FullPageImageViewActivity"
             android:screenOrientation="portrait" >
         </activity>
+        
+        <!-- 相册选取，开始 -->
         <activity
             android:name="com.wq.photo.MediaChoseActivity"
             android:label="@string/title_activity_media_chose" >
@@ -95,7 +108,12 @@
             android:name="com.wq.photo.CropImageActivity"
             android:label="@string/title_activity_crop_image" >
         </activity>
-
+		
+		<!-- 扫描 -->
+		 <activity
+            android:name="com.mining.app.zxing.activity.MipcaActivityCapture">
+        </activity>
+		
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

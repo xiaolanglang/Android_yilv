@@ -10,10 +10,14 @@
     <string name="icon_home_news">消息</string>
     <string name="icon_home_mine">我的</string>
     
+    <string name="login_more">点击登录  体验更多</string>
+    
     <string name="btn_fawenzi">发文字</string>
     <string name="btn_fapic">发图片</string>
     <string name="btn_qidai">敬请期待</string>
     <string name="loading">正在加载</string>
+    
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
 
     <string name="baiduMapAK">Na4uAgGdXoLsX6dq8EjKW1bi</string>
 

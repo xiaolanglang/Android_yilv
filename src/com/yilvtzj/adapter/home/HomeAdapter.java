@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
-import com.yilvtzj.pojo.DongTai;
+import com.yilvtzj.pojo.DongtaiMsg;
+import com.yilvtzj.util.DateUtil;
+import com.yilvtzj.view.NoScrolGridView;
 
 /**
  * Created by IntelliJ IDEA Project: com.ht.mynote.adapters Author: 安诺爱成长 Email:
@@ -22,9 +23,9 @@ import com.yilvtzj.pojo.DongTai;
  */
 public class HomeAdapter extends BaseAdapter {
 	private Context context;
-	private List<DongTai> list;
+	private List<DongtaiMsg> list;
 
-	public HomeAdapter(Context context, List<DongTai> list) {
+	public HomeAdapter(Context context, List<DongtaiMsg> list) {
 		this.context = context;
 		this.list = list;
 	}
@@ -52,9 +53,9 @@ public class HomeAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.name = (TextView) view.findViewById(R.id.name);
 			viewHolder.content = (TextView) view.findViewById(R.id.content);
-			GridView gridview = (GridView) view.findViewById(R.id.gridview);
-			gridview.setAdapter(new GridAdapter(context, mThumbIds));
-			gridview.setOnItemClickListener(new OnItemClickListener() {
+			viewHolder.time = (TextView) view.findViewById(R.id.time);
+			viewHolder.gridView = (NoScrolGridView) view.findViewById(R.id.gridview);
+			viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					FullPageImageViewActivity.actionStart(context, mThumbIds, position);
@@ -63,14 +64,18 @@ public class HomeAdapter extends BaseAdapter {
 			view.setTag(viewHolder);
 		} else
 			viewHolder = (ViewHolder) view.getTag();
-		viewHolder.name.setText(list.get(i).getName());
-		viewHolder.content.setText(list.get(i).getContent());
+
+		DongtaiMsg dongtaiMsg = list.get(i);
+		viewHolder.name.setText(dongtaiMsg.getAccount().getNickname());
+		viewHolder.content.setText(dongtaiMsg.getContent());
+		viewHolder.time.setText(DateUtil.rangeTime(dongtaiMsg.getCreateTime(), "yyyy-MM-dd hh:mm"));
+		viewHolder.gridView.setAdapter(new GridAdapter(context, mThumbIds));
 		return view;
 	}
 
 	private class ViewHolder {
-		private TextView name;
-		private TextView content;
+		private TextView name, content, time;
+		private NoScrolGridView gridView;
 	}
 
 	// Keep all Images in array

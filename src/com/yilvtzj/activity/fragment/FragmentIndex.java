@@ -3,34 +3,52 @@ package com.yilvtzj.activity.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mining.app.zxing.activity.MipcaActivityCapture;
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.home.HomeAdapter;
-import com.yilvtzj.pojo.DongTai;
+import com.yilvtzj.http.SocketHttpRequester;
+import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.pojo.DongtaiMsg;
+import com.yilvtzj.util.JSONHelper;
+import com.yilvtzj.util.ToastUtil;
+import com.yilvtzj.util.UrlUtil;
 import com.yilvtzj.view.MySwipeRefreshLayout;
 import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
 
-public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoadListener {
+public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoadListener, OnClickListener {
 
 	private MySwipeRefreshLayout myRefreshListView;
 	private ListView listView;
-	private List<DongTai> list = new ArrayList<>();
+	private ImageView scanIV;
+	private List<DongtaiMsg> list = new ArrayList<>();
 	private HomeAdapter homeAdapter;
-	private String str = "广播接收者和activity间如何传递消息，我想显示到activity上：通过接口，但是具体的流程和方式还是不懂。"
-			+ "activity和服务之间如何传递消息,我想显示到activity上.activity之间又是怎么传递数据ude.fragment和activity之间的。"
-			+ "交互也是一个问题，这里都涉及了回调，待再继续的深入的学习";
+	private SocketHttpRequester httpRequester;
+	private final static int SCANNIN_GREQUEST_CODE = 1;
+	private final static int GETDATA_SUCCESS = 1;
+	private final static int GETDATA_FAILED = 2;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_index, container, false);
+
+		httpRequester = new SocketHttpRequester();
 		init(view);
 		myRefreshListView.post(new Thread(new Runnable() {
 
@@ -54,11 +72,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 			@Override
 			public void run() {
 				// 更新数据
-				list.clear();
-				getData();
-				homeAdapter.notifyDataSetChanged();
-				// 更新完后调用该方法结束刷新
-				myRefreshListView.setRefreshing(false);
+				new Thread(new GetListThread()).start();
 			}
 		}, 1000);
 
@@ -81,9 +95,19 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.scan:
+			MipcaActivityCapture.startScan(getActivity(), SCANNIN_GREQUEST_CODE);
+			break;
+		}
+	}
+
 	public void init(View view) {
 		listView = (ListView) view.findViewById(R.id.home);
 		myRefreshListView = (MySwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		scanIV = (ImageView) view.findViewById(R.id.scan);
 
 		View view2 = LayoutInflater.from(this.getActivity()).inflate(R.layout.listview_footer, null);
 		view2.setVisibility(View.GONE);
@@ -94,18 +118,85 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		listView.setAdapter(homeAdapter);
 		listView.removeHeaderView(view2);
 
+		// 构建下拉刷新
 		myRefreshListView.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light,
 				R.color.holo_red_light);
 		myRefreshListView.setOnRefreshListener(this);
 		myRefreshListView.setOnLoadListener(this);
 
+		scanIV.setOnClickListener(this);
+
 	}
 
-	private void getData() {
-		list.add(new DongTai("天心月圆", str));
-		list.add(new DongTai("水月洞天", str));
-		list.add(new DongTai("四海为家", str));
-		list.add(new DongTai("冰心玉壶", str));
+	class GetListThread implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+				httpRequester.setSocketListener(new SocketListener() {
+
+					@Override
+					public void result(String JSON) {
+						try {
+							JSONObject jsonObject = new JSONObject(JSON);
+							JSONArray jsonArray = jsonObject.getJSONArray("list");
+							list.clear();
+							for (int i = 0, l = jsonArray.length(); i < l; i++) {
+								DongtaiMsg dongtaiMsg = JSONHelper.JSONToBean((JSONObject) jsonArray.get(i),
+										DongtaiMsg.class);
+								list.add(dongtaiMsg);
+							}
+							handler.sendEmptyMessage(GETDATA_SUCCESS);
+						} catch (JSONException e) {
+							handler.sendEmptyMessage(GETDATA_FAILED);
+							e.printStackTrace();
+						}
+
+					}
+
+				}).post(UrlUtil.getDongtaiList, getActivity(), null);
+			} catch (Exception e) {
+				handler.sendEmptyMessage(GETDATA_FAILED);
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case GETDATA_SUCCESS:
+				if (list.size() > 0) {
+					homeAdapter.notifyDataSetChanged();
+					// 更新完后调用该方法结束刷新
+					myRefreshListView.setRefreshing(false);
+				}
+				break;
+			case GETDATA_FAILED:
+				myRefreshListView.setRefreshing(false);
+				ToastUtil.show(getActivity(), "获取数据失败,稍后再试", null);
+				break;
+			}
+		};
+	};
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case SCANNIN_GREQUEST_CODE:
+			if (resultCode == getActivity().RESULT_OK) {
+				Bundle bundle = data.getExtras();
+				// 显示扫描到的内容
+				String message = bundle.getString("result");
+				ToastUtil.show(getActivity(), message, null);
+				// 显示
+				// (Bitmap) data.getParcelableExtra("bitmap");
+			}
+			break;
+		}
 	}
 
 }

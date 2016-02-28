@@ -19,7 +19,6 @@ $(function() {
 		var a = $(this).ajaxSubmit({
 			success: function(data) {
 				if (data.code == 200) {
-					jsInterface.setMineRefresh();
 					jsInterface.setCookie(data.message);
 					window.opener = null;
 					window.open('', '_self');
@@ -107,7 +106,6 @@ $(function() {
 		$(this).ajaxSubmit({
 			success: function(data) {
 				if (data.code == 200) {
-					jsInterface.setMineRefresh();
 					window.opener = null;
 					window.open('', '_self');
 					window.close();

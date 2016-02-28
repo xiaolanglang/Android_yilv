@@ -2,9 +2,6 @@ package com.yilvtzj.webview;
 
 import android.webkit.JavascriptInterface;
 
-import com.yilvtzj.activity.fragment.FragmentMine;
-import com.yilvtzj.util.ClassManagerUtil;
-
 public class JsInterface {
 	private JsInterfaceMethod method;
 
@@ -38,15 +35,6 @@ public class JsInterface {
 		if (method != null) {
 			method.runMethod(content, range);
 		}
-	}
-
-	/**
-	 * 让"我的"页面重新刷新
-	 */
-	@JavascriptInterface
-	public void setMineRefresh() {
-		FragmentMine fragmentMine = ClassManagerUtil.newInstance(FragmentMine.class);
-		fragmentMine.setIsload(true);
 	}
 
 	@JavascriptInterface

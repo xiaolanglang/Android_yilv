@@ -37,12 +37,12 @@ public class FullPageImageViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.full_page_image);
 		mPictures = (int[]) getIntent().getExtras().getSerializable("pictures");
-		mSelectId = (int) getIntent().getExtras().getLong("selectId");
+		mSelectId = getIntent().getExtras().getInt("selectId");
 
 		ViewPager vp = (ViewPager) findViewById(R.id.viewpager);
 		vp.setOffscreenPageLimit(5);
 		vp.setAdapter(new SamplePagerAdapter());
-		vp.setCurrentItem((int) mSelectId);
+		vp.setCurrentItem(mSelectId);
 		mActivity = FullPageImageViewActivity.this;
 	}
 
@@ -62,7 +62,8 @@ public class FullPageImageViewActivity extends Activity {
 			TextView reload_tv = new TextView(mActivity);
 			reload_tv.setText("加载失败点击重试");
 
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
 			lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 			view.addView(zoomImageView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			// view.addView(progress_img, lp);

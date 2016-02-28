@@ -35,8 +35,8 @@ public class LocationApplication extends Application {
 				.defaultDisplayImageOptions(getDefaultDisplayOption()).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory().memoryCache(new UsingFreqLimitedMemoryCache(20 * 1024 * 1024))
 				// 你可以通过自己的内存缓存实现
-				.memoryCacheSize(2 * 1024 * 1024).diskCacheFileCount(500).imageDownloader(new BaseImageDownloader(context))
-				.writeDebugLogs()
+				.memoryCacheSize(2 * 1024 * 1024).diskCacheFileCount(500)
+				.imageDownloader(new BaseImageDownloader(context)).writeDebugLogs()
 				// Remove for releaseapp
 				.discCache(new UnlimitedDiskCache(cacheDir)).tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		ImageLoader imageLoader = ImageLoader.getInstance();
@@ -45,8 +45,9 @@ public class LocationApplication extends Application {
 	}
 
 	private final static DisplayImageOptions getDefaultDisplayOption() {
-		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_loading_yuan_gray)
-		// 设置图片在下载期间显示的图片
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_loading_yuan_gray)
+				// 设置图片在下载期间显示的图片
 				.showImageForEmptyUri(R.drawable.ic_net_error)
 				// 设置图片Uri为空或是错误的时候显示的图片
 				.showImageOnFail(R.drawable.ic_net_error)

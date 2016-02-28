@@ -1,17 +1,124 @@
 package com.yilvtzj.activity.fragment;
 
-import com.yilvtzj.activity.LoginActivity;
-import com.yilvtzj.activity.common.MyFragment;
-import com.yilvtzj.util.Global;
-import com.yilvtzj.webview.MyWebViewClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class FragmentMine extends MyFragment {
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.yilvtzj.R;
+import com.yilvtzj.activity.LoginActivity;
+import com.yilvtzj.http.SocketHttpRequester;
+import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.pojo.Account;
+import com.yilvtzj.util.AccountUtil;
+import com.yilvtzj.util.ActivityUtil;
+import com.yilvtzj.util.JSONHelper;
+import com.yilvtzj.util.StringUtil;
+import com.yilvtzj.util.ToastUtil;
+import com.yilvtzj.util.UrlUtil;
+
+public class FragmentMine extends Fragment implements OnClickListener, SocketListener {
+	private ImageView loginBtn;
+	private SocketListener socketListener;
+	private TextView nicknameTV;
+	private final int SHOWINFO = 0;
+	private Account account;
 
 	@Override
-	protected void hookOnStart() {
-		webView.loadUrl(Global.getServletUrl("/travel/mine"));
-		webView.setWebViewClient(new MyWebViewClient(getActivity(), false, false, webView, jsInterface,
-				LoginActivity.class.getName()));
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		View view = inflater.inflate(R.layout.fragment_mine, container, false);
+		initView(view);
+		socketListener = this;
+		return view;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		refreshInfo();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.loginBtn:
+			ActivityUtil.startActivity(new Intent(), getActivity(), LoginActivity.class);
+			break;
+
+		}
+	}
+
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case SHOWINFO:
+				showInfo(account);
+				break;
+			}
+		};
+	};
+
+	/**
+	 * 获得用户登录信息,并显示
+	 */
+	private void refreshInfo() {
+		account = AccountUtil.getAccount(getActivity());
+		if (account == null) {
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						new SocketHttpRequester().setSocketListener(socketListener).post(UrlUtil.getUserInfo,
+								getActivity(), null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		} else {
+			showInfo(account);
+		}
+	}
+
+	private void initView(View view) {
+		loginBtn = (ImageView) view.findViewById(R.id.loginBtn);
+		nicknameTV = (TextView) view.findViewById(R.id.nickname);
+
+		loginBtn.setOnClickListener(this);
+	}
+
+	private void showInfo(Account account) {
+		if (account == null) {
+			return;
+		}
+		if (!StringUtil.isEmpty(account.getNickname())) {
+			nicknameTV.setText(account.getNickname());
+			ToastUtil.show(getActivity(), account.getNickname(), null);
+		}
+	}
+
+	@Override
+	public void result(String JSON) {
+		try {
+			account = JSONHelper.JSONToBean(new JSONObject(JSON), Account.class);
+			handler.sendEmptyMessage(SHOWINFO);
+			AccountUtil.setAccount(getActivity(), account);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

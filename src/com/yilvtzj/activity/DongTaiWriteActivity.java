@@ -22,6 +22,7 @@ import com.yilvtzj.R;
 import com.yilvtzj.baidumap.MyAddress;
 import com.yilvtzj.http.FormFile;
 import com.yilvtzj.http.SocketHttpRequester;
+import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.util.Global;
 import com.yilvtzj.util.LoadingDialogUtil;
 import com.yilvtzj.util.PhotoGalleryUtil;
@@ -32,7 +33,7 @@ import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
-public class DongTaiWriteActivity extends Activity implements OnClickListener, JsInterfaceMethod {
+public class DongTaiWriteActivity extends Activity implements OnClickListener, JsInterfaceMethod, SocketListener {
 
 	private WebView webView;
 	private FrameLayout flImage, flPisition;
@@ -168,13 +169,8 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			}
 			try {
 				handler.sendEmptyMessage(MESSAGE_UPLOAD_ING);
-				boolean flag = SocketHttpRequester.post(DongTaiWriteActivity.this, url, map, formFiles);
-				if (flag) {
-					handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
-				} else {
-					handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
-					sendFlag = true;
-				}
+				new SocketHttpRequester().post(DongTaiWriteActivity.this, url, map, formFiles).setSocketListener(
+						DongTaiWriteActivity.this);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -204,5 +200,16 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			}
 		};
 	};
+
+	@Override
+	public void result(String JSON) {
+		if (JSON.indexOf("200") != -1) {
+			handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
+		} else {
+			handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
+			sendFlag = true;
+		}
+
+	}
 
 }
