@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
 import com.yilvtzj.R;
-import com.yilvtzj.activity.DongTaiWriteActivity;
+import com.yilvtzj.activity.dongtai.DongTaiWriteActivity;
 
 public class PopupWindowView implements OnClickListener {
 

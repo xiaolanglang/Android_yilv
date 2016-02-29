@@ -11,6 +11,8 @@
     <string name="icon_home_mine">我的</string>
     
     <string name="login_more">点击登录  体验更多</string>
+    <string name="pinglun">评论</string>
+    <string name="zan">赞</string>
     
     <string name="btn_fawenzi">发文字</string>
     <string name="btn_fapic">发图片</string>

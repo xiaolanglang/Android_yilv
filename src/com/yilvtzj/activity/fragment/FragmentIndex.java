@@ -139,7 +139,8 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 							JSONArray jsonArray = jsonObject.getJSONArray("list");
 							list.clear();
 							for (int i = 0, l = jsonArray.length(); i < l; i++) {
-								DongtaiMsg dongtaiMsg = JSONHelper.JSONToBean((JSONObject) jsonArray.get(i), DongtaiMsg.class);
+								DongtaiMsg dongtaiMsg = JSONHelper.JSONToBean((JSONObject) jsonArray.get(i),
+										DongtaiMsg.class);
 								list.add(dongtaiMsg);
 							}
 							handler.sendEmptyMessage(GETDATA_SUCCESS);

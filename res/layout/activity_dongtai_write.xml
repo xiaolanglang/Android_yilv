@@ -3,91 +3,88 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white" >
+
     <WebView
-         android:id="@+id/webView"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:layout_above="@+id/linearlayout"
-         android:layout_alignParentTop="true"
-         />
-    
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearlayout"
+        android:layout_alignParentTop="true" />
+
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_above="@+id/linearlayout"
-            android:background="#ccc" >
-        </LinearLayout>
-    
-     <LinearLayout
-         android:id="@+id/linearlayout"
-         android:layout_width="match_parent"
-         android:layout_height="50dp"
-         android:orientation="horizontal"
-         android:layout_alignParentBottom="true"
-         >
-         <FrameLayout
-             	android:id="@+id/selectImage"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/btn_bk"
-                android:layout_weight="1" >
-			<FrameLayout 
-			    android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-			    >
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/linearlayout"
+        android:background="#ccc" >
+    </LinearLayout>
 
-			     <ImageView
-			         android:layout_width="27dp"
-			         android:layout_height="27dp"
-			         android:layout_gravity="center_vertical"
-			         android:background="@drawable/btn_camera"/>
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
 
-               <TextView
-                   android:layout_width="wrap_content" 
-                   android:layout_height="wrap_content"
-                   android:textColor="@android:color/black"
-                   android:layout_gravity="center_vertical"
-                   android:layout_marginLeft="34dp"
-                   android:textSize="14sp"
-                   android:text="选择图片"
-                   />
-			</FrameLayout>
-               
+        <FrameLayout
+            android:id="@+id/selectImage"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bk" >
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" >
+
+                <ImageView
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/btn_camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="34dp"
+                    android:text="选择图片"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
             </FrameLayout>
-            
-         <FrameLayout
-             	android:id="@+id/selectPosition"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/btn_bk"
-                android:layout_weight="1" >
+        </FrameLayout>
 
-                <FrameLayout 
-				    android:layout_width="wrap_content"
-	                android:layout_height="match_parent"
-	                android:layout_gravity="center_horizontal"
-				    >
-					     <ImageView
-					         android:id="@+id/position_image"
-				            android:layout_width="wrap_content"
-				            android:layout_height="wrap_content"
-				            android:background="@drawable/btn_position_select"
-				            android:scaleType="center"
-				            android:layout_gravity="center_vertical"
-				             />
-		               <TextView
-		                   android:id="@+id/position_wenzi"
-		                   android:layout_width="wrap_content" 
-		                   android:layout_height="wrap_content"
-		                   android:textColor="@android:color/black"
-		                   android:layout_gravity="center_vertical"
-		                   android:layout_marginLeft="30dp"
-		                   android:textSize="14sp"
-		                   android:text="显示位置"
-		                   />
-				</FrameLayout>
+        <FrameLayout
+            android:id="@+id/selectPosition"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bk" >
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/position_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/btn_position_select"
+                    android:scaleType="center" />
+
+                <TextView
+                    android:id="@+id/position_wenzi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:text="显示位置"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
             </FrameLayout>
-            
-     </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
 </RelativeLayout>

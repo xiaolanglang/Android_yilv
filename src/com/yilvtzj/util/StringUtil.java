@@ -324,4 +324,13 @@ public class StringUtil {
 		}
 		return true;
 	}
+
+	public static String[] toStrings(List<String> list) {
+		int l = list.size();
+		String[] urls = new String[l];
+		for (int i = 0; i < l; i++) {
+			urls[i] = list.get(i);
+		}
+		return urls;
+	}
 }

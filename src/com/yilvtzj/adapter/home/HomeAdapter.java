@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +22,13 @@ import android.widget.Toast;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
+import com.yilvtzj.activity.dongtai.DongTaiCommentActivity;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.pojo.DongtaiMsg;
 import com.yilvtzj.service.DongTaiGoodService;
+import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.DateUtil;
+import com.yilvtzj.util.StringUtil;
 import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.NoScrolGridView;
 
@@ -59,10 +64,11 @@ public class HomeAdapter extends BaseAdapter {
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(R.layout.home_item, null);
 			viewHolder = new ViewHolder();
-			viewHolder.attitudesCountLay = (LinearLayout) view.findViewById(R.id.attitudesCountLay);
 			viewHolder.name = (TextView) view.findViewById(R.id.name);
 			viewHolder.content = (TextView) view.findViewById(R.id.content);
+			viewHolder.attitudesCountLay = (LinearLayout) view.findViewById(R.id.attitudesCountLay);
 			viewHolder.attitudesCount = (TextView) view.findViewById(R.id.attitudesCount);
+			viewHolder.commentCountLay = (LinearLayout) view.findViewById(R.id.commentCountLay);
 			viewHolder.commentCount = (TextView) view.findViewById(R.id.commentCount);
 			viewHolder.time = (TextView) view.findViewById(R.id.time);
 			viewHolder.gridView = (NoScrolGridView) view.findViewById(R.id.gridview);
@@ -77,14 +83,16 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.attitudesCount.setTag(dongtaiMsg.getId());
 		viewHolder.commentCount.setText(String.valueOf(dongtaiMsg.getCommentCount()));
 		viewHolder.time.setText(DateUtil.rangeTime(dongtaiMsg.getCreateTime(), "yyyy-MM-dd hh:mm"));
+
 		final int a = i;
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				FullPageImageViewActivity.actionStart(context, getUrls(list.get(a).getImageUrls()), position);
+				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(list.get(a).getImageUrls()),
+						position);
 			}
 		});
-		viewHolder.gridView.setAdapter(new GridAdapter(context, getUrls(list.get(a).getImageUrls())));
+		viewHolder.gridView.setAdapter(new GridAdapter(context, StringUtil.toStrings(list.get(a).getImageUrls())));
 
 		viewHolder.attitudesCountLay.setOnClickListener(new Animate(view));
 		if ("1".equals(dongtaiMsg.getIsGood())) {
@@ -93,22 +101,16 @@ public class HomeAdapter extends BaseAdapter {
 			notGood(view, false);
 		}
 
+		viewHolder.content.setOnClickListener(new CommentListener(dongtaiMsg));
+		viewHolder.commentCountLay.setOnClickListener(new CommentListener(dongtaiMsg));
+
 		return view;
 	}
 
 	private class ViewHolder {
 		private TextView name, content, time, attitudesCount, commentCount;
 		private NoScrolGridView gridView;
-		private LinearLayout attitudesCountLay;
-	}
-
-	private static String[] getUrls(List<String> list) {
-		int l = list.size();
-		String[] urls = new String[l];
-		for (int i = 0; i < l; i++) {
-			urls[i] = list.get(i);
-		}
-		return urls;
+		private LinearLayout attitudesCountLay, commentCountLay;
 	}
 
 	/**
@@ -219,6 +221,22 @@ public class HomeAdapter extends BaseAdapter {
 					animatorY.start();
 				}
 			}
+		}
+
+	}
+
+	private class CommentListener implements OnClickListener {
+		private DongtaiMsg msg;
+
+		public CommentListener(DongtaiMsg msg) {
+			this.msg = msg;
+		}
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent();
+			intent.putExtra("msg", msg);
+			ActivityUtil.startActivity(intent, (Activity) context, DongTaiCommentActivity.class);
 		}
 
 	}

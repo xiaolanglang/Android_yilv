@@ -21,13 +21,14 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 >
 
             <com.yilvtzj.view.CircleImageView
                     android:id="@+id/touxiang_img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/portrait"
+                    android:src="@drawable/mine_account_img"
                     />
 
             <TextView
@@ -72,6 +73,7 @@
                     android:textColor="#737373"
                     android:lineSpacingExtra="5dp"
                     android:textSize="14sp"
+                    android:background="@drawable/btn_bk"
                     />
 
             <com.yilvtzj.view.NoScrolGridView
@@ -112,11 +114,12 @@
                 >
 
             <LinearLayout
+					android:id="@+id/commentCountLay"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
-
+                    android:background="@drawable/btn_bk"
                     >
 
                 <ImageView
@@ -131,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
+                        android:textColor="@color/cgrey"
                         android:layout_gravity="center_vertical"
                         />
 
@@ -149,6 +153,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:background="@drawable/btn_bk"
                     >
 
                 <ImageView
@@ -162,6 +167,7 @@
                     	android:id="@+id/attitudesCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                         android:textColor="@color/cgrey"
                         android:paddingLeft="5dp"
                         android:layout_gravity="center_vertical"
                         />
