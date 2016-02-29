@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -23,12 +22,11 @@ import android.widget.Toast;
 import com.mining.app.zxing.activity.MipcaActivityCapture;
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.home.HomeAdapter;
-import com.yilvtzj.http.SocketHttpRequester;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.pojo.DongtaiMsg;
+import com.yilvtzj.service.DongTaiService;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.ToastUtil;
-import com.yilvtzj.util.UrlUtil;
 import com.yilvtzj.view.MySwipeRefreshLayout;
 import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
 
@@ -39,7 +37,6 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	private ImageView scanIV;
 	private List<DongtaiMsg> list = new ArrayList<>();
 	private HomeAdapter homeAdapter;
-	private SocketHttpRequester httpRequester;
 	private final static int SCANNIN_GREQUEST_CODE = 1;
 	private final static int GETDATA_SUCCESS = 1;
 	private final static int GETDATA_FAILED = 2;
@@ -48,7 +45,6 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_index, container, false);
 
-		httpRequester = new SocketHttpRequester();
 		init(view);
 		myRefreshListView.post(new Thread(new Runnable() {
 
@@ -104,6 +100,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		}
 	}
 
+	//
 	public void init(View view) {
 		listView = (ListView) view.findViewById(R.id.home);
 		myRefreshListView = (MySwipeRefreshLayout) view.findViewById(R.id.swipe_container);
@@ -133,7 +130,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		@Override
 		public void run() {
 			try {
-				httpRequester.setSocketListener(new SocketListener() {
+				DongTaiService.getDongtaiList(getActivity(), new SocketListener() {
 
 					@Override
 					public void result(String JSON) {
@@ -142,8 +139,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 							JSONArray jsonArray = jsonObject.getJSONArray("list");
 							list.clear();
 							for (int i = 0, l = jsonArray.length(); i < l; i++) {
-								DongtaiMsg dongtaiMsg = JSONHelper.JSONToBean((JSONObject) jsonArray.get(i),
-										DongtaiMsg.class);
+								DongtaiMsg dongtaiMsg = JSONHelper.JSONToBean((JSONObject) jsonArray.get(i), DongtaiMsg.class);
 								list.add(dongtaiMsg);
 							}
 							handler.sendEmptyMessage(GETDATA_SUCCESS);
@@ -154,7 +150,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 					}
 
-				}).post(UrlUtil.getDongtaiList, getActivity(), null);
+				});
 			} catch (Exception e) {
 				handler.sendEmptyMessage(GETDATA_FAILED);
 				e.printStackTrace();
@@ -181,22 +177,5 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 			}
 		};
 	};
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-		case SCANNIN_GREQUEST_CODE:
-			if (resultCode == getActivity().RESULT_OK) {
-				Bundle bundle = data.getExtras();
-				// 显示扫描到的内容
-				String message = bundle.getString("result");
-				ToastUtil.show(getActivity(), message, null);
-				// 显示
-				// (Bitmap) data.getParcelableExtra("bitmap");
-			}
-			break;
-		}
-	}
 
 }

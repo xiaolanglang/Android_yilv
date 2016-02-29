@@ -1,6 +1,7 @@
 package com.yilvtzj.activity.main;
 
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.yilvtzj.activity.fragment.FragmentNews;
 import com.yilvtzj.activity.fragment.FragmentZiXun;
 import com.yilvtzj.baidumap.MyBaiduMap;
 import com.yilvtzj.util.ClassManagerUtil;
+import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.PopupWindowView;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
@@ -246,6 +248,23 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		} else {
 			finish();
 			System.exit(0);
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case 1:
+			if (resultCode == this.RESULT_OK) {
+				Bundle bundle = data.getExtras();
+				// 显示扫描到的内容
+				String message = bundle.getString("result");
+				ToastUtil.show(this, message, null);
+				// 显示
+				// (Bitmap) data.getParcelableExtra("bitmap");
+			}
+			break;
 		}
 	}
 

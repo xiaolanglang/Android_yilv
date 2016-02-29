@@ -1,6 +1,5 @@
 package com.yilvtzj.adapter.home;
 
-import android.content.ClipData.Item;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.yilvtzj.R;
+import com.yilvtzj.util.MyImageLoader;
 
 public class GridAdapter extends BaseAdapter {
 	private Context mContext;
-	private int[] mThumbIds;
+	private String[] mThumbIds;
 
 	// Constructor
-	public GridAdapter(Context c, int[] mThumbIds2) {
+	public GridAdapter(Context c, String[] strings) {
 		mContext = c;
-		this.mThumbIds = mThumbIds2;
+		this.mThumbIds = strings;
 	}
 
 	public int getCount() {
@@ -37,9 +37,11 @@ public class GridAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.home_item_image, null);
 		}
-		ImageView image = (ImageView) convertView.findViewById(R.id.icon);
-		Item item = (Item) getItem(position);
-		image.setImageResource(mThumbIds[position]);
+		MyImageLoader imageLoader = new MyImageLoader();
+		ImageView imageView = (ImageView) convertView.findViewById(R.id.icon);
+
+		imageLoader.mImageView = imageView;
+		imageLoader.displayImage(mThumbIds[position]);
 		return convertView;
 
 	}

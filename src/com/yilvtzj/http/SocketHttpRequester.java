@@ -46,8 +46,7 @@ public class SocketHttpRequester {
 	 *            上传文件
 	 * @return
 	 */
-	public SocketHttpRequester post(Context context, String path, Map<String, String> params, FormFile[] files)
-			throws Exception {
+	public boolean post(Context context, String path, Map<String, String> params, FormFile[] files) throws Exception {
 		long t1 = System.currentTimeMillis();
 
 		final String BOUNDARY = "---------------------------7da2137580612"; // 数据分隔线
@@ -60,8 +59,8 @@ public class SocketHttpRequester {
 				fileExplain.append("--");
 				fileExplain.append(BOUNDARY);
 				fileExplain.append("\r\n");
-				fileExplain.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName()
-						+ "\";filename=\"" + uploadFile.getFilname() + "\"\r\n");
+				fileExplain.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName() + "\";filename=\""
+						+ uploadFile.getFilname() + "\"\r\n");
 				fileExplain.append("Content-Type: " + uploadFile.getContentType() + "\r\n\r\n");
 				fileExplain.append("\r\n");
 				fileDataLength += fileExplain.length();
@@ -118,8 +117,8 @@ public class SocketHttpRequester {
 				fileEntity.append("--");
 				fileEntity.append(BOUNDARY);
 				fileEntity.append("\r\n");
-				fileEntity.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName()
-						+ "\";filename=\"" + uploadFile.getFilname() + "\"\r\n");
+				fileEntity.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName() + "\";filename=\""
+						+ uploadFile.getFilname() + "\"\r\n");
 				fileEntity.append("Content-Type: " + uploadFile.getContentType() + "\r\n\r\n");
 				outStream.write(fileEntity.toString().getBytes());
 				if (uploadFile.getInStream() != null) {
@@ -144,6 +143,10 @@ public class SocketHttpRequester {
 		StringBuilder builder = new StringBuilder();
 		String str = reader.readLine();
 		int i = 0;
+		boolean result = false;
+		if (str.indexOf("200") != -1) {
+			result = true;
+		}
 		while (str != null) {
 			if (i == 2) {
 				break;
@@ -178,7 +181,7 @@ public class SocketHttpRequester {
 			socketListener.result(str);
 		}
 
-		return this;
+		return result;
 	}
 
 	/**
@@ -193,12 +196,11 @@ public class SocketHttpRequester {
 	 *            上传文件
 	 * @return
 	 */
-	public SocketHttpRequester post(String path, Context context, Map<String, String> params, FormFile file)
-			throws Exception {
+	public boolean post(String path, Context context, Map<String, String> params, FormFile file) throws Exception {
 		return post(context, path, params, new FormFile[] { file });
 	}
 
-	public SocketHttpRequester post(String path, Context context, Map<String, String> params) throws Exception {
+	public boolean post(String path, Context context, Map<String, String> params) throws Exception {
 		return post(context, path, params, null);
 	}
 

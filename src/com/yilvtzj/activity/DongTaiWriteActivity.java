@@ -169,8 +169,13 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			}
 			try {
 				handler.sendEmptyMessage(MESSAGE_UPLOAD_ING);
-				new SocketHttpRequester().post(DongTaiWriteActivity.this, url, map, formFiles).setSocketListener(
-						DongTaiWriteActivity.this);
+				boolean flag = new SocketHttpRequester().setSocketListener(DongTaiWriteActivity.this).post(DongTaiWriteActivity.this, url,
+						map, formFiles);
+				if (flag) {
+					handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
+				} else {
+					handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -17,15 +17,14 @@ import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.LoginActivity;
-import com.yilvtzj.http.SocketHttpRequester;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.pojo.Account;
+import com.yilvtzj.service.UserService;
 import com.yilvtzj.util.AccountUtil;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.StringUtil;
 import com.yilvtzj.util.ToastUtil;
-import com.yilvtzj.util.UrlUtil;
 
 public class FragmentMine extends Fragment implements OnClickListener, SocketListener {
 	private ImageView loginBtn;
@@ -81,8 +80,7 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 				@Override
 				public void run() {
 					try {
-						new SocketHttpRequester().setSocketListener(socketListener).post(UrlUtil.getUserInfo,
-								getActivity(), null);
+						UserService.getUserInfo(socketListener, getActivity());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

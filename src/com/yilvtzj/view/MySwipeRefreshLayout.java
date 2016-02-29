@@ -176,8 +176,10 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 	public boolean isListViewReachBottomEdge(ListView listView) {
 		boolean result = false;
 		if (listView.getLastVisiblePosition() == (listView.getCount() - 2)) {
-			final View bottomChildView = listView.getChildAt(listView.getLastVisiblePosition()
-					- listView.getFirstVisiblePosition());
+			final View bottomChildView = listView.getChildAt(listView.getLastVisiblePosition() - listView.getFirstVisiblePosition());
+			if (bottomChildView == null) {
+				return false;
+			}
 			result = (listView.getHeight() >= bottomChildView.getBottom());
 		}
 		return result;

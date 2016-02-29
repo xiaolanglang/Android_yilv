@@ -4,7 +4,11 @@
     <color name="skin_tabbar_bg">#FCF8FC</color>
     <color name="white">#fff</color>
     <color name="ccc">#ccc</color>
+    <color name="black">#000000</color>
     <!-- FFFFFF -->
+    
+    <!-- 点赞按钮颜色 -->
+    <color name="like_on">#FF6815</color>
 
 	<!-- actionBar颜色 -->
     <color name="action_bar_bk">#F8F8F8</color>

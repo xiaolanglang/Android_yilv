@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="libs/locSDK_6.13.jar"/>
 	<classpathentry kind="lib" path="libs/universal-image-loader-1.9.5.jar"/>
 	<classpathentry kind="lib" path="libs/zxing.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/PhotoGallery_library"/>
+	<classpathentry kind="lib" path="libs/nineoldandroids.jar" sourcepath="D:/TDownLoad/NineOldAndroids-master/library/src"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
