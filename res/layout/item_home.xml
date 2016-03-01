@@ -83,8 +83,10 @@
                 android:layout_below="@id/content"
                 android:numColumns="3"
                 android:gravity="center"
-                android:horizontalSpacing="4dp"
-                android:verticalSpacing="4dp" 
+                android:horizontalSpacing="@dimen/image_thumbnail_spacing"
+                android:verticalSpacing="@dimen/image_thumbnail_spacing"
+                android:columnWidth="@dimen/image_thumbnail_size"
+       			android:stretchMode="columnWidth"
                 android:listSelector="@android:color/transparent"
                 />
 

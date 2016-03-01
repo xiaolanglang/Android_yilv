@@ -15,6 +15,7 @@ public class MyImageLoader {
 	private MyImageLoadingListener mImageLoadingListener = new MyImageLoadingListener();
 	public ProgressBar mProgress_img;
 	public TextView mReload_tv;
+	private ImageLoadFinish loadFinish;
 
 	public void displayImage(String uri) {
 		LocationApplication.imageLoader.displayImage(uri, mImageView, mImageLoadingListener);
@@ -56,6 +57,9 @@ public class MyImageLoader {
 				ImageView img = (ImageView) view;
 				img.setImageBitmap(bitmap);
 			}
+			if (loadFinish != null) {
+				loadFinish.result(bitmap);
+			}
 
 		}
 
@@ -64,6 +68,10 @@ public class MyImageLoader {
 			mProgress_img(View.GONE);
 			mReload_tv(View.GONE);
 		}
+	}
+
+	public interface ImageLoadFinish {
+		void result(Bitmap bitmap);
 	}
 
 }

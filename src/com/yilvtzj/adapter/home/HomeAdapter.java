@@ -85,14 +85,26 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.commentCount.setText(String.valueOf(dongtaiMsg.getCommentCount()));
 		viewHolder.time.setText(DateUtil.rangeTime(dongtaiMsg.getCreateTime(), "yyyy-MM-dd hh:mm"));
 
-		final int a = i;
+		final PhotoWallAdapter wallAdapter = new PhotoWallAdapter(context, StringUtil.toStrings(dongtaiMsg
+				.getImageUrls()));
+		final ViewHolder viewHolder2 = viewHolder;
+		viewHolder.gridView.post(new Runnable() {
+
+			@Override
+			public void run() {
+				int columnWidth = (viewHolder2.gridView.getWidth() / 3) - 4 * 2;
+				wallAdapter.setItemHeight(columnWidth);
+
+			}
+		});
+		viewHolder.gridView.setAdapter(wallAdapter);
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(list.get(a).getImageUrls()), position);
+				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()),
+						position);
 			}
 		});
-		viewHolder.gridView.setAdapter(new GridAdapter(context, StringUtil.toStrings(list.get(a).getImageUrls())));
 
 		viewHolder.attitudesCountLay.setOnClickListener(new Animate(view));
 		if ("1".equals(dongtaiMsg.getIsGood())) {

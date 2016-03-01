@@ -17,7 +17,7 @@ import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.dongtaicomment.ListAdapter;
-import com.yilvtzj.adapter.home.GridAdapter;
+import com.yilvtzj.adapter.home.PhotoWallAdapter;
 import com.yilvtzj.pojo.Account;
 import com.yilvtzj.pojo.DongtaiComment;
 import com.yilvtzj.pojo.DongtaiMsg;
@@ -32,6 +32,7 @@ public class DongTaiCommentActivity extends MyActivity {
 	private Activity mActivity;
 	private ListView listView;
 	private ListAdapter listAdapter;
+	private PhotoWallAdapter wallAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,18 @@ public class DongTaiCommentActivity extends MyActivity {
 		name.setText(msg.getAccount().getNickname());
 		time.setText(DateUtil.rangeTime(msg.getCreateTime(), "yyyy-MM-dd hh:mm"));
 		content.setText(msg.getContent());
-		gridView.setAdapter(new GridAdapter(this.getBaseContext(), StringUtil.toStrings(msg.getImageUrls())));
+
+		wallAdapter = new PhotoWallAdapter(this.getBaseContext(), StringUtil.toStrings(msg.getImageUrls()));
+		gridView.post(new Runnable() {
+
+			@Override
+			public void run() {
+				int columnWidth = (gridView.getWidth() / 3) - 4 * 2;
+				wallAdapter.setItemHeight(columnWidth);
+
+			}
+		});
+		gridView.setAdapter(wallAdapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,5 +99,4 @@ public class DongTaiCommentActivity extends MyActivity {
 		listAdapter = new ListAdapter(mActivity, list);
 		listView.setAdapter(listAdapter);
 	}
-
 }
