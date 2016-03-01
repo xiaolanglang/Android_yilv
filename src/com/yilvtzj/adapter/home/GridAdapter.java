@@ -35,7 +35,7 @@ public class GridAdapter extends BaseAdapter {
 	// create a new ImageView for each item referenced by the Adapter
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.home_item_image, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_home_image, null);
 		}
 		MyImageLoader imageLoader = new MyImageLoader();
 		ImageView imageView = (ImageView) convertView.findViewById(R.id.icon);

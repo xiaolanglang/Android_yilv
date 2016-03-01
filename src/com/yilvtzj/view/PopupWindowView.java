@@ -31,7 +31,7 @@ public class PopupWindowView implements OnClickListener {
 	}
 
 	private void initPopupWindowView() {
-		contentView = LayoutInflater.from(activity).inflate(R.layout.fast, null, false);
+		contentView = LayoutInflater.from(activity).inflate(R.layout.home_fast, null, false);
 		popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, 450);
 		popupWindow.setAnimationStyle(R.style.AnimationPopupWindow);
 

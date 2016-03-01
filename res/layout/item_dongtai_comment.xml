@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FAFAFA"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
+
+        <com.yilvtzj.view.CircleImageView
+            android:id="@+id/touxiang_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/mine_human" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@id/touxiang_img"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="你好"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/name"
+            android:layout_toRightOf="@id/touxiang_img"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="3-3 09:23"
+            android:textColor="#737373"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/market_icon_arrow_down"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/touxiang_img"
+            android:lineSpacingExtra="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="69dp"
+            android:paddingTop="5dp"
+            android:text="你好你好你好你好你好你好你好"
+            android:textColor="#737373"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F4F1F4" >
+    </View>
+
+</LinearLayout>

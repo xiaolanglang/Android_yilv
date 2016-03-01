@@ -65,7 +65,7 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-		mListViewFooter = LayoutInflater.from(context).inflate(R.layout.listview_footer, null, false);
+		mListViewFooter = LayoutInflater.from(context).inflate(R.layout.home_listview_footer, null, false);
 	}
 
 	@Override

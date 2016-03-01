@@ -10,7 +10,6 @@
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:orientation="vertical" 
-        android:onClick="onClick"
         android:background="@drawable/action_bar_image_btn_press"
         >
          <ImageView
@@ -18,7 +17,6 @@
             android:layout_height="28dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/action_bar_image_btn_press"
             android:contentDescription="@string/app_name"
             android:src="@drawable/arrow_left"
              />

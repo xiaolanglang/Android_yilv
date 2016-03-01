@@ -3,11 +3,11 @@ package com.yilvtzj.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.yilvtzj.activity.common.MyActivity;
+import com.yilvtzj.activity.common.WebActivity;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
-public class WebViewActivity extends MyActivity {
+public class WebViewActivity extends WebActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

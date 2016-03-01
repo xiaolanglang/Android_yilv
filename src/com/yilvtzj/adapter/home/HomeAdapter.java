@@ -62,7 +62,7 @@ public class HomeAdapter extends BaseAdapter {
 	public View getView(int i, View view, ViewGroup viewGroup) {
 		ViewHolder viewHolder = null;
 		if (view == null) {
-			view = LayoutInflater.from(context).inflate(R.layout.home_item, null);
+			view = LayoutInflater.from(context).inflate(R.layout.item_home, null);
 			viewHolder = new ViewHolder();
 			viewHolder.name = (TextView) view.findViewById(R.id.name);
 			viewHolder.content = (TextView) view.findViewById(R.id.content);
@@ -88,8 +88,7 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(list.get(a).getImageUrls()),
-						position);
+				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(list.get(a).getImageUrls()), position);
 			}
 		});
 		viewHolder.gridView.setAdapter(new GridAdapter(context, StringUtil.toStrings(list.get(a).getImageUrls())));

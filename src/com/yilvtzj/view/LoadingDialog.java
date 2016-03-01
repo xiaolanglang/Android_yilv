@@ -23,6 +23,6 @@ public class LoadingDialog extends Dialog {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dialog_loading);
+		setContentView(R.layout.common_dialog_loading);
 	}
 }

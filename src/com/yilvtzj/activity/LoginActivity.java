@@ -2,12 +2,12 @@ package com.yilvtzj.activity;
 
 import android.os.Bundle;
 
-import com.yilvtzj.activity.common.MyActivity;
+import com.yilvtzj.activity.common.WebActivity;
 import com.yilvtzj.util.AccountUtil;
 import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebViewClient;
 
-public class LoginActivity extends MyActivity {
+public class LoginActivity extends WebActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
