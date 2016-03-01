@@ -73,8 +73,9 @@ public class HomeAdapter extends BaseAdapter {
 			viewHolder.time = (TextView) view.findViewById(R.id.time);
 			viewHolder.gridView = (NoScrolGridView) view.findViewById(R.id.gridview);
 			view.setTag(viewHolder);
-		} else
-			viewHolder = (ViewHolder) view.getTag();
+		} else {
+			return view;
+		}
 
 		final DongtaiMsg dongtaiMsg = list.get(i);
 		viewHolder.name.setText(dongtaiMsg.getAccount().getNickname());
