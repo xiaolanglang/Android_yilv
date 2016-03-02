@@ -8,25 +8,25 @@ public class DongtaiComment implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Account account;
-	private String time;
+	private Account user;
+	private String createDate;
 	private String id;
 	private String content;
 
-	public Account getAccount() {
-		return account;
+	public Account getUser() {
+		return user;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setUser(Account user) {
+		this.user = user;
 	}
 
-	public String getTime() {
-		return time;
+	public String getCreateDate() {
+		return createDate;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
 
 	public String getId() {

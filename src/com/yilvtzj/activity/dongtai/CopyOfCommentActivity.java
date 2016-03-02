@@ -5,9 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -15,11 +13,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
 import com.yilvtzj.activity.common.MyActivity;
@@ -32,7 +27,7 @@ import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.DateUtil;
 import com.yilvtzj.util.StringUtil;
 
-public class CommentActivity extends MyActivity implements OnClickListener {
+public class CopyOfCommentActivity extends MyActivity implements OnClickListener {
 
 	private DongtaiMsg msg;
 	private TextView name, time, content;
@@ -42,7 +37,6 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 	private ListView listView;
 	private ListAdapter listAdapter;
 	private GridViewAdapter wallAdapter;
-	private PullToRefreshScrollView mPullRefreshScrollView;;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,29 +50,6 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 
 		initView();
 		setValue();
-
-		mPullRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.swipe_container);
-		mPullRefreshScrollView.setOnRefreshListener(new PullToRefreshScrollView.OnRefreshListener<ScrollView>() {
-
-			@Override
-			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
-				new GetDataTask().execute();
-			}
-		});
-
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.comment:
-			Intent intent = new Intent();
-			intent.putExtra("dongTaiId", msg.getId());
-			ActivityUtil.startActivity(intent, CommentActivity.this, CommentWriteActivity.class);
-			break;
-
-		}
-
 	}
 
 	private void initView() {
@@ -107,14 +78,6 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 
 			}
 		});
-
-		View view2 = LayoutInflater.from(this).inflate(R.layout.item_home_listview_footer, null);
-		view2.setVisibility(View.GONE);
-		// 这边如果不设置一下，后面再加载的时候是不会显示的
-		listView.addHeaderView(view2);
-
-		listView.removeHeaderView(view2);
-
 		gridView.setAdapter(wallAdapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -144,26 +107,16 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 		listView.setAdapter(listAdapter);
 	}
 
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.comment:
+			Intent intent = new Intent();
+			intent.putExtra("dongTaiId", msg.getId());
+			ActivityUtil.startActivity(intent, CopyOfCommentActivity.this, CommentWriteActivity.class);
+			break;
 
-		@Override
-		protected String[] doInBackground(Void... params) {
-			// Simulates a background job.
-			try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-			}
-			return null;
 		}
 
-		@Override
-		protected void onPostExecute(String[] result) {
-			// Do some stuff here
-
-			// Call onRefreshComplete when the list has been refreshed.
-			mPullRefreshScrollView.onRefreshComplete();
-
-			super.onPostExecute(result);
-		}
 	}
 }

@@ -47,8 +47,8 @@ public class ListAdapter extends BaseAdapter {
 		TextView time = (TextView) convertView.findViewById(R.id.time);
 		TextView content = (TextView) convertView.findViewById(R.id.content);
 		DongtaiComment comment = list.get(position);
-		name.setText(comment.getAccount().getNickname());
-		time.setText(comment.getTime());
+		name.setText(comment.getUser().getNickname());
+		time.setText(comment.getCreateDate());
 		content.setText(comment.getContent());
 		return convertView;
 	}
