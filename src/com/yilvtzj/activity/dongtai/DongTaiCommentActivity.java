@@ -17,7 +17,7 @@ import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.dongtaicomment.ListAdapter;
-import com.yilvtzj.adapter.home.PhotoWallAdapter;
+import com.yilvtzj.adapter.home.GridViewAdapter;
 import com.yilvtzj.pojo.Account;
 import com.yilvtzj.pojo.DongtaiComment;
 import com.yilvtzj.pojo.DongtaiMsg;
@@ -32,7 +32,7 @@ public class DongTaiCommentActivity extends MyActivity {
 	private Activity mActivity;
 	private ListView listView;
 	private ListAdapter listAdapter;
-	private PhotoWallAdapter wallAdapter;
+	private GridViewAdapter wallAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class DongTaiCommentActivity extends MyActivity {
 		time.setText(DateUtil.rangeTime(msg.getCreateTime(), "yyyy-MM-dd hh:mm"));
 		content.setText(msg.getContent());
 
-		wallAdapter = new PhotoWallAdapter(this.getBaseContext(), StringUtil.toStrings(msg.getImageUrls()));
+		wallAdapter = new GridViewAdapter(this.getBaseContext(), StringUtil.toStrings(msg.getImageUrls()));
 		gridView.post(new Runnable() {
 
 			@Override

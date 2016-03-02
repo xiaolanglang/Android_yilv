@@ -5,8 +5,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -15,7 +13,7 @@ import com.yilvtzj.R;
 import com.yilvtzj.app.LocationApplication;
 import com.yilvtzj.volley.cache.LruBitmapCache;
 
-public class PhotoWallAdapter extends BaseAdapter implements OnScrollListener {
+public class GridViewAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private String[] mThumbIds;
@@ -26,7 +24,7 @@ public class PhotoWallAdapter extends BaseAdapter implements OnScrollListener {
 	 */
 	private int mItemHeight = 0;
 
-	public PhotoWallAdapter(Context context, String[] mThumbIds) {
+	public GridViewAdapter(Context context, String[] mThumbIds) {
 		this.mContext = context;
 		this.mThumbIds = mThumbIds;
 		// 初始化mImageLoader，并且传入了自定义的内存缓存
@@ -95,21 +93,6 @@ public class PhotoWallAdapter extends BaseAdapter implements OnScrollListener {
 		}
 		mItemHeight = height;
 		notifyDataSetChanged();
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-	}
-
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// 仅当GridView静止时才去下载图片，GridView滑动时取消所有正在下载的任务
-		if (scrollState == SCROLL_STATE_IDLE) {
-			// loadBitmaps(mFirstVisibleItem, mVisibleItemCount);
-		} else {
-			// cancelAllTasks();
-		}
 	}
 
 	private static class ViewHolder {
