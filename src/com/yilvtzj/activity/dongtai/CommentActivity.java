@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,13 +23,15 @@ import com.yilvtzj.adapter.home.GridViewAdapter;
 import com.yilvtzj.pojo.Account;
 import com.yilvtzj.pojo.DongtaiComment;
 import com.yilvtzj.pojo.DongtaiMsg;
+import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.DateUtil;
 import com.yilvtzj.util.StringUtil;
 
-public class DongTaiCommentActivity extends MyActivity {
+public class CommentActivity extends MyActivity implements OnClickListener {
 
 	private DongtaiMsg msg;
 	private TextView name, time, content;
+	private FrameLayout commentF;
 	private GridView gridView;
 	private Activity mActivity;
 	private ListView listView;
@@ -54,6 +58,9 @@ public class DongTaiCommentActivity extends MyActivity {
 		content = (TextView) findViewById(R.id.content);
 		gridView = (GridView) findViewById(R.id.gridview);
 		listView = (ListView) findViewById(R.id.list);
+		commentF = (FrameLayout) findViewById(R.id.comment);
+
+		commentF.setOnClickListener(this);
 	}
 
 	private void setValue() {
@@ -98,5 +105,18 @@ public class DongTaiCommentActivity extends MyActivity {
 		list.add(comment);
 		listAdapter = new ListAdapter(mActivity, list);
 		listView.setAdapter(listAdapter);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.comment:
+			Intent intent = new Intent();
+			intent.putExtra("dongTaiId", msg.getId());
+			ActivityUtil.startActivity(intent, CommentActivity.this, CommentWriteActivity.class);
+			break;
+
+		}
+
 	}
 }

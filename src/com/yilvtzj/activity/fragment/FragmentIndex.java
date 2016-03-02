@@ -106,7 +106,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		myRefreshListView = (MySwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		scanIV = (ImageView) view.findViewById(R.id.scan);
 
-		View view2 = LayoutInflater.from(this.getActivity()).inflate(R.layout.home_listview_footer, null);
+		View view2 = LayoutInflater.from(this.getActivity()).inflate(R.layout.item_home_listview_footer, null);
 		view2.setVisibility(View.GONE);
 		// 这边如果不设置一下，后面再加载的时候是不会显示的
 		listView.addHeaderView(view2);

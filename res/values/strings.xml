@@ -13,6 +13,10 @@
     <string name="login_more">点击登录  体验更多</string>
     <string name="pinglun">评论</string>
     <string name="zan">赞</string>
+    <string name="cancel">取消</string>
+    <string name="send">发送</string>
+    <string name="fapinglun">发评论</string>
+    <string name="xiepinglun">写评论...</string>
     
     <string name="btn_fawenzi">发文字</string>
     <string name="btn_fapic">发图片</string>

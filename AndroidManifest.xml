@@ -92,7 +92,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.dongtai.DongTaiWriteActivity"
+            android:name="com.yilvtzj.activity.dongtai.WriteActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
@@ -104,7 +104,9 @@
             android:name="com.yilvtzj.activity.FullPageImageViewActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.dongtai.DongTaiCommentActivity" >
+        <activity android:name="com.yilvtzj.activity.dongtai.CommentActivity" >
+        </activity>
+        <activity android:name="com.yilvtzj.activity.dongtai.CommentWriteActivity" >
         </activity>
 
         <!-- 相册选取，开始 -->

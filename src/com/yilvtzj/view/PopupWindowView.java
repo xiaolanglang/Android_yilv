@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
 import com.yilvtzj.R;
-import com.yilvtzj.activity.dongtai.DongTaiWriteActivity;
+import com.yilvtzj.activity.dongtai.WriteActivity;
 
 public class PopupWindowView implements OnClickListener {
 
@@ -31,7 +31,7 @@ public class PopupWindowView implements OnClickListener {
 	}
 
 	private void initPopupWindowView() {
-		contentView = LayoutInflater.from(activity).inflate(R.layout.home_fast, null, false);
+		contentView = LayoutInflater.from(activity).inflate(R.layout.item_home_fast, null, false);
 		popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, 450);
 		popupWindow.setAnimationStyle(R.style.AnimationPopupWindow);
 
@@ -109,13 +109,13 @@ public class PopupWindowView implements OnClickListener {
 	}
 
 	private void faWenZi() {
-		Intent intent = new Intent(activity, DongTaiWriteActivity.class);
+		Intent intent = new Intent(activity, WriteActivity.class);
 		activity.startActivity(intent);
 		activity.overridePendingTransition(R.anim.my_slide_in_bottom, 0);
 	}
 
 	private void faiImage() {
-		Intent intent = new Intent(activity, DongTaiWriteActivity.class);
+		Intent intent = new Intent(activity, WriteActivity.class);
 		Bundle b = new Bundle();
 		b.putString("imgFlag", "true");
 		intent.putExtras(b);

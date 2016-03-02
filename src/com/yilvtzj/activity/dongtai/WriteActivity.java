@@ -33,7 +33,7 @@ import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
-public class DongTaiWriteActivity extends Activity implements OnClickListener, JsInterfaceMethod, SocketListener {
+public class WriteActivity extends Activity implements OnClickListener, JsInterfaceMethod {
 
 	private WebView webView;
 	private FrameLayout flImage, flPisition;
@@ -169,13 +169,18 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			}
 			try {
 				handler.sendEmptyMessage(MESSAGE_UPLOAD_ING);
-				boolean flag = new SocketHttpRequester().setSocketListener(DongTaiWriteActivity.this).post(DongTaiWriteActivity.this, url,
-						map, formFiles);
-				if (flag) {
-					handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
-				} else {
-					handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
-				}
+				new SocketHttpRequester().setSocketListener(new SocketListener() {
+
+					@Override
+					public void result(String JSON) {
+						if (JSON.indexOf("200") != -1) {
+							handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
+						} else {
+							handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
+							sendFlag = true;
+						}
+					}
+				}).post(WriteActivity.this, url, map, formFiles);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -191,30 +196,19 @@ public class DongTaiWriteActivity extends Activity implements OnClickListener, J
 			switch (msg.what) {
 			case MESSAGE_UPLOAD_SUCCESS:
 				dialog.cancel();
-				toast = ToastUtil.show(DongTaiWriteActivity.this, "上传成功", toast);
+				toast = ToastUtil.show(WriteActivity.this, "上传成功", toast);
 				finish();
 				break;
 			case MESSAGE_UPLOAD_FAILED:
 				dialog.cancel();
-				toast = ToastUtil.show(DongTaiWriteActivity.this, "上传失败", toast);
+				toast = ToastUtil.show(WriteActivity.this, "上传失败", toast);
 				break;
 			case MESSAGE_UPLOAD_ING:
-				dialog = LoadingDialogUtil.show(DongTaiWriteActivity.this, dialog);
-				toast = ToastUtil.show(DongTaiWriteActivity.this, "上传中...", toast);
+				dialog = LoadingDialogUtil.show(WriteActivity.this, dialog);
+				toast = ToastUtil.show(WriteActivity.this, "上传中...", toast);
 				break;
 			}
 		};
 	};
-
-	@Override
-	public void result(String JSON) {
-		if (JSON.indexOf("200") != -1) {
-			handler.sendEmptyMessage(MESSAGE_UPLOAD_SUCCESS);
-		} else {
-			handler.sendEmptyMessage(MESSAGE_UPLOAD_FAILED);
-			sendFlag = true;
-		}
-
-	}
 
 }

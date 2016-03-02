@@ -46,7 +46,7 @@ public class SocketHttpRequester {
 	 *            上传文件
 	 * @return
 	 */
-	public boolean post(Context context, String path, Map<String, String> params, FormFile[] files) throws Exception {
+	public void post(Context context, String path, Map<String, String> params, FormFile[] files) throws Exception {
 		long t1 = System.currentTimeMillis();
 
 		final String BOUNDARY = "---------------------------7da2137580612"; // 数据分隔线
@@ -143,10 +143,6 @@ public class SocketHttpRequester {
 		StringBuilder builder = new StringBuilder();
 		String str = reader.readLine();
 		int i = 0;
-		boolean result = false;
-		if (str.indexOf("200") != -1) {
-			result = true;
-		}
 		while (str != null) {
 			if (i == 2) {
 				break;
@@ -181,7 +177,6 @@ public class SocketHttpRequester {
 			socketListener.result(str);
 		}
 
-		return result;
 	}
 
 	/**
@@ -196,12 +191,12 @@ public class SocketHttpRequester {
 	 *            上传文件
 	 * @return
 	 */
-	public boolean post(String path, Context context, Map<String, String> params, FormFile file) throws Exception {
-		return post(context, path, params, new FormFile[] { file });
+	public void post(String path, Context context, Map<String, String> params, FormFile file) throws Exception {
+		post(context, path, params, new FormFile[] { file });
 	}
 
-	public boolean post(String path, Context context, Map<String, String> params) throws Exception {
-		return post(context, path, params, null);
+	public void post(String path, Context context, Map<String, String> params) throws Exception {
+		post(context, path, params, null);
 	}
 
 	public interface SocketListener {

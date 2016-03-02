@@ -19,10 +19,18 @@ public class GridViewAdapter extends BaseAdapter {
 	private String[] mThumbIds;
 	private static ImageLoader mImageLoader; // imageLoader对象，用来初始化NetworkImageView
 
+	public void setmThumbIds(String[] mThumbIds) {
+		this.mThumbIds = mThumbIds;
+	}
+
 	/**
 	 * 记录每个子项的高度。
 	 */
 	private int mItemHeight = 0;
+
+	public GridViewAdapter(Context context) {
+		this(context, null);
+	}
 
 	public GridViewAdapter(Context context, String[] mThumbIds) {
 		this.mContext = context;

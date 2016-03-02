@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
-import com.yilvtzj.activity.dongtai.DongTaiCommentActivity;
+import com.yilvtzj.activity.dongtai.CommentActivity;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.pojo.DongtaiMsg;
 import com.yilvtzj.service.DongTaiGoodService;
@@ -74,7 +74,7 @@ public class HomeAdapter extends BaseAdapter {
 			viewHolder.gridView = (NoScrolGridView) view.findViewById(R.id.gridview);
 			view.setTag(viewHolder);
 		} else {
-			return view;
+			viewHolder = (ViewHolder) view.getTag();
 		}
 
 		final DongtaiMsg dongtaiMsg = list.get(i);
@@ -85,18 +85,22 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.commentCount.setText(String.valueOf(dongtaiMsg.getCommentCount()));
 		viewHolder.time.setText(DateUtil.rangeTime(dongtaiMsg.getCreateTime(), "yyyy-MM-dd hh:mm"));
 
-		final GridViewAdapter wallAdapter = new GridViewAdapter(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()));
+		if (viewHolder.wallAdapter == null) {
+			viewHolder.wallAdapter = new GridViewAdapter(context);
+		}
+		viewHolder.wallAdapter.setmThumbIds(StringUtil.toStrings(dongtaiMsg.getImageUrls()));
+		viewHolder.wallAdapter.notifyDataSetChanged();
 		final ViewHolder viewHolder2 = viewHolder;
 		viewHolder.gridView.post(new Runnable() {
 
 			@Override
 			public void run() {
 				int columnWidth = (viewHolder2.gridView.getWidth() / 3) - 4 * 2;
-				wallAdapter.setItemHeight(columnWidth);
+				viewHolder2.wallAdapter.setItemHeight(columnWidth);
 
 			}
 		});
-		viewHolder.gridView.setAdapter(wallAdapter);
+		viewHolder.gridView.setAdapter(viewHolder.wallAdapter);
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -121,6 +125,7 @@ public class HomeAdapter extends BaseAdapter {
 		private TextView name, content, time, attitudesCount, commentCount;
 		private NoScrolGridView gridView;
 		private LinearLayout attitudesCountLay, commentCountLay;
+		private GridViewAdapter wallAdapter;
 	}
 
 	/**
@@ -246,7 +251,7 @@ public class HomeAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			Intent intent = new Intent();
 			intent.putExtra("msg", msg);
-			ActivityUtil.startActivity(intent, (Activity) context, DongTaiCommentActivity.class);
+			ActivityUtil.startActivity(intent, (Activity) context, CommentActivity.class);
 		}
 
 	}

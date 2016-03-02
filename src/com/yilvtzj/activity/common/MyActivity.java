@@ -1,6 +1,7 @@
 package com.yilvtzj.activity.common;
 
 import android.app.Activity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -24,5 +25,14 @@ public class MyActivity extends Activity {
 				ActivityUtil.closeActivity(MyActivity.this);
 			}
 		});
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			ActivityUtil.closeActivity(this);
+			return false;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }
