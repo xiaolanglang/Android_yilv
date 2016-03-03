@@ -10,6 +10,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JSONHelper {
+
+	public static <T> List<T> JSONArrayToBeans(JSONArray array, Class<T> cls) throws JSONException {
+		if (array.length() == 0) {
+			return null;
+		}
+		List<T> list = new ArrayList<>();
+		for (int i = 0, l = array.length(); i < l; i++) {
+			JSONObject object = array.getJSONObject(i);
+			T t = JSONToBean(object, cls);
+			list.add(t);
+		}
+		return list;
+	}
+
 	/**
 	 * 将JSON对象变成实体对象，实体对象的属性支持java基本数据类型，支持对象嵌套，仅支持List集合
 	 * 
@@ -18,11 +32,11 @@ public class JSONHelper {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static <T> T JSONToBean(JSONObject json, Class<?> cls) throws JSONException {
+	public static <T> T JSONToBean(JSONObject json, Class<T> cls) throws JSONException {
 		if (json == null) {
 			return null;
 		}
-		Object obj = null;
+		T obj = null;
 		try {
 			obj = cls.newInstance();
 		} catch (InstantiationException e) {
@@ -60,7 +74,7 @@ public class JSONHelper {
 		if (obj == null) {
 			return null;
 		}
-		return (T) obj;
+		return obj;
 	}
 
 	private static boolean isListType(Field field) {

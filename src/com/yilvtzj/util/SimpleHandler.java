@@ -7,6 +7,7 @@ import android.os.Message;
 public class SimpleHandler {
 
 	private final static int SHOWTOAST = 0;
+	private final static int RUNMETHOD = 1;
 	private static Toast toast;
 	private Activity activity;
 	private static Handler handler = new Handler() {
@@ -15,6 +16,14 @@ public class SimpleHandler {
 			switch (msg.what) {
 			case SHOWTOAST:
 				toast.show();
+				break;
+			case RUNMETHOD:
+				if (msg.obj != null) {
+					RunMethod method = (RunMethod) msg.obj;
+					if (method != null) {
+						method.run();
+					}
+				}
 				break;
 
 			}
@@ -26,9 +35,6 @@ public class SimpleHandler {
 	}
 
 	public void sendMessage(final String message) {
-		Message msg = new Message();
-		msg.obj = message;
-		msg.what = SHOWTOAST;
 		toast = new Toast() {
 
 			@Override
@@ -36,10 +42,21 @@ public class SimpleHandler {
 				ToastUtil.show(activity, message, null);
 			}
 		};
-		handler.sendMessage(msg);
+		handler.sendEmptyMessage(SHOWTOAST);
+	}
+
+	public void runMethod(RunMethod method) {
+		Message message = new Message();
+		message.what = RUNMETHOD;
+		message.obj = method;
+		handler.sendMessage(message);
 	}
 
 	private interface Toast {
 		void show();
+	}
+
+	public interface RunMethod {
+		void run();
 	}
 }

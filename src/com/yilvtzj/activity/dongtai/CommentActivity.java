@@ -3,11 +3,13 @@ package com.yilvtzj.activity.dongtai;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,17 +21,22 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.dongtaicomment.ListAdapter;
 import com.yilvtzj.adapter.home.GridViewAdapter;
-import com.yilvtzj.pojo.Account;
+import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.pojo.DongtaiComment;
 import com.yilvtzj.pojo.DongtaiMsg;
+import com.yilvtzj.service.DongTaiCommentService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.DateUtil;
+import com.yilvtzj.util.JSONHelper;
+import com.yilvtzj.util.SimpleHandler;
+import com.yilvtzj.util.SimpleHandler.RunMethod;
 import com.yilvtzj.util.StringUtil;
 
 public class CommentActivity extends MyActivity implements OnClickListener {
@@ -42,27 +49,37 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 	private ListView listView;
 	private ListAdapter listAdapter;
 	private GridViewAdapter wallAdapter;
-	private PullToRefreshScrollView mPullRefreshScrollView;;
+	private PullToRefreshScrollView mPullRefreshScrollView;
+	private List<DongtaiComment> list = new ArrayList<>();
+	private SimpleHandler handler;
+	private int pageNum = 1;
+	private boolean isLoading = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dongtai_comment);
 		setCommonActionBar("动态正文");
+		mActivity = this;
+		handler = new SimpleHandler(this);
 
 		Intent intent = getIntent();
 		msg = (DongtaiMsg) intent.getExtras().getSerializable("msg");
-		mActivity = this;
 
 		initView();
 		setValue();
 
 		mPullRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.swipe_container);
+		mPullRefreshScrollView.setMode(Mode.PULL_FROM_END);
 		mPullRefreshScrollView.setOnRefreshListener(new PullToRefreshScrollView.OnRefreshListener<ScrollView>() {
 
 			@Override
 			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
-				new GetDataTask().execute();
+				if (!isLoading) {
+					new Thread(new GetListThread()).start();
+				} else {
+					mPullRefreshScrollView.onRefreshComplete();
+				}
 			}
 		});
 
@@ -107,14 +124,6 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 
 			}
 		});
-
-		View view2 = LayoutInflater.from(this).inflate(R.layout.item_home_listview_footer, null);
-		view2.setVisibility(View.GONE);
-		// 这边如果不设置一下，后面再加载的时候是不会显示的
-		listView.addHeaderView(view2);
-
-		listView.removeHeaderView(view2);
-
 		gridView.setAdapter(wallAdapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -127,43 +136,64 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 			}
 		});
 
-		List<DongtaiComment> list = new ArrayList<>();
-		DongtaiComment comment = new DongtaiComment();
-		Account account = new Account();
-		account.setNickname("测试人员");
-		comment.setUser(account);
-		comment.setCreateDate("2015-1-1 10:12");
-		comment.setContent("这是一条评论");
-		comment.setId("1243dadsadas");
-		list.add(comment);
-		list.add(comment);
-		list.add(comment);
-		list.add(comment);
-		list.add(comment);
 		listAdapter = new ListAdapter(mActivity, list);
 		listView.setAdapter(listAdapter);
+		new Thread(new GetListThread()).start();
 	}
 
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	private class GetListThread implements Runnable {
 
-		@Override
-		protected String[] doInBackground(Void... params) {
-			// Simulates a background job.
-			try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-			}
-			return null;
+		private void error() {
+			mPullRefreshScrollView.onRefreshComplete();
+			handler.sendMessage("获取数据失败");
+			isLoading = false;
+		}
+
+		private void setList(String JSON) throws JSONException {
+			JSONObject object = new JSONObject(JSON);
+			JSONArray array = object.getJSONArray("list");
+			final List<DongtaiComment> listTemp = JSONHelper.JSONArrayToBeans(array, DongtaiComment.class);
+			handler.runMethod(new RunMethod() {
+
+				@Override
+				public void run() {
+					if (listTemp != null && listTemp.size() > 0) {
+						for (DongtaiComment comment : listTemp) {
+							list.add(comment);
+						}
+						pageNum += 1;
+						listAdapter.notifyDataSetChanged();
+					} else {
+						handler.sendMessage("暂无更多数据");
+					}
+
+					isLoading = false;
+					mPullRefreshScrollView.onRefreshComplete();
+				}
+			});
 		}
 
 		@Override
-		protected void onPostExecute(String[] result) {
-			// Do some stuff here
+		public void run() {
+			try {
+				isLoading = true;
+				DongTaiCommentService.getList(new SocketListener() {
 
-			// Call onRefreshComplete when the list has been refreshed.
-			mPullRefreshScrollView.onRefreshComplete();
+					@Override
+					public void result(String JSON) {
+						try {
+							setList(JSON);
+						} catch (JSONException e) {
+							error();
+							e.printStackTrace();
+						}
+					}
+				}, mActivity, pageNum, msg.getId());
+			} catch (Exception e) {
+				error();
+				e.printStackTrace();
+			}
 
-			super.onPostExecute(result);
 		}
 	}
 }

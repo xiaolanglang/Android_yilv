@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="吃素食的Luffy"
+            android:text="咖喱拌饭"
             android:textColor="#737373"
             android:textSize="15sp" />
 

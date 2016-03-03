@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
-import com.yilvtzj.service.DongTaiComment;
+import com.yilvtzj.service.DongTaiCommentService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.LoadingDialogUtil;
 import com.yilvtzj.util.SimpleHandler;
@@ -92,7 +92,7 @@ public class CommentWriteActivity extends MyActivity implements OnClickListener 
 			params.put("dongtaiId", dongTaiId);
 			params.put("content", content.getText().toString());
 			try {
-				DongTaiComment.saveComment(new SocketListener() {
+				DongTaiCommentService.saveComment(new SocketListener() {
 
 					@Override
 					public void result(String JSON) {

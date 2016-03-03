@@ -10,128 +10,116 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
-/**
- * * * * * * * * * * * * * * * * * * * * * * *
- * Created by zhaoyiding
- * Date: 15/9/3
- * * * * * * * * * * * * * * * * * * * * * * *
- **/
 public class HoveringScrollView extends FrameLayout {
 
-    /**
-     * 固定在顶部的View
-     */
-    private ViewGroup mTopView;
+	/**
+	 * 固定在顶部的View
+	 */
+	private ViewGroup mTopView;
 
-    /**
-     * 固定在顶部的View里面的内容
-     */
-    private View mTopContent;
+	/**
+	 * 固定在顶部的View里面的内容
+	 */
+	private View mTopContent;
 
-    /**
-     * 固定在顶部的View在滚动条里最上端的位置
-     */
-    private int mTopViewTop;
+	/**
+	 * 固定在顶部的View在滚动条里最上端的位置
+	 */
+	private int mTopViewTop;
 
-    /**
-     * 滚动条的内容
-     */
-    private ViewGroup mContentView;
+	/**
+	 * 滚动条的内容
+	 */
+	private ViewGroup mContentView;
 
+	public HoveringScrollView(Context context) {
+		this(context, null);
+	}
 
-    public HoveringScrollView(Context context) {
-        this(context, null);
-    }
+	public HoveringScrollView(Context context, AttributeSet attrs) {
+		this(context, attrs, 0);
 
-    public HoveringScrollView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+	}
 
-    }
+	public HoveringScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
 
-    public HoveringScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
+	}
 
-    }
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public HoveringScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init();
+	}
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public HoveringScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
+	public void init() {
+		post(new Runnable() {
+			@Override
+			public void run() {
+				mContentView = (ViewGroup) getChildAt(0);
+				removeAllViews();
 
-    public void init() {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mContentView = (ViewGroup) getChildAt(0);
-                removeAllViews();
+				MyScrollView scrollView = new MyScrollView(getContext(), HoveringScrollView.this);
+				scrollView.addView(mContentView);
+				addView(scrollView);
 
-                MyScrollView scrollView = new MyScrollView(getContext(), HoveringScrollView.this);
-                scrollView.addView(mContentView);
-                addView(scrollView);
+			}
+		});
+	}
 
-            }
-        });
-    }
+	public void setTopView(final int id) {
+		post(new Runnable() {
+			@Override
+			public void run() {
+				mTopView = (ViewGroup) mContentView.findViewById(id);
 
+				int height = mTopView.getChildAt(0).getMeasuredHeight();
+				ViewGroup.LayoutParams params = mTopView.getLayoutParams();
+				params.height = height;
+				mTopView.setLayoutParams(params);
+				mTopViewTop = mTopView.getTop();
+				mTopContent = mTopView.getChildAt(0);
 
-    public void setTopView(final int id) {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mTopView = (ViewGroup) mContentView.findViewById(id);
+			}
+		});
+	}
 
-                int height = mTopView.getChildAt(0).getMeasuredHeight();
-                ViewGroup.LayoutParams params = mTopView.getLayoutParams();
-                params.height = height;
-                mTopView.setLayoutParams(params);
-                mTopViewTop = mTopView.getTop();
-                mTopContent = mTopView.getChildAt(0);
+	public void onScroll(final int scrollY) {
+		post(new Runnable() {
+			@Override
+			public void run() {
+				if (mTopView == null)
+					return;
 
-            }
-        });
-    }
+				if (scrollY >= mTopViewTop && mTopContent.getParent() == mTopView) {
+					mTopView.removeView(mTopContent);
+					addView(mTopContent);
+				} else if (scrollY < mTopViewTop && mTopContent.getParent() == HoveringScrollView.this) {
+					removeView(mTopContent);
+					mTopView.addView(mTopContent);
+				}
 
-    public void onScroll(final int scrollY) {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                if (mTopView == null
-                        ) return;
+			}
+		});
+	}
 
-                if (scrollY >= mTopViewTop
-                        && mTopContent.getParent() == mTopView) {
-                    mTopView.removeView(mTopContent);
-                    addView(mTopContent);
-                } else if (scrollY < mTopViewTop
-                        && mTopContent.getParent() == HoveringScrollView.this) {
-                    removeView(mTopContent);
-                    mTopView.addView(mTopContent);
-                }
+	@SuppressLint("ViewConstructor")
+	private static class MyScrollView extends ScrollView {
 
-            }
-        });
-    }
+		private HoveringScrollView mScrollView;
 
-    @SuppressLint("ViewConstructor")
-    private static class MyScrollView extends ScrollView {
+		public MyScrollView(Context context, HoveringScrollView scrollView) {
+			super(context);
+			mScrollView = scrollView;
+		}
 
-        private HoveringScrollView mScrollView;
+		@Override
+		protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+			super.onScrollChanged(l, t, oldl, oldt);
+			mScrollView.onScroll(t);
+		}
 
-        public MyScrollView(Context context, HoveringScrollView scrollView) {
-            super(context);
-            mScrollView = scrollView;
-        }
-
-
-        @Override
-        protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-            super.onScrollChanged(l, t, oldl, oldt);
-            mScrollView.onScroll(t);
-        }
-
-    }
-
+	}
 
 }
