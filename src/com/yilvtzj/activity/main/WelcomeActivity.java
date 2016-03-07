@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.fragment.FragmentIndex;
 import com.yilvtzj.activity.fragment.FragmentMine;
+import com.yilvtzj.activity.fragment.FragmentFriends;
 import com.yilvtzj.activity.fragment.FragmentNews;
-import com.yilvtzj.activity.fragment.FragmentZiXun;
 import com.yilvtzj.util.ClassManagerUtil;
 
 public class WelcomeActivity extends Activity {
@@ -35,8 +35,8 @@ public class WelcomeActivity extends Activity {
 
 	private void newInstance() {
 		ClassManagerUtil.newInstance(FragmentIndex.class);
-		ClassManagerUtil.newInstance(FragmentZiXun.class);
 		ClassManagerUtil.newInstance(FragmentNews.class);
+		ClassManagerUtil.newInstance(FragmentFriends.class);
 		ClassManagerUtil.newInstance(FragmentMine.class);
 	}
 

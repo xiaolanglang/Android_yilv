@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.fragment.FragmentIndex;
 import com.yilvtzj.activity.fragment.FragmentMine;
+import com.yilvtzj.activity.fragment.FragmentFriends;
 import com.yilvtzj.activity.fragment.FragmentNews;
-import com.yilvtzj.activity.fragment.FragmentZiXun;
 import com.yilvtzj.baidumap.MyBaiduMap;
 import com.yilvtzj.util.ClassManagerUtil;
 import com.yilvtzj.util.ToastUtil;
@@ -28,8 +28,8 @@ import com.yilvtzj.view.PopupWindowView;
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	// 定义Fragment页面
 	private Fragment fragmentIndex = ClassManagerUtil.newInstance(FragmentIndex.class);
-	private Fragment fragmentZiXun = ClassManagerUtil.newInstance(FragmentZiXun.class);
-	private Fragment fragmentNews = ClassManagerUtil.newInstance(FragmentNews.class);
+	private Fragment fragmentZiXun = ClassManagerUtil.newInstance(FragmentNews.class);
+	private Fragment fragmentNews = ClassManagerUtil.newInstance(FragmentFriends.class);
 	private Fragment fragmentMine = ClassManagerUtil.newInstance(FragmentMine.class);
 	private Fragment currentFragment = null;
 	// 定义布局对象

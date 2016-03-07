@@ -1,8 +1,5 @@
 package com.yilvtzj.activity.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,15 +11,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
-import com.yilvtzj.adapter.news.NewsListAdapter;
-import com.yilvtzj.pojo.News;
 
-public class FragmentNews extends Fragment implements OnRefreshListener {
+public class FragmentFriends extends Fragment implements OnRefreshListener {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
-	private ListView listV;
-	private NewsListAdapter newsAdapter;
-	private List<News> list = new ArrayList<News>();
+	private ListView list;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,11 +26,9 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 		return view;
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		initData();
+	private void initView(View view) {
+		swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		list = (ListView) view.findViewById(R.id.list);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -57,31 +48,16 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 
 	@Override
 	public void onRefresh() {
-		Toast.makeText(FragmentNews.this.getActivity(), "refresh", Toast.LENGTH_SHORT).show();
+		Toast.makeText(FragmentFriends.this.getActivity(), "refresh", Toast.LENGTH_SHORT).show();
 
 		swipeRefreshLayout.postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-				list.clear();
-				for (int i = 0; i < 10; i++) {
-					list.add(new News());
-				}
-				newsAdapter.notifyDataSetChanged();
 				swipeRefreshLayout.setRefreshing(false);
 			}
 		}, 1000);
 
 	}
 
-	private void initData() {
-	}
-
-	private void initView(View view) {
-		swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-		listV = (ListView) view.findViewById(R.id.list);
-
-		newsAdapter = new NewsListAdapter(this.getActivity(), list);
-		listV.setAdapter(newsAdapter);
-	}
 }
