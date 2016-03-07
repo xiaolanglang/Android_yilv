@@ -1,6 +1,6 @@
 package com.yilvtzj.util;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
@@ -9,7 +9,8 @@ public class SimpleHandler {
 	private final static int SHOWTOAST = 0;
 	private final static int RUNMETHOD = 1;
 	private static Toast toast;
-	private Activity activity;
+	private Context context;
+	private android.widget.Toast toast2;
 	private static Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -30,8 +31,8 @@ public class SimpleHandler {
 		}
 	};
 
-	public SimpleHandler(Activity activity) {
-		this.activity = activity;
+	public SimpleHandler(Context context) {
+		this.context = context;
 	}
 
 	public void sendMessage(final String message) {
@@ -39,7 +40,7 @@ public class SimpleHandler {
 
 			@Override
 			public void show() {
-				ToastUtil.show(activity, message, null);
+				toast2 = ToastUtil.show(context, message, toast2);
 			}
 		};
 		handler.sendEmptyMessage(SHOWTOAST);
