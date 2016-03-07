@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
                     android:contentDescription="@string/icon_home_zixun"
-                    android:src="@drawable/skin_tabbar_icon_zixun_select" />
+                    android:src="@drawable/skin_tabbar_icon_news_select" />
             </FrameLayout>
             
             <!-- 快捷按钮 -->
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
                     android:contentDescription="@string/icon_home_news"
-                    android:src="@drawable/skin_tabbar_icon_msg_select" />
+                    android:src="@drawable/skin_tabbar_icon_friends_select" />
             </FrameLayout>
 
             <!-- 我的 -->
