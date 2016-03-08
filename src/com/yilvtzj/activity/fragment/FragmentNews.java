@@ -14,14 +14,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
-import com.yilvtzj.adapter.news.NewsListAdapter;
+import com.yilvtzj.adapter.news.HorizontalSlideAdapter;
 import com.yilvtzj.pojo.News;
 
 public class FragmentNews extends Fragment implements OnRefreshListener {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listV;
-	private NewsListAdapter newsAdapter;
+	private HorizontalSlideAdapter adapter;
 	private List<News> list = new ArrayList<News>();
 
 	@Override
@@ -36,15 +36,13 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 	@Override
 	public void onStart() {
 		super.onStart();
-
-		initData();
 	}
 
 	@SuppressWarnings("deprecation")
 	private void initSwipeRefresh(View view) {
 		swipeRefreshLayout.setOnRefreshListener(this);
-		swipeRefreshLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light,
-				R.color.holo_orange_light, R.color.holo_red_light);
+		swipeRefreshLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light,
+				R.color.holo_red_light);
 		swipeRefreshLayout.post(new Thread(new Runnable() {
 
 			@Override
@@ -67,21 +65,18 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 				for (int i = 0; i < 10; i++) {
 					list.add(new News());
 				}
-				newsAdapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 				swipeRefreshLayout.setRefreshing(false);
 			}
 		}, 1000);
 
 	}
 
-	private void initData() {
-	}
-
 	private void initView(View view) {
 		swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		listV = (ListView) view.findViewById(R.id.list);
 
-		newsAdapter = new NewsListAdapter(this.getActivity(), list);
-		listV.setAdapter(newsAdapter);
+		adapter = new HorizontalSlideAdapter(this.getActivity(), list);
+		listV.setAdapter(adapter);
 	}
 }

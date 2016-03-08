@@ -13,6 +13,12 @@ import com.yilvtzj.webview.JsInterface;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
+/**
+ * 没有作用
+ * 
+ * @author Administrator
+ *
+ */
 public abstract class MyFragment extends Fragment {
 	protected WebView webView;
 	protected boolean isload = true;
