@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.yilvtzj.R;
-import com.yilvtzj.pojo.News;
+import com.yilvtzj.entity.News;
 
 public class NewsListAdapter extends BaseAdapter {
 

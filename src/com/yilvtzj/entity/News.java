@@ -1,4 +1,4 @@
-package com.yilvtzj.pojo;
+package com.yilvtzj.entity;
 
 import java.io.Serializable;
 

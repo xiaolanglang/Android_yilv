@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.yilvtzj.pojo.Account;
+import com.yilvtzj.entity.Account;
 
 public class AccountUtil {
 

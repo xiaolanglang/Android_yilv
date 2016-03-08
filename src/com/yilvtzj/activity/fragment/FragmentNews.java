@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.news.HorizontalSlideAdapter;
-import com.yilvtzj.pojo.News;
+import com.yilvtzj.entity.News;
 
 public class FragmentNews extends Fragment implements OnRefreshListener {
 

@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
-import com.yilvtzj.pojo.DongtaiComment;
+import com.yilvtzj.entity.DongtaiComment;
 
 public class ListAdapter extends BaseAdapter {
 	private Context mContext;

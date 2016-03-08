@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.LoginActivity;
+import com.yilvtzj.entity.Account;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
-import com.yilvtzj.pojo.Account;
 import com.yilvtzj.service.UserService;
 import com.yilvtzj.util.AccountUtil;
 import com.yilvtzj.util.ActivityUtil;

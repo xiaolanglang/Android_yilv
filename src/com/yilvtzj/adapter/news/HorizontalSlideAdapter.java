@@ -21,7 +21,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.yilvtzj.R;
-import com.yilvtzj.pojo.News;
+import com.yilvtzj.entity.News;
 
 public class HorizontalSlideAdapter extends BaseAdapter {
 

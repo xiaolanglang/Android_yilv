@@ -16,7 +16,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
-import com.yilvtzj.pojo.Account;
+import com.yilvtzj.entity.Account;
 import com.yilvtzj.util.PingYinUtil;
 
 public class ContactAdapter extends BaseAdapter implements SectionIndexer {
@@ -32,6 +32,14 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 	public void sort() {
 		// 排序(实现了中英文混排)
 		Collections.sort(UserInfos, new PinyinComparator());
+	}
+
+	public List<Account> getUserInfos() {
+		return UserInfos;
+	}
+
+	public void setUserInfos(List<Account> userInfos) {
+		UserInfos = userInfos;
 	}
 
 	@Override

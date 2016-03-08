@@ -1,4 +1,4 @@
-package com.yilvtzj.pojo;
+package com.yilvtzj.entity;
 
 /**
  * Created by annuo on 2015/5/21.

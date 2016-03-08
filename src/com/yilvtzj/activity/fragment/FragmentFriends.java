@@ -7,6 +7,9 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +22,7 @@ import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.friends.ContactAdapter;
-import com.yilvtzj.pojo.Account;
+import com.yilvtzj.entity.Account;
 import com.yilvtzj.view.SideBar;
 
 public class FragmentFriends extends Fragment implements OnItemClickListener {
@@ -38,8 +41,28 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 		mWindowManager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 		initViews(view);
 		initData();
+		initListen(view);
 
 		return view;
+	}
+
+	private void initListen(View view) {
+		((TextView) view.findViewById(R.id.txt_search)).addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				filterData(s.toString());
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
 	}
 
 	private void initViews(View layout) {
@@ -49,9 +72,10 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 		mDialogText.setVisibility(View.INVISIBLE);
 		indexBar = (SideBar) layout.findViewById(R.id.sideBar);
 		indexBar.setListView(lvContact);
-		WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-				WindowManager.LayoutParams.TYPE_APPLICATION, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-						| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_APPLICATION,
+				WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				PixelFormat.TRANSLUCENT);
 		mWindowManager.addView(mDialogText, lp);
 		indexBar.setTextView(mDialogText);
 
@@ -119,6 +143,26 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
+	}
+
+	private void filterData(String filterStr) {
+		List<Account> filterDateList = new ArrayList<Account>();
+
+		if (TextUtils.isEmpty(filterStr)) {
+			filterDateList = list;
+		} else {
+			filterDateList.clear();
+			for (Account sortModel : list) {
+				String name = sortModel.getNickname();
+				if (name.indexOf(filterStr.toString()) != -1) {
+					filterDateList.add(sortModel);
+				}
+			}
+		}
+
+		contactAdapter.setUserInfos(filterDateList);
+		contactAdapter.sort();
+		contactAdapter.notifyDataSetChanged();
 	}
 
 }

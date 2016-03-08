@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import android.test.AndroidTestCase;
 
-import com.yilvtzj.pojo.DongTai;
+import com.yilvtzj.entity.DongTai;
 import com.yilvtzj.util.JSONHelper;
 
 public class Test extends AndroidTestCase {
