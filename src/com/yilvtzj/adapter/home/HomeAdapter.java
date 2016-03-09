@@ -43,6 +43,14 @@ public class HomeAdapter extends BaseAdapter {
 		this.list = list;
 	}
 
+	public List<DongtaiMsg> getList() {
+		return list;
+	}
+
+	public void setList(List<DongtaiMsg> list) {
+		this.list = list;
+	}
+
 	@Override
 	public int getCount() {
 		return list.size();

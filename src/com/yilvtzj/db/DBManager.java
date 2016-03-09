@@ -1,15 +1,10 @@
 package com.yilvtzj.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
-import com.yilvtzj.entity.MemberInfo;
 
 /**
  * DBManager是建立在DBHelper之上，封装了常用的业务方法
@@ -32,21 +27,23 @@ public class DBManager {
 	 * 
 	 * @param memberInfo
 	 */
-	public void add(List<MemberInfo> memberInfo) {
-		db.beginTransaction();// 开始事务
-		try {
-			for (MemberInfo info : memberInfo) {
-				Log.i(TAG, "------add memberInfo----------");
-				Log.i(TAG, info.name + "/" + info.age + "/" + info.website + "/" + info.weibo);
-				// 向表info中插入数据
-				db.execSQL("INSERT INTO info VALUES(null,?,?,?,?)", new Object[] { info.name, info.age, info.website,
-						info.weibo });
-			}
-			db.setTransactionSuccessful();// 事务成功
-		} finally {
-			db.endTransaction();// 结束事务
-		}
-	}
+	// public void add(List<MemberInfo> memberInfo) {
+	// db.beginTransaction();// 开始事务
+	// try {
+	// for (MemberInfo info : memberInfo) {
+	// Log.i(TAG, "------add memberInfo----------");
+	// Log.i(TAG, info.name + "/" + info.age + "/" + info.website + "/" +
+	// info.weibo);
+	// // 向表info中插入数据
+	// db.execSQL("INSERT INTO info VALUES(null,?,?,?,?)", new Object[] {
+	// info.name, info.age, info.website,
+	// info.weibo });
+	// }
+	// db.setTransactionSuccessful();// 事务成功
+	// } finally {
+	// db.endTransaction();// 结束事务
+	// }
+	// }
 
 	/**
 	 * @param _id
@@ -63,7 +60,7 @@ public class DBManager {
 		cv.put("age", age);
 		cv.put("website", website);
 		cv.put("weibo", weibo);
-		db.insert(DBHelper.DB_TABLE_NAME, null, cv);
+		// db.insert(DBHelper.DB_TABLE_NAME, null, cv);
 		Log.i(TAG, name + "/" + age + "/" + website + "/" + weibo);
 	}
 
@@ -74,7 +71,7 @@ public class DBManager {
 	 */
 	public void delData(String name) {
 		String[] args = { name };
-		db.delete(DBHelper.DB_TABLE_NAME, "name=?", args);
+		// db.delete(DBHelper.DB_TABLE_NAME, "name=?", args);
 		Log.i(TAG, "delete data by " + name);
 
 	}
@@ -92,15 +89,15 @@ public class DBManager {
 	 * 
 	 * @param name
 	 */
-	public ArrayList<MemberInfo> searchData(final String name) {
-		String sql = "SELECT * FROM info WHERE name =" + "'" + name + "'";
-		return ExecSQLForMemberInfo(sql);
-	}
-
-	public ArrayList<MemberInfo> searchAllData() {
-		String sql = "SELECT * FROM info";
-		return ExecSQLForMemberInfo(sql);
-	}
+	// public ArrayList<MemberInfo> searchData(final String name) {
+	// String sql = "SELECT * FROM info WHERE name =" + "'" + name + "'";
+	// return ExecSQLForMemberInfo(sql);
+	// }
+	//
+	// public ArrayList<MemberInfo> searchAllData() {
+	// String sql = "SELECT * FROM info";
+	// return ExecSQLForMemberInfo(sql);
+	// }
 
 	/**
 	 * 通过名字来修改值
@@ -110,8 +107,7 @@ public class DBManager {
 	 * @param whereName
 	 */
 	public void updateData(String raw, String rawValue, String whereName) {
-		String sql = "UPDATE info SET " + raw + " =" + " " + "'" + rawValue + "'" + " WHERE name =" + "'" + whereName
-				+ "'";
+		String sql = "UPDATE info SET " + raw + " =" + " " + "'" + rawValue + "'" + " WHERE name =" + "'" + whereName + "'";
 		ExecSQL(sql);
 		Log.i(TAG, sql);
 	}
@@ -122,21 +118,21 @@ public class DBManager {
 	 * @param sql
 	 * @return
 	 */
-	private ArrayList<MemberInfo> ExecSQLForMemberInfo(String sql) {
-		ArrayList<MemberInfo> list = new ArrayList<MemberInfo>();
-		Cursor c = ExecSQLForCursor(sql);
-		while (c.moveToNext()) {
-			MemberInfo info = new MemberInfo();
-			info._id = c.getInt(c.getColumnIndex("_id"));
-			info.name = c.getString(c.getColumnIndex("name"));
-			info.age = c.getInt(c.getColumnIndex("age"));
-			info.website = c.getString(c.getColumnIndex("website"));
-			info.weibo = c.getString(c.getColumnIndex("weibo"));
-			list.add(info);
-		}
-		c.close();
-		return list;
-	}
+	// private ArrayList<MemberInfo> ExecSQLForMemberInfo(String sql) {
+	// ArrayList<MemberInfo> list = new ArrayList<MemberInfo>();
+	// Cursor c = ExecSQLForCursor(sql);
+	// while (c.moveToNext()) {
+	// MemberInfo info = new MemberInfo();
+	// info._id = c.getInt(c.getColumnIndex("_id"));
+	// info.name = c.getString(c.getColumnIndex("name"));
+	// info.age = c.getInt(c.getColumnIndex("age"));
+	// info.website = c.getString(c.getColumnIndex("website"));
+	// info.weibo = c.getString(c.getColumnIndex("weibo"));
+	// list.add(info);
+	// }
+	// c.close();
+	// return list;
+	// }
 
 	/**
 	 * 执行一个SQL语句

@@ -26,6 +26,7 @@ import com.yilvtzj.entity.DongtaiMsg;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.service.DongTaiService;
 import com.yilvtzj.util.JSONHelper;
+import com.yilvtzj.util.SharedPreferencesUtil;
 import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.MySwipeRefreshLayout;
 import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
@@ -35,7 +36,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	private MySwipeRefreshLayout myRefreshListView;
 	private ListView listView;
 	private ImageView scanIV;
-	private List<DongtaiMsg> list = new ArrayList<>();
+	private List<DongtaiMsg> list;
 	private HomeAdapter homeAdapter;
 	private final static int SCANNIN_GREQUEST_CODE = 1;
 	private final static int GETDATA_SUCCESS = 1;
@@ -45,17 +46,24 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_index, container, false);
 
+		loadLocalData();
 		init(view);
-		myRefreshListView.post(new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				myRefreshListView.setRefreshing(true);
-			}
-		}));
-		onRefresh();
 
 		return view;
+	}
+
+	private void loadLocalData() {
+		String JSONArray = SharedPreferencesUtil.get(SharedPreferencesUtil.HOMEPAGE, "pageList", "");
+
+		try {
+			list = JSONHelper.JSONArrayToBeans(new JSONArray(JSONArray), DongtaiMsg.class);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		if (list == null) {
+			list = new ArrayList<>();
+		}
 	}
 
 	// 设置下拉刷新监听器
@@ -137,11 +145,10 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 						try {
 							JSONObject jsonObject = new JSONObject(JSON);
 							JSONArray jsonArray = jsonObject.getJSONArray("list");
+
 							list.clear();
-							for (int i = 0, l = jsonArray.length(); i < l; i++) {
-								DongtaiMsg dongtaiMsg = JSONHelper.JSONToBean((JSONObject) jsonArray.get(i), DongtaiMsg.class);
-								list.add(dongtaiMsg);
-							}
+							list = JSONHelper.JSONArrayToBeans(jsonArray, DongtaiMsg.class);
+							SharedPreferencesUtil.put(SharedPreferencesUtil.HOMEPAGE, "pageList", jsonArray.toString());
 							handler.sendEmptyMessage(GETDATA_SUCCESS);
 						} catch (JSONException e) {
 							handler.sendEmptyMessage(GETDATA_FAILED);
@@ -165,6 +172,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 			switch (msg.what) {
 			case GETDATA_SUCCESS:
 				if (list.size() > 0) {
+					homeAdapter.setList(list);
 					homeAdapter.notifyDataSetChanged();
 					// 更新完后调用该方法结束刷新
 					myRefreshListView.setRefreshing(false);

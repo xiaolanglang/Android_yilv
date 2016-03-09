@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.yilvtzj.R;
+import com.yilvtzj.util.Global;
 
 public class LocationApplication extends Application {
 	public static ImageLoader imageLoader;
@@ -34,6 +35,8 @@ public class LocationApplication extends Application {
 		requestQueue = Volley.newRequestQueue(this);
 		// 计算内存缓存
 		memoryCacheSize = getMemoryCacheSize();
+
+		Global.CONTEXT = this;
 	}
 
 	/**

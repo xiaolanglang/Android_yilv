@@ -46,7 +46,7 @@ public class SocketHttpRequester {
 	 *            上传文件
 	 * @return
 	 */
-	public void post(Context context, String path, Map<String, String> params, FormFile[] files) throws Exception {
+	public void post(String path, Map<String, String> params, FormFile[] files) throws Exception {
 		long t1 = System.currentTimeMillis();
 
 		final String BOUNDARY = "---------------------------7da2137580612"; // 数据分隔线
@@ -102,7 +102,7 @@ public class SocketHttpRequester {
 		outStream.write(contentlength.getBytes());
 		String alive = "Connection: Keep-Alive\r\n";
 		outStream.write(alive.getBytes());
-		String cookie = "Cookie: " + AccountUtil.getCookie(context) + "\r\n";
+		String cookie = "Cookie: " + AccountUtil.getCookie() + "\r\n";
 		outStream.write(cookie.getBytes());
 		String host = "Host: " + url.getHost() + ":" + port + "\r\n";
 		outStream.write(host.getBytes());
@@ -192,11 +192,11 @@ public class SocketHttpRequester {
 	 * @return
 	 */
 	public void post(String path, Context context, Map<String, String> params, FormFile file) throws Exception {
-		post(context, path, params, new FormFile[] { file });
+		post(path, params, new FormFile[] { file });
 	}
 
 	public void post(String path, Context context, Map<String, String> params) throws Exception {
-		post(context, path, params, null);
+		post(path, params, null);
 	}
 
 	public interface SocketListener {

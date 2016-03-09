@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class JSONHelper {
 
 	public static <T> List<T> JSONArrayToBeans(JSONArray array, Class<T> cls) throws JSONException {
-		if (array.length() == 0) {
+		if (array == null || array.length() == 0) {
 			return null;
 		}
 		List<T> list = new ArrayList<>();

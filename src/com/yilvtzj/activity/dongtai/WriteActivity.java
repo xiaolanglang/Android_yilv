@@ -180,7 +180,7 @@ public class WriteActivity extends Activity implements OnClickListener, JsInterf
 							sendFlag = true;
 						}
 					}
-				}).post(WriteActivity.this, url, map, formFiles);
+				}).post(url, map, formFiles);
 
 			} catch (Exception e) {
 				e.printStackTrace();

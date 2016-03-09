@@ -26,7 +26,7 @@ public class LoginActivity extends WebActivity {
 			@Override
 			public void runMethod(String... params) {
 				String cookie = params[0];
-				AccountUtil.setCookie(LoginActivity.this, cookie);
+				AccountUtil.setCookie(cookie);
 			}
 		});
 	}

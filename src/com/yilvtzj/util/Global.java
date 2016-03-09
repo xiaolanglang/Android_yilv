@@ -1,5 +1,7 @@
 package com.yilvtzj.util;
 
+import android.content.Context;
+
 public class Global {
 	public static final String urlContent = "static/mobile/";
 	public static final String urlContentLocalImage = "file://";
@@ -14,6 +16,7 @@ public class Global {
 	// private static final String SERVLETNAME = "192.168.0.102:8080/yilv";
 	public static final String JSINTERFACE = "jsInterface";
 	public static final String TIANGOU_SERVICE = "";
+	public static Context CONTEXT;
 
 	/**
 	 * 获得请求路径

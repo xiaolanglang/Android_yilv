@@ -73,7 +73,7 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 	 * 获得用户登录信息,并显示
 	 */
 	private void refreshInfo() {
-		account = AccountUtil.getAccount(getActivity());
+		account = AccountUtil.getAccount();
 		if (account == null) {
 			new Thread(new Runnable() {
 

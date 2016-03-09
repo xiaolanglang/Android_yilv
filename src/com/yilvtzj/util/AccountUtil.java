@@ -1,36 +1,33 @@
 package com.yilvtzj.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 import com.yilvtzj.entity.Account;
 
 public class AccountUtil {
 
-	public static String getCookie(Context context) {
-		SharedPreferences preferences = context.getSharedPreferences("cookie", 0);
-		String cookie = preferences.getString("cookie", "");
-		return cookie;
+	public static String getCookie() {
+		return SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE, "cookie", "");
 	}
 
-	public static void setCookie(Context context, String cookie) {
-		Editor editor = context.getSharedPreferences("cookie", 0).edit();
-		editor.putString("cookie", cookie);
-		editor.commit();
+	public static void setCookie(String cookie) {
+		SharedPreferencesUtil.put(SharedPreferencesUtil.COOKIE, "cookie", cookie);
 	}
 
-	public static Account getAccount(Context context) {
-		if (StringUtil.isEmpty(getCookie(context))) {
+	public static Account getAccount() {
+		if (StringUtil.isEmpty(getCookie())) {
 			return null;
 		}
-		SharedPreferences preferences = context.getSharedPreferences("cookie_account", 0);
-		String id = preferences.getString("id", "");
+
+		String id = SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE_ACCOUNT, "id", "");
 		if (StringUtil.isEmpty(id)) {
 			return null;
 		}
-		String nickname = preferences.getString("nickname", "");
-		String img = preferences.getString("img", "");
+		String nickname = SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE_ACCOUNT, "nickname", "");
+		String img = SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE_ACCOUNT, "img", "");
 		Account account = new Account();
 		account.setId(id);
 		account.setNickname(nickname);
@@ -39,10 +36,10 @@ public class AccountUtil {
 	}
 
 	public static void setAccount(Context context, Account account) {
-		Editor editor = context.getSharedPreferences("cookie_account", 0).edit();
-		editor.putString("id", account.getId());
-		editor.putString("nickname", account.getNickname());
-		editor.putString("img", account.getImg());
-		editor.commit();
+		Map<String, String> map = new HashMap<>();
+		map.put("id", account.getId());
+		map.put("nickname", account.getNickname());
+		map.put("img", account.getImg());
+		SharedPreferencesUtil.put(SharedPreferencesUtil.COOKIE_ACCOUNT, map);
 	}
 }
