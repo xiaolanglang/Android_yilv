@@ -41,8 +41,8 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 	@SuppressWarnings("deprecation")
 	private void initSwipeRefresh(View view) {
 		swipeRefreshLayout.setOnRefreshListener(this);
-		swipeRefreshLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light, R.color.holo_orange_light,
-				R.color.holo_red_light);
+		swipeRefreshLayout.setColorScheme(R.color.holo_blue_bright, R.color.holo_green_light,
+				R.color.holo_orange_light, R.color.holo_red_light);
 		swipeRefreshLayout.post(new Thread(new Runnable() {
 
 			@Override
@@ -79,4 +79,5 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 		adapter = new HorizontalSlideAdapter(this.getActivity(), list);
 		listV.setAdapter(adapter);
 	}
+
 }

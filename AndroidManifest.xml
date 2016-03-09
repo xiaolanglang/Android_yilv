@@ -108,6 +108,8 @@
         </activity>
         <activity android:name="com.yilvtzj.activity.dongtai.CommentWriteActivity" >
         </activity>
+        <activity android:name="com.yilvtzj.activity.chat.ChatActivity" >
+        </activity>
 
         <!-- 相册选取，开始 -->
         <activity

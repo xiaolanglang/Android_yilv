@@ -3,7 +3,6 @@ package com.yilvtzj.activity.chat;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,21 +39,18 @@ import com.yilvtzj.R;
 import com.yilvtzj.adapter.chat.FaceAdapter;
 import com.yilvtzj.adapter.chat.FacePageAdeapter;
 import com.yilvtzj.adapter.chat.MessageAdapter;
-import com.yilvtzj.entity.Account;
 import com.yilvtzj.entity.MessageItem;
 import com.yilvtzj.util.FaceUtil;
-import com.yilvtzj.util.SharePreferenceUtil;
 import com.yilvtzj.view.chat.CirclePageIndicator;
 import com.yilvtzj.view.chat.JazzyViewPager;
 import com.yilvtzj.view.chat.JazzyViewPager.TransitionEffect;
 
-@SuppressLint("ClickableViewAccessibility")
 public class ChatActivity extends Activity implements OnTouchListener, OnClickListener {
 	public static final int NEW_MESSAGE = 0x001;// 收到消息
-	private TransitionEffect mEffects[] = { TransitionEffect.Standard, TransitionEffect.Tablet, TransitionEffect.CubeIn,
-			TransitionEffect.CubeOut, TransitionEffect.FlipVertical, TransitionEffect.FlipHorizontal, TransitionEffect.Stack,
-			TransitionEffect.ZoomIn, TransitionEffect.ZoomOut, TransitionEffect.RotateUp, TransitionEffect.RotateDown,
-			TransitionEffect.Accordion, };// 表情翻页效果
+	private TransitionEffect mEffects[] = { TransitionEffect.Standard, TransitionEffect.Tablet,
+			TransitionEffect.CubeIn, TransitionEffect.CubeOut, TransitionEffect.FlipVertical,
+			TransitionEffect.FlipHorizontal, TransitionEffect.Stack, TransitionEffect.ZoomIn, TransitionEffect.ZoomOut,
+			TransitionEffect.RotateUp, TransitionEffect.RotateDown, TransitionEffect.Accordion, };// 表情翻页效果
 	private int currentPage = 0;
 	private boolean isFaceShow = false;
 	private Button sendBtn;
@@ -67,16 +63,15 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 	private List<String> keys;
 	private MessageAdapter adapter;
 	private ListView mMsgListView;
-	private SharePreferenceUtil mSpUtil;
-	private Account mFromUser;
+	private List<MessageItem> msgList = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_main);
-		initData();
 		initView();
 		initFacePage();
+		initMsgData();
 
 	}
 
@@ -91,13 +86,6 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 		faceLinearLayout.setVisibility(View.GONE);
 		isFaceShow = false;
 		super.onPause();
-	}
-
-	private void initData() {
-		mFromUser = (Account) getIntent().getSerializableExtra("account");
-		if (mFromUser == null) {// 如果为空，直接关闭
-			finish();
-		}
 	}
 
 	/**
@@ -180,7 +168,8 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 					// msgEt.setSelection(index + keys.get(count).length());
 
 					// 下面这部分，在EditText中显示表情
-					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), (Integer) FaceUtil.getFaceMap().values().toArray()[count]);
+					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), (Integer) FaceUtil.getFaceMap()
+							.values().toArray()[count]);
 					if (bitmap != null) {
 						int rawHeigh = bitmap.getHeight();
 						int rawWidth = bitmap.getHeight();
@@ -223,6 +212,7 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		params = getWindow().getAttributes();
 
+		adapter = new MessageAdapter(this, msgList);
 		mMsgListView = (ListView) findViewById(R.id.msg_listView);
 		// 触摸ListView隐藏表情和输入法
 		mMsgListView.setOnTouchListener(this);

@@ -2,9 +2,9 @@ package com.yilvtzj.adapter.news;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -21,7 +21,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.chat.ChatActivity;
 import com.yilvtzj.entity.MessageItem;
+import com.yilvtzj.util.ActivityUtil;
 
 public class HorizontalSlideAdapter extends BaseAdapter {
 
@@ -95,9 +97,10 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 		/** 记录开始时的坐标 */
 		private float startX = 0;
 
-		@SuppressLint("ClickableViewAccessibility")
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
+			HorizontalScrollView view = (HorizontalScrollView) v;
+			System.out.println(">>>>>>>>>>" + view.getScrollX());
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				// 如果有划出删除按钮的itemView,就让他滑回去并且锁定本次touch操作,解锁会在父组件的dispatchTouchEvent中进行
@@ -105,24 +108,35 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 					scrollView(mScrollView, HorizontalScrollView.FOCUS_LEFT);
 					mScrollView = null;
 					mLockOnTouch = true;
+					System.out.println("11111111111111");
 					return true;
 				}
+				System.out.println("22222222222222");
 				startX = event.getX();
 				break;
 			case MotionEvent.ACTION_UP:
-				HorizontalScrollView view = (HorizontalScrollView) v;
+
 				// 如果滑动了>50个像素,就显示出删除按钮
 				if (startX > event.getX() + 50) {
 					startX = 0;// 因为公用一个事件处理对象,防止错乱,还原startX值
 					scrollView(view, HorizontalScrollView.FOCUS_RIGHT);
 					mScrollView = view;
+					System.out.println("3333333333333");
 				} else {
 					scrollView(view, HorizontalScrollView.FOCUS_LEFT);
+					System.out.println("44444444444444");
+				}
+
+				// 没有滚动，认为是点击事件
+				if (view.getScrollX() == 0) {
+					ActivityUtil.startActivity(new Intent(), (Activity) context, ChatActivity.class);
 				}
 				break;
 			}
+
 			return false;
 		}
+
 	}
 
 	/** HorizontalScrollView左右滑动 */
@@ -140,27 +154,23 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 		@Override
 		public void onClick(View v) {
 			final ViewHolder holder = (ViewHolder) v.getTag();
-			if (v.getId() == R.id.item_delete) {
-				Animation animation = AnimationUtils.loadAnimation(context, R.anim.anim_item_delete);
-				holder.scrollView.startAnimation(animation);
-				animation.setAnimationListener(new AnimationListener() {
-					@Override
-					public void onAnimationStart(Animation animation) {
-					}
+			Animation animation = AnimationUtils.loadAnimation(context, R.anim.anim_item_delete);
+			holder.scrollView.startAnimation(animation);
+			animation.setAnimationListener(new AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+				}
 
-					@Override
-					public void onAnimationRepeat(Animation animation) {
-					}
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+				}
 
-					@Override
-					public void onAnimationEnd(Animation animation) {
-						list.remove(getItem(holder.position));
-						notifyDataSetChanged();
-					}
-				});
-			} else {
-
-			}
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					list.remove(getItem(holder.position));
+					notifyDataSetChanged();
+				}
+			});
 
 		}
 	}
