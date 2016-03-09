@@ -21,7 +21,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.yilvtzj.R;
-import com.yilvtzj.entity.News;
+import com.yilvtzj.entity.MessageItem;
 
 public class HorizontalSlideAdapter extends BaseAdapter {
 
@@ -44,9 +44,9 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 
 	private Context context;
 
-	private List<News> list;
+	private List<MessageItem> list;
 
-	public HorizontalSlideAdapter(Context context, List<News> list) {
+	public HorizontalSlideAdapter(Context context, List<MessageItem> list) {
 		this.context = context;
 		this.list = list;
 		// 搞到屏幕宽度

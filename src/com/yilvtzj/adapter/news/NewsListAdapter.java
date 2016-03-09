@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.yilvtzj.R;
-import com.yilvtzj.entity.News;
+import com.yilvtzj.entity.MessageItem;
 
 public class NewsListAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<News> list;
+	private List<MessageItem> list;
 
-	public NewsListAdapter(Context context, List<News> list) {
+	public NewsListAdapter(Context context, List<MessageItem> list) {
 		this.context = context;
 		this.list = list;
 	}

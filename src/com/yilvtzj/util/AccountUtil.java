@@ -10,11 +10,11 @@ import com.yilvtzj.entity.Account;
 public class AccountUtil {
 
 	public static String getCookie() {
-		return SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE, "cookie", "");
+		return SharePreferenceUtil.get(SharePreferenceUtil.COOKIE, "cookie", "");
 	}
 
 	public static void setCookie(String cookie) {
-		SharedPreferencesUtil.put(SharedPreferencesUtil.COOKIE, "cookie", cookie);
+		SharePreferenceUtil.put(SharePreferenceUtil.COOKIE, "cookie", cookie);
 	}
 
 	public static Account getAccount() {
@@ -22,12 +22,12 @@ public class AccountUtil {
 			return null;
 		}
 
-		String id = SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE_ACCOUNT, "id", "");
+		String id = SharePreferenceUtil.get(SharePreferenceUtil.COOKIE_ACCOUNT, "id", "");
 		if (StringUtil.isEmpty(id)) {
 			return null;
 		}
-		String nickname = SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE_ACCOUNT, "nickname", "");
-		String img = SharedPreferencesUtil.get(SharedPreferencesUtil.COOKIE_ACCOUNT, "img", "");
+		String nickname = SharePreferenceUtil.get(SharePreferenceUtil.COOKIE_ACCOUNT, "nickname", "");
+		String img = SharePreferenceUtil.get(SharePreferenceUtil.COOKIE_ACCOUNT, "img", "");
 		Account account = new Account();
 		account.setId(id);
 		account.setNickname(nickname);
@@ -40,6 +40,6 @@ public class AccountUtil {
 		map.put("id", account.getId());
 		map.put("nickname", account.getNickname());
 		map.put("img", account.getImg());
-		SharedPreferencesUtil.put(SharedPreferencesUtil.COOKIE_ACCOUNT, map);
+		SharePreferenceUtil.put(SharePreferenceUtil.COOKIE_ACCOUNT, map);
 	}
 }

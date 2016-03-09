@@ -26,7 +26,7 @@ import com.yilvtzj.entity.DongtaiMsg;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.service.DongTaiService;
 import com.yilvtzj.util.JSONHelper;
-import com.yilvtzj.util.SharedPreferencesUtil;
+import com.yilvtzj.util.SharePreferenceUtil;
 import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.MySwipeRefreshLayout;
 import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
@@ -53,7 +53,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	}
 
 	private void loadLocalData() {
-		String JSONArray = SharedPreferencesUtil.get(SharedPreferencesUtil.HOMEPAGE, "pageList", "");
+		String JSONArray = SharePreferenceUtil.get(SharePreferenceUtil.HOMEPAGE, "pageList", "");
 
 		try {
 			list = JSONHelper.JSONArrayToBeans(new JSONArray(JSONArray), DongtaiMsg.class);
@@ -148,7 +148,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 							list.clear();
 							list = JSONHelper.JSONArrayToBeans(jsonArray, DongtaiMsg.class);
-							SharedPreferencesUtil.put(SharedPreferencesUtil.HOMEPAGE, "pageList", jsonArray.toString());
+							SharePreferenceUtil.put(SharePreferenceUtil.HOMEPAGE, "pageList", jsonArray.toString());
 							handler.sendEmptyMessage(GETDATA_SUCCESS);
 						} catch (JSONException e) {
 							handler.sendEmptyMessage(GETDATA_FAILED);

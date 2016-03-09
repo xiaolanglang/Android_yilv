@@ -6,7 +6,7 @@ import java.util.Set;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-public class SharedPreferencesUtil {
+public class SharePreferenceUtil {
 	public static final String COOKIE = "cookie";
 	public static final String COOKIE_ACCOUNT = "cookie_account";
 	public static final String HOMEPAGE = "homepage";

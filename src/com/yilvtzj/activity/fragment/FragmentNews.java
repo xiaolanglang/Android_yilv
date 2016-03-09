@@ -15,14 +15,14 @@ import android.widget.Toast;
 
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.news.HorizontalSlideAdapter;
-import com.yilvtzj.entity.News;
+import com.yilvtzj.entity.MessageItem;
 
 public class FragmentNews extends Fragment implements OnRefreshListener {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listV;
 	private HorizontalSlideAdapter adapter;
-	private List<News> list = new ArrayList<News>();
+	private List<MessageItem> list = new ArrayList<MessageItem>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class FragmentNews extends Fragment implements OnRefreshListener {
 			public void run() {
 				list.clear();
 				for (int i = 0; i < 10; i++) {
-					list.add(new News());
+					list.add(new MessageItem());
 				}
 				adapter.notifyDataSetChanged();
 				swipeRefreshLayout.setRefreshing(false);
