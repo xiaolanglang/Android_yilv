@@ -88,10 +88,11 @@ public class MessageAdapter extends BaseAdapter {
 			holder.head = (ImageView) convertView.findViewById(R.id.icon);
 			holder.msg = (TextView) convertView.findViewById(R.id.textView2);
 			convertView.setTag(R.drawable.ic_launcher + position);
+
+			holder.head.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.c1));
 		} else {
 			holder = (ViewHolder) convertView.getTag(R.drawable.ic_launcher + position);
 		}
-		holder.head.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), item.getHeadImg()));
 
 		holder.msg.setText(convertNormalStringToSpannableString(item.getMessage()), BufferType.SPANNABLE);
 		return convertView;
