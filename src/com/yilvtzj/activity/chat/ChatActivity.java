@@ -2,8 +2,9 @@ package com.yilvtzj.activity.chat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import android.app.Activity;
+import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -36,21 +37,23 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.chat.FaceAdapter;
 import com.yilvtzj.adapter.chat.FacePageAdeapter;
 import com.yilvtzj.adapter.chat.MessageAdapter;
+import com.yilvtzj.db.DBManager;
 import com.yilvtzj.entity.MessageItem;
 import com.yilvtzj.util.FaceUtil;
 import com.yilvtzj.view.chat.CirclePageIndicator;
 import com.yilvtzj.view.chat.JazzyViewPager;
 import com.yilvtzj.view.chat.JazzyViewPager.TransitionEffect;
 
-public class ChatActivity extends Activity implements OnTouchListener, OnClickListener {
+public class ChatActivity extends MyActivity implements OnTouchListener, OnClickListener {
 	public static final int NEW_MESSAGE = 0x001;// 收到消息
-	private TransitionEffect mEffects[] = { TransitionEffect.Standard, TransitionEffect.Tablet,
-			TransitionEffect.CubeIn, TransitionEffect.CubeOut, TransitionEffect.FlipVertical,
-			TransitionEffect.FlipHorizontal, TransitionEffect.Stack, TransitionEffect.ZoomIn, TransitionEffect.ZoomOut,
-			TransitionEffect.RotateUp, TransitionEffect.RotateDown, TransitionEffect.Accordion, };// 表情翻页效果
+	private TransitionEffect mEffects[] = { TransitionEffect.Standard, TransitionEffect.Tablet, TransitionEffect.CubeIn,
+			TransitionEffect.CubeOut, TransitionEffect.FlipVertical, TransitionEffect.FlipHorizontal, TransitionEffect.Stack,
+			TransitionEffect.ZoomIn, TransitionEffect.ZoomOut, TransitionEffect.RotateUp, TransitionEffect.RotateDown,
+			TransitionEffect.Accordion, };// 表情翻页效果
 	private int currentPage = 0;
 	private boolean isFaceShow = false;
 	private Button sendBtn;
@@ -64,11 +67,16 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 	private MessageAdapter adapter;
 	private ListView mMsgListView;
 	private List<MessageItem> msgList = new ArrayList<>();
+	private DBManager dbManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chat_main);
+		setContentView(R.layout.activity_chat);
+		setCommonActionBar("聊天");
+		dbManager = new DBManager(this);
+
+		initData();
 		initView();
 		initFacePage();
 		initMsgData();
@@ -88,22 +96,83 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 		super.onPause();
 	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.face_btn:
+			if (!isFaceShow) {
+				imm.hideSoftInputFromWindow(msgEt.getWindowToken(), 0);
+				try {
+					Thread.sleep(80);// 解决此时会黑一下屏幕的问题
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				faceLinearLayout.setVisibility(View.VISIBLE);
+				isFaceShow = true;
+			} else {
+				faceLinearLayout.setVisibility(View.GONE);
+				isFaceShow = false;
+			}
+			break;
+		case R.id.send_btn:// 发送消息
+			sendMessage();
+			break;
+		}
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch (v.getId()) {
+		case R.id.msg_listView:
+			imm.hideSoftInputFromWindow(msgEt.getWindowToken(), 0);
+			faceLinearLayout.setVisibility(View.GONE);
+			isFaceShow = false;
+			break;
+		case R.id.msg_et:
+			imm.showSoftInput(msgEt, 0);
+			faceLinearLayout.setVisibility(View.GONE);
+			isFaceShow = false;
+			break;
+
+		default:
+			break;
+		}
+		return false;
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		dbManager.closeDB();
+	}
+
+	private void initData() {
+		Set<String> keySet = FaceUtil.getFaceMap().keySet();
+		keys = new ArrayList<String>();
+		keys.addAll(keySet);
+
+	}
+
 	/**
 	 * 加载消息历史，从数据库中读出
 	 */
-	private List<MessageItem> initMsgData() {
-		return null;
-
+	private void initMsgData() {
+		msgList = dbManager.findAllList(DBManager.MESSAGEITEM, MessageItem.class);
+		if (msgList == null) {
+			return;
+		}
+		adapter.setMessageList(msgList);
+		adapter.notifyDataSetChanged();
 	}
 
 	private void initFacePage() {
 		List<View> lv = new ArrayList<View>();
-		for (int i = 0; i < 20; ++i)
+		for (int i = 0; i < 6; ++i)
 			lv.add(getGridView(i));
 		FacePageAdeapter adapter = new FacePageAdeapter(lv, faceViewPager);
 		faceViewPager.setAdapter(adapter);
 		faceViewPager.setCurrentItem(currentPage);
-		faceViewPager.setTransitionEffect(mEffects[3]);
+		faceViewPager.setTransitionEffect(mEffects[0]);
 		CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(faceViewPager);
 		adapter.notifyDataSetChanged();
@@ -168,8 +237,7 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 					// msgEt.setSelection(index + keys.get(count).length());
 
 					// 下面这部分，在EditText中显示表情
-					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), (Integer) FaceUtil.getFaceMap()
-							.values().toArray()[count]);
+					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), (Integer) FaceUtil.getFaceMap().values().toArray()[count]);
 					if (bitmap != null) {
 						int rawHeigh = bitmap.getHeight();
 						int rawWidth = bitmap.getHeight();
@@ -209,20 +277,22 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 	}
 
 	private void initView() {
-		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-		params = getWindow().getAttributes();
-
-		adapter = new MessageAdapter(this, msgList);
 		mMsgListView = (ListView) findViewById(R.id.msg_listView);
-		// 触摸ListView隐藏表情和输入法
-		mMsgListView.setOnTouchListener(this);
-		mMsgListView.setAdapter(adapter);
-		mMsgListView.setSelection(adapter.getCount() - 1);
 		sendBtn = (Button) findViewById(R.id.send_btn);
 		faceBtn = (ImageButton) findViewById(R.id.face_btn);
 		msgEt = (EditText) findViewById(R.id.msg_et);
 		faceLinearLayout = (LinearLayout) findViewById(R.id.face_ll);
 		faceViewPager = (JazzyViewPager) findViewById(R.id.face_pager);
+		faceViewPager = (JazzyViewPager) findViewById(R.id.face_pager);
+
+		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		params = getWindow().getAttributes();
+
+		adapter = new MessageAdapter(this, msgList);
+		// 触摸ListView隐藏表情和输入法
+		mMsgListView.setOnTouchListener(this);
+		mMsgListView.setAdapter(adapter);
+		mMsgListView.setSelection(adapter.getCount() - 1);
 		msgEt.setOnTouchListener(this);
 		msgEt.setOnKeyListener(new OnKeyListener() {
 
@@ -275,47 +345,19 @@ public class ChatActivity extends Activity implements OnTouchListener, OnClickLi
 		};
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.face_btn:
-			if (!isFaceShow) {
-				imm.hideSoftInputFromWindow(msgEt.getWindowToken(), 0);
-				try {
-					Thread.sleep(80);// 解决此时会黑一下屏幕的问题
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				faceLinearLayout.setVisibility(View.VISIBLE);
-				isFaceShow = true;
-			} else {
-				faceLinearLayout.setVisibility(View.GONE);
-				isFaceShow = false;
-			}
-			break;
-		case R.id.send_btn:// 发送消息
-			break;
-		}
-	}
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		switch (v.getId()) {
-		case R.id.msg_listView:
-			imm.hideSoftInputFromWindow(msgEt.getWindowToken(), 0);
-			faceLinearLayout.setVisibility(View.GONE);
-			isFaceShow = false;
-			break;
-		case R.id.msg_et:
-			imm.showSoftInput(msgEt, 0);
-			faceLinearLayout.setVisibility(View.GONE);
-			isFaceShow = false;
-			break;
-
-		default:
-			break;
-		}
-		return false;
+	/**
+	 * 发送消息
+	 */
+	private void sendMessage() {
+		String msg = msgEt.getText().toString();
+		MessageItem item = new MessageItem("昵称", System.currentTimeMillis(), msg, R.drawable.c1, false, 0);
+		adapter.upDateMsg(item);
+		mMsgListView.setSelection(adapter.getCount() - 1);
+		msgEt.setText("");
+		ContentValues cv = new ContentValues();
+		cv.put("fromwho", "昵称");
+		cv.put("message", msg);
+		dbManager.insert(DBManager.MESSAGEITEM, cv);
 	}
 
 }

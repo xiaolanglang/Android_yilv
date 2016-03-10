@@ -1,12 +1,13 @@
 package com.yilvtzj.test;
 
-import android.test.AndroidTestCase;
+import java.util.UUID;
 
-import com.yilvtzj.db.DBManager;
+import android.test.AndroidTestCase;
 
 public class Test extends AndroidTestCase {
 	public void test() {
-		DBManager dbManager = new DBManager(mContext);
+		System.out.println(UUID.randomUUID().toString().replace("-", ""));
+		System.out.println(UUID.randomUUID().toString().replace("-", "").length());
 	}
 
 }

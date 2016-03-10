@@ -100,7 +100,13 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			HorizontalScrollView view = (HorizontalScrollView) v;
-			System.out.println(">>>>>>>>>>" + view.getScrollX());
+			if (view.getScrollX() == 0) {
+				// 没有滚动，认为是点击的按下
+				view.setBackgroundResource(R.color.new_item_press);
+			} else {
+				// 滚动了，取消点击颜色
+				view.setBackgroundResource(R.color.white);
+			}
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				// 如果有划出删除按钮的itemView,就让他滑回去并且锁定本次touch操作,解锁会在父组件的dispatchTouchEvent中进行
@@ -116,6 +122,9 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 				break;
 			case MotionEvent.ACTION_UP:
 
+				// 抬起，取消点击颜色
+				view.setBackgroundResource(R.color.white);
+
 				// 如果滑动了>50个像素,就显示出删除按钮
 				if (startX > event.getX() + 50) {
 					startX = 0;// 因为公用一个事件处理对象,防止错乱,还原startX值
@@ -127,7 +136,7 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 					System.out.println("44444444444444");
 				}
 
-				// 没有滚动，认为是点击事件
+				// 没有滚动，且抬起，认为是点击事件
 				if (view.getScrollX() == 0) {
 					ActivityUtil.startActivity(new Intent(), (Activity) context, ChatActivity.class);
 				}

@@ -17,6 +17,7 @@
     <color name="thirty_transparent_black">#4d000000</color>
     <color name="semi_transparent_w">#7fffffff</color>
     <color name="holo_blue">#FF33E5B5</color>
+    <color name="new_item_press">#EDFAFF</color>
     
     <!-- 点赞按钮颜色 -->
     <color name="like_on">#FF6815</color>

@@ -11,9 +11,7 @@ import android.util.Log;
  */
 class DBHelper extends SQLiteOpenHelper {
 
-	public static final String DB_NAME = "yilv.db";
-	public static final String TABLE_ACCOUNT = "account";
-	public static final String TABLE_DONGTAI = "dongtai";
+	private static final String DB_NAME = "yilv.db";
 	private static final int DB_VERSION = 1;
 	private static DBHelper dbHelper;
 
@@ -28,16 +26,12 @@ class DBHelper extends SQLiteOpenHelper {
 		return dbHelper;
 	}
 
-	// 数据第一次创建的时候会调用onCreate
+	// 数据第一次创建的时候会调用onCreate,表的列名要和实体中的属性名称一样
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// 创建表
-		// db.execSQL("CREATE TABLE IF NOT EXISTS info"
-		// +
-		// "(_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, age INTEGER, website STRING,weibo STRING)");
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ACCOUNT + "(id VARCHAR PRIMARY KEY, nickname VARCHAR, img VARCHAR)");
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DONGTAI + "(id VARCHAR PRIMARY KEY, nickname VARCHAR, img VARCHAR)");
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + DBManager.MESSAGEITEM
+				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR, fromWho VARCHAR)");
 	}
 
 	// 数据库第一次创建时onCreate方法会被调用，我们可以执行创建表的语句，当系统发现版本变化之后，会调用onUpgrade方法，我们可以执行修改表结构等语句

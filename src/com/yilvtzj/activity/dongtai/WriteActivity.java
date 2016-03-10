@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.baidumap.MyAddress;
 import com.yilvtzj.http.FormFile;
 import com.yilvtzj.http.SocketHttpRequester;
@@ -33,7 +33,7 @@ import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;
 
-public class WriteActivity extends Activity implements OnClickListener, JsInterfaceMethod {
+public class WriteActivity extends MyActivity implements OnClickListener, JsInterfaceMethod {
 
 	private WebView webView;
 	private FrameLayout flImage, flPisition;

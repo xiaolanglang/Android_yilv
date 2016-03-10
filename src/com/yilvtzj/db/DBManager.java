@@ -1,10 +1,15 @@
 package com.yilvtzj.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.yilvtzj.util.Reflections;
 
 /**
  * DBManager是建立在DBHelper之上，封装了常用的业务方法
@@ -12,8 +17,11 @@ import android.util.Log;
  */
 public class DBManager {
 
+	public static final String MESSAGEITEM = "messageitem";
+
 	private DBHelper helper;
 	private SQLiteDatabase db;
+	private static final int pageSize = 20;
 
 	public static final String TAG = "SQLite";
 
@@ -23,123 +31,109 @@ public class DBManager {
 	}
 
 	/**
-	 * 向表info中增加一个成员信息
+	 * 插入数据，id自增长
 	 * 
-	 * @param memberInfo
+	 * @param table
+	 * @param cv
 	 */
-	// public void add(List<MemberInfo> memberInfo) {
-	// db.beginTransaction();// 开始事务
-	// try {
-	// for (MemberInfo info : memberInfo) {
-	// Log.i(TAG, "------add memberInfo----------");
-	// Log.i(TAG, info.name + "/" + info.age + "/" + info.website + "/" +
-	// info.weibo);
-	// // 向表info中插入数据
-	// db.execSQL("INSERT INTO info VALUES(null,?,?,?,?)", new Object[] {
-	// info.name, info.age, info.website,
-	// info.weibo });
-	// }
-	// db.setTransactionSuccessful();// 事务成功
-	// } finally {
-	// db.endTransaction();// 结束事务
-	// }
-	// }
-
-	/**
-	 * @param _id
-	 * @param name
-	 * @param age
-	 * @param website
-	 * @param weibo
-	 */
-	public void add(int _id, String name, int age, String website, String weibo) {
-		Log.i(TAG, "------add data----------");
-		ContentValues cv = new ContentValues();
-		// cv.put("_id", _id);
-		cv.put("name", name);
-		cv.put("age", age);
-		cv.put("website", website);
-		cv.put("weibo", weibo);
-		// db.insert(DBHelper.DB_TABLE_NAME, null, cv);
-		Log.i(TAG, name + "/" + age + "/" + website + "/" + weibo);
+	public void insert(String table, ContentValues cv) {
+		Log.i(TAG, "------insert----------");
+		db.insert(table, null, cv);
 	}
 
 	/**
-	 * 通过name来删除数据
+	 * 通过ID删除数据
 	 * 
 	 * @param name
 	 */
-	public void delData(String name) {
-		String[] args = { name };
-		// db.delete(DBHelper.DB_TABLE_NAME, "name=?", args);
-		Log.i(TAG, "delete data by " + name);
-
+	public void delById(String table, int id) {
+		String[] args = { String.valueOf(id) };
+		db.delete(table, "id=?", args);
+		Log.i(TAG, "delete data by " + id);
 	}
 
 	/**
-	 * 清空数据
-	 */
-	public void clearData() {
-		ExecSQL("DELETE FROM info");
-		Log.i(TAG, "clear data");
-	}
-
-	/**
-	 * 通过名字查询信息,返回所有的数据
-	 * 
-	 * @param name
-	 */
-	// public ArrayList<MemberInfo> searchData(final String name) {
-	// String sql = "SELECT * FROM info WHERE name =" + "'" + name + "'";
-	// return ExecSQLForMemberInfo(sql);
-	// }
-	//
-	// public ArrayList<MemberInfo> searchAllData() {
-	// String sql = "SELECT * FROM info";
-	// return ExecSQLForMemberInfo(sql);
-	// }
-
-	/**
-	 * 通过名字来修改值
+	 * 通过ID来修改值
 	 * 
 	 * @param raw
 	 * @param rawValue
 	 * @param whereName
 	 */
-	public void updateData(String raw, String rawValue, String whereName) {
-		String sql = "UPDATE info SET " + raw + " =" + " " + "'" + rawValue + "'" + " WHERE name =" + "'" + whereName + "'";
-		ExecSQL(sql);
-		Log.i(TAG, sql);
+	public void updateById(String table, ContentValues cv, int id) {
+		db.update(table, cv, "id=?", new String[] { String.valueOf(id) });
+
+		Log.i(TAG, "update data by " + id);
 	}
 
 	/**
-	 * 执行SQL命令返回list
+	 * 分页查询，如果超过页数，就返回null
 	 * 
-	 * @param sql
-	 * @return
+	 * @param name
 	 */
-	// private ArrayList<MemberInfo> ExecSQLForMemberInfo(String sql) {
-	// ArrayList<MemberInfo> list = new ArrayList<MemberInfo>();
-	// Cursor c = ExecSQLForCursor(sql);
-	// while (c.moveToNext()) {
-	// MemberInfo info = new MemberInfo();
-	// info._id = c.getInt(c.getColumnIndex("_id"));
-	// info.name = c.getString(c.getColumnIndex("name"));
-	// info.age = c.getInt(c.getColumnIndex("age"));
-	// info.website = c.getString(c.getColumnIndex("website"));
-	// info.weibo = c.getString(c.getColumnIndex("weibo"));
-	// list.add(info);
-	// }
-	// c.close();
-	// return list;
-	// }
+	public <T> ArrayList<T> findPageList(String table, int pageNum, Class<T> clz) {
+		String sql = "select count(*) as COUNT from " + table;
+		Cursor cursor = execSQLForCursor(sql);
+		int count = cursor.getInt(0);
+		double c = count / pageSize;
+		c = Math.ceil(c);// 向上取整
+		cursor.close();// 关闭游标
+		if (c < pageNum) {
+			return null;
+		}
+		sql = String.format("select * from " + table + " limit {0} offset {0}*{1}", pageSize, (pageNum - 1) * pageSize);
+		cursor = execSQLForCursor(sql);
+		for (String name : cursor.getColumnNames()) {
+			System.out.println(">>>>>>>>>>" + name);
+		}
+		return null;
+	}
 
 	/**
-	 * 执行一个SQL语句
+	 * 分页查询，如果超过页数，就返回null
+	 * 
+	 * @param name
+	 */
+	public <T> List<T> findAllList(String table, Class<T> clz) {
+		String sql = String.format("select * from " + table);
+		Cursor cursor = execSQLForCursor(sql);
+		return getObject(cursor, clz);
+	}
+
+	/**
+	 * 利用反射从光标中遍历数据
+	 * 
+	 * @param cursor
+	 * @param clz
+	 * @return
+	 */
+	private <T> List<T> getObject(Cursor cursor, Class<T> clz) {
+		if (cursor.getCount() == 0) {
+			return null;
+		}
+		T t = null;
+		List<T> list = new ArrayList<T>();
+		try {
+			while (cursor.moveToNext()) {
+				t = clz.newInstance();
+				for (String name : cursor.getColumnNames()) {
+					Reflections.invokeSetter(t, name, cursor.getString(cursor.getColumnIndex(name)));
+				}
+				list.add(t);
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	/**
+	 * 单纯执行一个SQL语句
 	 * 
 	 * @param sql
 	 */
-	private void ExecSQL(String sql) {
+	public void ExecSQL(String sql) {
 		try {
 			db.execSQL(sql);
 			Log.i("execSql: ", sql);
@@ -155,7 +149,7 @@ public class DBManager {
 	 * @param sql
 	 * @return
 	 */
-	private Cursor ExecSQLForCursor(String sql) {
+	private Cursor execSQLForCursor(String sql) {
 		Cursor c = db.rawQuery(sql, null);
 		return c;
 	}

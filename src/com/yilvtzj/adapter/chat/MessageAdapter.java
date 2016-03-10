@@ -5,18 +5,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 
 import com.nostra13.universalimageloader.utils.L;
+import com.yilvtzj.R;
 import com.yilvtzj.entity.MessageItem;
-import com.yilvtzj.util.SharePreferenceUtil;
+import com.yilvtzj.util.FaceUtil;
 
 public class MessageAdapter extends BaseAdapter {
 
@@ -25,7 +30,6 @@ public class MessageAdapter extends BaseAdapter {
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private List<MessageItem> mMsgList;
-	private SharePreferenceUtil mSpUtil;
 
 	public MessageAdapter(Context context, List<MessageItem> msgList) {
 		this.mContext = context;
@@ -71,7 +75,25 @@ public class MessageAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		MessageItem item = mMsgList.get(position);
+		boolean isComMsg = item.isComMeg();
+		ViewHolder holder;
+		if (convertView == null || convertView.getTag(R.drawable.ic_launcher + position) == null) {
+			holder = new ViewHolder();
+			if (isComMsg) {
+				convertView = mInflater.inflate(R.layout.item_chat_left, null);
+			} else {
+				convertView = mInflater.inflate(R.layout.item_chat_right, null);
+			}
+			holder.head = (ImageView) convertView.findViewById(R.id.icon);
+			holder.msg = (TextView) convertView.findViewById(R.id.textView2);
+			convertView.setTag(R.drawable.ic_launcher + position);
+		} else {
+			holder = (ViewHolder) convertView.getTag(R.drawable.ic_launcher + position);
+		}
+		holder.head.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), item.getHeadImg()));
 
+		holder.msg.setText(convertNormalStringToSpannableString(item.getMessage()), BufferType.SPANNABLE);
 		return convertView;
 	}
 
@@ -83,7 +105,6 @@ public class MessageAdapter extends BaseAdapter {
 	 * @return
 	 */
 	private CharSequence convertNormalStringToSpannableString(String message) {
-		// TODO Auto-generated method stub
 		String hackTxt;
 		if (message.startsWith("[") && message.endsWith("]")) {
 			hackTxt = message + " ";
@@ -98,20 +119,14 @@ public class MessageAdapter extends BaseAdapter {
 			int k = localMatcher.start();
 			int m = localMatcher.end();
 			if (m - k < 8) {
-				// if
-				// (PushApplication.getInstance().getFaceMap().containsKey(str2))
-				// {
-				// int face =
-				// PushApplication.getInstance().getFaceMap().get(str2);
-				// Bitmap bitmap =
-				// BitmapFactory.decodeResource(mContext.getResources(), face);
-				// if (bitmap != null) {
-				// ImageSpan localImageSpan = new ImageSpan(mContext, bitmap,
-				// ImageSpan.ALIGN_BASELINE);
-				// value.setSpan(localImageSpan, k, m,
-				// Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				// }
-				// }
+				if (FaceUtil.getFaceMap().containsKey(str2)) {
+					int face = FaceUtil.getFaceMap().get(str2);
+					Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), face);
+					if (bitmap != null) {
+						ImageSpan localImageSpan = new ImageSpan(mContext, bitmap, ImageSpan.ALIGN_BASELINE);
+						value.setSpan(localImageSpan, k, m, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
+				}
 			}
 		}
 		return value;
@@ -121,7 +136,6 @@ public class MessageAdapter extends BaseAdapter {
 		ImageView head;
 		TextView msg;
 		ImageView imageView;
-		ProgressBar progressBar;
 
 	}
 }
