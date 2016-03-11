@@ -1,5 +1,6 @@
 package com.yilvtzj.adapter.chat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +23,7 @@ import com.nostra13.universalimageloader.utils.L;
 import com.yilvtzj.R;
 import com.yilvtzj.entity.MessageItem;
 import com.yilvtzj.util.FaceUtil;
+import com.yilvtzj.util.ImageUtil;
 
 public class MessageAdapter extends BaseAdapter {
 
@@ -30,6 +32,8 @@ public class MessageAdapter extends BaseAdapter {
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private List<MessageItem> mMsgList;
+	private List<Bitmap> bitmaps = new ArrayList<Bitmap>(2);
+	private Bitmap leftBitmap, rightBitmap;
 
 	public MessageAdapter(Context context, List<MessageItem> msgList) {
 		this.mContext = context;
@@ -54,8 +58,18 @@ public class MessageAdapter extends BaseAdapter {
 	}
 
 	public void upDateMsg(MessageItem msg) {
+		recycleBitMap();
 		mMsgList.add(msg);
 		notifyDataSetChanged();
+	}
+
+	public void recycleBitMap() {
+		for (Bitmap bitmap : bitmaps) {
+			if (bitmap != null && !bitmap.isRecycled()) {
+				bitmap.recycle();
+			}
+		}
+		bitmaps.clear();
 	}
 
 	@Override
@@ -78,20 +92,33 @@ public class MessageAdapter extends BaseAdapter {
 		MessageItem item = mMsgList.get(position);
 		boolean isComMsg = item.isComMeg();
 		ViewHolder holder;
-		if (convertView == null || convertView.getTag(R.drawable.ic_launcher + position) == null) {
+		if (convertView == null || convertView.getTag(R.id.icon + position) == null) {
 			holder = new ViewHolder();
+			Bitmap bitmap = null;
+			// 因为头像在listview中都是重复的，所以只要保留两份bitmap复用就好了
 			if (isComMsg) {
 				convertView = mInflater.inflate(R.layout.item_chat_left, null);
+				if (leftBitmap == null) {
+					leftBitmap = ImageUtil.readBitMap(mContext, R.drawable.c1);
+					bitmaps.add(leftBitmap);
+				}
+				bitmap = leftBitmap;
 			} else {
 				convertView = mInflater.inflate(R.layout.item_chat_right, null);
+				if (rightBitmap == null) {
+					rightBitmap = ImageUtil.readBitMap(mContext, R.drawable.c1);
+					bitmaps.add(rightBitmap);
+				}
+				bitmap = rightBitmap;
 			}
-			holder.head = (ImageView) convertView.findViewById(R.id.icon);
 			holder.msg = (TextView) convertView.findViewById(R.id.textView2);
-			convertView.setTag(R.drawable.ic_launcher + position);
+			holder.head = (ImageView) convertView.findViewById(R.id.icon);
 
-			holder.head.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.c1));
+			holder.head.setImageBitmap(bitmap);// 因为首次加载头像之后，头像是不会变的，所以在首次初始化就好了
+
+			convertView.setTag(R.id.icon + position, holder);
 		} else {
-			holder = (ViewHolder) convertView.getTag(R.drawable.ic_launcher + position);
+			holder = (ViewHolder) convertView.getTag(R.id.icon + position);
 		}
 
 		holder.msg.setText(convertNormalStringToSpannableString(item.getMessage()), BufferType.SPANNABLE);
@@ -137,6 +164,6 @@ public class MessageAdapter extends BaseAdapter {
 		ImageView head;
 		TextView msg;
 		ImageView imageView;
-
 	}
+
 }

@@ -76,11 +76,10 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 		setCommonActionBar("聊天");
 		dbManager = new DBManager(this);
 
-		initData();
 		initView();
 		initFacePage();
-		initMsgData();
 
+		initMsgData();
 	}
 
 	@Override
@@ -144,13 +143,13 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 	protected void onDestroy() {
 		super.onDestroy();
 		dbManager.closeDB();
+		adapter.recycleBitMap();
 	}
 
 	private void initData() {
 		Set<String> keySet = FaceUtil.getFaceMap().keySet();
 		keys = new ArrayList<String>();
 		keys.addAll(keySet);
-
 	}
 
 	/**
@@ -163,9 +162,11 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 		}
 		adapter.setMessageList(msgList);
 		adapter.notifyDataSetChanged();
+		mMsgListView.setSelection(adapter.getCount() - 1);
 	}
 
 	private void initFacePage() {
+		initData();
 		List<View> lv = new ArrayList<View>();
 		for (int i = 0; i < 6; ++i)
 			lv.add(getGridView(i));
@@ -292,7 +293,6 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 		// 触摸ListView隐藏表情和输入法
 		mMsgListView.setOnTouchListener(this);
 		mMsgListView.setAdapter(adapter);
-		mMsgListView.setSelection(adapter.getCount() - 1);
 		msgEt.setOnTouchListener(this);
 		msgEt.setOnKeyListener(new OnKeyListener() {
 
@@ -302,7 +302,6 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 					if (params.softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE || isFaceShow) {
 						faceLinearLayout.setVisibility(View.GONE);
 						isFaceShow = false;
-						// imm.showSoftInput(msgEt, 0);
 						return true;
 					}
 				}

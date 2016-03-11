@@ -141,8 +141,14 @@ public class HorizontalSlideAdapter extends BaseAdapter {
 					ActivityUtil.startActivity(new Intent(), (Activity) context, ChatActivity.class);
 				}
 				break;
-			}
+			case MotionEvent.ACTION_CANCEL:
 
+				// 取消点击颜色
+				view.setBackgroundResource(R.color.white);
+				scrollView(view, HorizontalScrollView.FOCUS_LEFT);
+				break;
+			}
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + event.getAction());
 			return false;
 		}
 
