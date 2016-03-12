@@ -34,6 +34,12 @@
         <item name="android:windowEnterAnimation">@anim/in_from_top</item>
         <item name="android:windowExitAnimation">@anim/out_from_top</item>
     </style>
+    
+    <!-- 右上角popupwindow -->
+    <style name="AnimationPreview">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
 
     <style name="MMListCatalog">
         <item name="android:textSize">14.0dip</item>

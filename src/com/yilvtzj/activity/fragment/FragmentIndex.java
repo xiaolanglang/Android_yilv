@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.mining.app.zxing.activity.MipcaActivityCapture;
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.home.HomeAdapter;
 import com.yilvtzj.entity.DongtaiMsg;
@@ -30,21 +29,24 @@ import com.yilvtzj.util.SharePreferenceUtil;
 import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.MySwipeRefreshLayout;
 import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
+import com.yilvtzj.view.fragmentindex.AddPopWindow;
 
 public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoadListener, OnClickListener {
 
 	private MySwipeRefreshLayout myRefreshListView;
 	private ListView listView;
-	private ImageView scanIV;
+	private ImageView addTv;
 	private List<DongtaiMsg> list;
 	private HomeAdapter homeAdapter;
-	private final static int SCANNIN_GREQUEST_CODE = 1;
 	private final static int GETDATA_SUCCESS = 1;
 	private final static int GETDATA_FAILED = 2;
+	private AddPopWindow addPopWindow;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_index, container, false);
+
+		addPopWindow = new AddPopWindow(this.getActivity());
 
 		loadLocalData();
 		init(view);
@@ -102,8 +104,8 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.scan:
-			MipcaActivityCapture.startScan(getActivity(), SCANNIN_GREQUEST_CODE);
+		case R.id.add:
+			addPopWindow.showPopupWindow(addTv, FragmentIndex.this.getActivity());
 			break;
 		}
 	}
@@ -112,7 +114,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	public void init(View view) {
 		listView = (ListView) view.findViewById(R.id.home);
 		myRefreshListView = (MySwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-		scanIV = (ImageView) view.findViewById(R.id.scan);
+		addTv = (ImageView) view.findViewById(R.id.add);
 
 		View view2 = LayoutInflater.from(this.getActivity()).inflate(R.layout.item_home_listview_footer, null);
 		view2.setVisibility(View.GONE);
@@ -129,7 +131,17 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		myRefreshListView.setOnRefreshListener(this);
 		myRefreshListView.setOnLoadListener(this);
 
-		scanIV.setOnClickListener(this);
+		addTv.setOnClickListener(this);
+
+		// iv_add.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// AddPopWindow addPopWindow = new AddPopWindow(MainActivity.this);
+		// addPopWindow.showPopupWindow(iv_add);
+		// }
+		//
+		// });
 
 	}
 

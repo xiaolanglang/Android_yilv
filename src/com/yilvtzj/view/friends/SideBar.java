@@ -1,4 +1,4 @@
-package com.yilvtzj.view;
+package com.yilvtzj.view.friends;
 
 import android.content.Context;
 import android.graphics.Canvas;

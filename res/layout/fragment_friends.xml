@@ -65,7 +65,7 @@
                 android:scrollbars="none" />
         </LinearLayout>
 
-        <com.yilvtzj.view.SideBar
+        <com.yilvtzj.view.friends.SideBar
             android:id="@+id/sideBar"
             android:layout_width="30dp"
             android:layout_height="wrap_content"

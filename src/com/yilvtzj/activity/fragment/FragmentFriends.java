@@ -26,7 +26,7 @@ import com.yilvtzj.activity.mine.SelfInfoActivity;
 import com.yilvtzj.adapter.friends.ContactAdapter;
 import com.yilvtzj.entity.Account;
 import com.yilvtzj.util.ActivityUtil;
-import com.yilvtzj.view.SideBar;
+import com.yilvtzj.view.friends.SideBar;
 
 public class FragmentFriends extends Fragment implements OnItemClickListener {
 

@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:background="#fff"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
@@ -28,14 +28,14 @@
             android:gravity="center"
             android:text="全部动态"
             android:textColor="@color/title"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/icon_ticketbox_scan" />
+        <ImageButton
+            android:id="@+id/add"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/btn_main_activtiy_add" />
     </LinearLayout>
 
     <View
