@@ -16,6 +16,7 @@
     <color name="dark_blue">#4090B3</color>
     <color name="gray">#ff808080</color>
     <color name="title">#737373</color>
+    <color name="purple">#292C6F</color>
     <!-- chat -->
     <color name="thirty_transparent_black">#4d000000</color>
     <color name="semi_transparent_w">#7fffffff</color>

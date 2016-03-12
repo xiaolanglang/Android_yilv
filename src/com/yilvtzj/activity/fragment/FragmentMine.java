@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.LoginActivity;
+import com.yilvtzj.activity.mine.MyQrActivity;
 import com.yilvtzj.entity.Account;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 import com.yilvtzj.service.UserService;
@@ -32,6 +34,7 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 	private TextView nicknameTV;
 	private final int SHOWINFO = 0;
 	private Account account;
+	private LinearLayout myqr;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +57,9 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 		case R.id.loginBtn:
 			ActivityUtil.startActivity(new Intent(), getActivity(), LoginActivity.class);
 			break;
-
+		case R.id.myqr:
+			ActivityUtil.startActivity(new Intent(), this.getActivity(), MyQrActivity.class);
+			break;
 		}
 	}
 
@@ -94,8 +99,10 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 	private void initView(View view) {
 		loginBtn = (ImageView) view.findViewById(R.id.loginBtn);
 		nicknameTV = (TextView) view.findViewById(R.id.nickname);
+		myqr = (LinearLayout) view.findViewById(R.id.myqr);
 
 		loginBtn.setOnClickListener(this);
+		myqr.setOnClickListener(this);
 	}
 
 	private void showInfo(Account account) {

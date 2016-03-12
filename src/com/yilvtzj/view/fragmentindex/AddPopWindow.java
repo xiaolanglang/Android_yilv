@@ -12,13 +12,13 @@ import android.widget.RelativeLayout;
 
 import com.mining.app.zxing.activity.MipcaActivityCapture;
 import com.yilvtzj.R;
+import com.yilvtzj.util.Global;
 import com.yilvtzj.util.ToastUtil;
 
 public class AddPopWindow extends PopupWindow implements OnClickListener {
 	private View conentView;
 	private Activity activity;
 	private RelativeLayout addfriends, scan;
-	private final static int SCANNIN_GREQUEST_CODE = 1;
 
 	public AddPopWindow(final Activity context) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -74,7 +74,7 @@ public class AddPopWindow extends PopupWindow implements OnClickListener {
 			break;
 
 		case R.id.scan:
-			MipcaActivityCapture.startScan(activity, SCANNIN_GREQUEST_CODE);
+			MipcaActivityCapture.startScan(activity, Global.SCANNIN_GREQUEST_CODE);
 			break;
 		}
 		AddPopWindow.this.dismiss();

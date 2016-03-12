@@ -11,7 +11,6 @@
 	<classpathentry kind="lib" path="libs/baidumapapi_search_v3_6_1.jar"/>
 	<classpathentry kind="lib" path="libs/baidumapapi_util_v3_6_1.jar"/>
 	<classpathentry kind="lib" path="libs/locSDK_6.13.jar"/>
-	<classpathentry kind="lib" path="libs/zxing.jar"/>
 	<classpathentry kind="lib" path="libs/nineoldandroids.jar" sourcepath="D:/TDownLoad/NineOldAndroids-master/library/src"/>
 	<classpathentry kind="lib" path="libs/volly-1.0.11.jar"/>
 	<classpathentry kind="lib" path="libs/universal-image-loader-1.9.5.jar"/>

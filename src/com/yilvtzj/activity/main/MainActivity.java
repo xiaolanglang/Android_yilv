@@ -16,12 +16,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.fragment.FragmentFriends;
 import com.yilvtzj.activity.fragment.FragmentIndex;
 import com.yilvtzj.activity.fragment.FragmentMine;
-import com.yilvtzj.activity.fragment.FragmentFriends;
 import com.yilvtzj.activity.fragment.FragmentNews;
 import com.yilvtzj.baidumap.MyBaiduMap;
 import com.yilvtzj.util.ClassManagerUtil;
+import com.yilvtzj.util.Global;
 import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.PopupWindowView;
 
@@ -255,7 +256,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-		case 1:
+		case Global.SCANNIN_GREQUEST_CODE:
 			if (resultCode == this.RESULT_OK) {
 				Bundle bundle = data.getExtras();
 				// 显示扫描到的内容

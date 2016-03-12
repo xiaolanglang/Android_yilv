@@ -18,6 +18,8 @@ public class Global {
 	public static final String TIANGOU_SERVICE = "";
 	public static Context CONTEXT;
 
+	public final static int SCANNIN_GREQUEST_CODE = 1;
+
 	/**
 	 * 获得请求路径
 	 * 
