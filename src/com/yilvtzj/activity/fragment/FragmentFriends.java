@@ -3,7 +3,9 @@ package com.yilvtzj.activity.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar.LayoutParams;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +18,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
+import com.yilvtzj.activity.mine.SelfInfoActivity;
 import com.yilvtzj.adapter.friends.ContactAdapter;
 import com.yilvtzj.entity.Account;
+import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.view.SideBar;
 
 public class FragmentFriends extends Fragment implements OnItemClickListener {
@@ -41,12 +44,23 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 		mWindowManager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 		initViews(view);
 		initData();
-		initListen(view);
+		initTxtSearchListen(view);
 
 		return view;
 	}
 
-	private void initListen(View view) {
+	@Override
+	public void onDestroy() {
+		mWindowManager.removeView(mDialogText);
+		super.onDestroy();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		ActivityUtil.startActivity(new Intent(), FragmentFriends.this.getActivity(), SelfInfoActivity.class);
+	}
+
+	private void initTxtSearchListen(View view) {
 		((TextView) view.findViewById(R.id.txt_search)).addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -67,6 +81,7 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 
 	private void initViews(View layout) {
 		lvContact = (ListView) layout.findViewById(R.id.lvContact);
+		lvContact.setOnItemClickListener(this);
 
 		mDialogText = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_friends_list_position, null);
 		mDialogText.setVisibility(View.INVISIBLE);
@@ -79,12 +94,6 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 		mWindowManager.addView(mDialogText, lp);
 		indexBar.setTextView(mDialogText);
 
-	}
-
-	@Override
-	public void onDestroy() {
-		mWindowManager.removeView(mDialogText);
-		super.onDestroy();
 	}
 
 	private void initData() {
@@ -137,11 +146,6 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 		list.add(account9);
 
 		contactAdapter.sort();
-
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
 	}
 

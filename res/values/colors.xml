@@ -11,6 +11,9 @@
     <color name="line1">#DCDCDC</color>
     <color name="line2">#F4F1F4</color>
     <color name="greeny">#00CB0D</color>
+    <color name="dark_greeny">#13920D</color>
+    <color name="blue">#40A7FF</color>
+    <color name="dark_blue">#4090B3</color>
     <color name="gray">#ff808080</color>
     <color name="title">#737373</color>
     <!-- chat -->

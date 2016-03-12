@@ -15,7 +15,6 @@
         android:id="@+id/contactitem_layout"
         style="@style/MMListItem"
         android:layout_height="65.0dip"
-        android:background="@color/white"
         android:paddingLeft="15dip" >
 
         <com.yilvtzj.view.CircleImageView
@@ -43,7 +42,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/line1" />
 
 </LinearLayout>

@@ -108,6 +108,7 @@
         </activity>
         <activity android:name="com.yilvtzj.activity.dongtai.CommentWriteActivity" >
         </activity>
+        <activity android:name="com.yilvtzj.activity.mine.SelfInfoActivity"></activity>
         <activity android:name="com.yilvtzj.activity.chat.ChatActivity" >
         </activity>
 
