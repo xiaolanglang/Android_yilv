@@ -112,7 +112,8 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()), position);
+				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()),
+						position);
 			}
 		});
 
@@ -207,7 +208,7 @@ public class HomeAdapter extends BaseAdapter {
 							}
 						}
 
-					}, context, params);
+					}, params);
 				} catch (Exception e) {
 					handler.sendEmptyMessage(GOODFAILED);
 					notGood(view, true);

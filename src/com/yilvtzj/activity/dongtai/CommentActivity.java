@@ -188,7 +188,7 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 							e.printStackTrace();
 						}
 					}
-				}, mActivity, pageNum, msg.getId());
+				}, pageNum, msg.getId());
 			} catch (Exception e) {
 				error();
 				e.printStackTrace();

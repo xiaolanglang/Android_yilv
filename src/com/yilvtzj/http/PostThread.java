@@ -2,23 +2,22 @@ package com.yilvtzj.http;
 
 import java.util.Map;
 
-import android.content.Context;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
 
 public class PostThread implements Runnable {
-	private Context context;
 	private Map<String, String> params;
 	private String url;
 	private PostThreadListener listener;
-	private String resultJSON;
 
 	/**
 	 * 请求成功回调方法
 	 */
-	private void success() {
+	private void success(JSONObject JSON) {
 		if (listener != null) {
-			listener.postThreadSuccess(resultJSON);
+			listener.postThreadSuccess(JSON);
 		}
 	}
 
@@ -27,7 +26,7 @@ public class PostThread implements Runnable {
 	 */
 	private void error() {
 		if (listener != null) {
-			listener.postThreadSuccess(resultJSON);
+			listener.postThreadFailed();
 		}
 	}
 
@@ -36,7 +35,7 @@ public class PostThread implements Runnable {
 	 */
 	private void finallyMethod() {
 		if (listener != null) {
-			listener.postThreadFinally(resultJSON);
+			listener.postThreadFinally();
 		}
 	}
 
@@ -47,10 +46,14 @@ public class PostThread implements Runnable {
 
 				@Override
 				public void result(String JSON) {
-					resultJSON = JSON;
-					success();
+					try {
+						success(new JSONObject(JSON));
+					} catch (JSONException e) {
+						error();
+						e.printStackTrace();
+					}
 				}
-			}).post(url, context, params);
+			}).post(url, params);
 		} catch (Exception e) {
 			error();
 			e.printStackTrace();
@@ -61,11 +64,11 @@ public class PostThread implements Runnable {
 	}
 
 	public interface PostThreadListener {
-		public boolean postThreadSuccess(String JSON);
+		public boolean postThreadSuccess(JSONObject JSON);
 
-		public boolean postThreadFailed(String JSON);
+		public boolean postThreadFailed();
 
-		public boolean postThreadFinally(String JSON);
+		public boolean postThreadFinally();
 	}
 
 }

@@ -103,7 +103,7 @@ public class CommentWriteActivity extends MyActivity implements OnClickListener 
 							canReSend();
 						}
 					}
-				}, CommentWriteActivity.this, params);
+				}, params);
 			} catch (Exception e) {
 				canReSend();
 				e.printStackTrace();

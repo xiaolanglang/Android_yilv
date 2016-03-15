@@ -8,8 +8,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.Map;
 
-import android.content.Context;
-
 import com.yilvtzj.util.AccountUtil;
 import com.yilvtzj.util.StringUtil;
 
@@ -59,8 +57,8 @@ public class SocketHttpRequester {
 				fileExplain.append("--");
 				fileExplain.append(BOUNDARY);
 				fileExplain.append("\r\n");
-				fileExplain.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName() + "\";filename=\""
-						+ uploadFile.getFilname() + "\"\r\n");
+				fileExplain.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName()
+						+ "\";filename=\"" + uploadFile.getFilname() + "\"\r\n");
 				fileExplain.append("Content-Type: " + uploadFile.getContentType() + "\r\n\r\n");
 				fileExplain.append("\r\n");
 				fileDataLength += fileExplain.length();
@@ -117,8 +115,8 @@ public class SocketHttpRequester {
 				fileEntity.append("--");
 				fileEntity.append(BOUNDARY);
 				fileEntity.append("\r\n");
-				fileEntity.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName() + "\";filename=\""
-						+ uploadFile.getFilname() + "\"\r\n");
+				fileEntity.append("Content-Disposition: form-data;name=\"" + uploadFile.getParameterName()
+						+ "\";filename=\"" + uploadFile.getFilname() + "\"\r\n");
 				fileEntity.append("Content-Type: " + uploadFile.getContentType() + "\r\n\r\n");
 				outStream.write(fileEntity.toString().getBytes());
 				if (uploadFile.getInStream() != null) {
@@ -191,11 +189,11 @@ public class SocketHttpRequester {
 	 *            上传文件
 	 * @return
 	 */
-	public void post(String path, Context context, Map<String, String> params, FormFile file) throws Exception {
+	public void post(FormFile file, String path, Map<String, String> params) throws Exception {
 		post(path, params, new FormFile[] { file });
 	}
 
-	public void post(String path, Context context, Map<String, String> params) throws Exception {
+	public void post(String path, Map<String, String> params) throws Exception {
 		post(path, params, null);
 	}
 

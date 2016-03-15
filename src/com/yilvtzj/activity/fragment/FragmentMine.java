@@ -85,7 +85,7 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 				@Override
 				public void run() {
 					try {
-						UserService.getUserInfo(socketListener, getActivity());
+						UserService.getUserInfo(socketListener);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

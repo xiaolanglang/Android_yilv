@@ -147,7 +147,7 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 							e.printStackTrace();
 						}
 					}
-				}, SearchFriendActivity.this, pageNum, searchMsg);
+				}, pageNum, searchMsg);
 			} catch (Exception e) {
 				error();
 				e.printStackTrace();

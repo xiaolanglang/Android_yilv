@@ -150,7 +150,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		@Override
 		public void run() {
 			try {
-				DongTaiService.getDongtaiList(getActivity(), new SocketListener() {
+				DongTaiService.getDongtaiList(new SocketListener() {
 
 					@Override
 					public void result(String JSON) {
