@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/contactitem_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dip"
+        android:paddingTop="5dp" >
+
+        <com.yilvtzj.view.CircleImageView
+            android:id="@+id/image"
+            android:layout_width="55.0dip"
+            android:layout_height="55.0dip"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/c1" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp" >
+
+            <TextView
+                android:id="@+id/nickname"
+                style="@style/MMFontTitleInList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line1" />
+
+</LinearLayout>

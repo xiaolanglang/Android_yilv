@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
-import com.yilvtzj.activity.mine.SelfInfoActivity;
+import com.yilvtzj.activity.friend.SelfInfoActivity;
 import com.yilvtzj.adapter.friends.ContactAdapter;
 import com.yilvtzj.entity.Account;
 import com.yilvtzj.util.ActivityUtil;

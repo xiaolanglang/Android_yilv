@@ -110,8 +110,14 @@
         </activity>
         <activity android:name="com.yilvtzj.activity.chat.ChatActivity" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.mine.SelfInfoActivity"></activity>
-        <activity android:name="com.yilvtzj.activity.mine.MyQrActivity"></activity>
+        <activity android:name="com.yilvtzj.activity.friend.SelfInfoActivity" >
+        </activity>
+        <activity android:name="com.yilvtzj.activity.mine.MyQrActivity" >
+        </activity>
+        <activity
+            android:name="com.yilvtzj.activity.friend.SearchFriendActivity"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
 
         <!-- 相册选取，开始 -->
         <activity
@@ -132,7 +138,6 @@
             android:enabled="true"
             android:process=":remote" >
         </service>
-        
         <service
             android:name="com.androidpn.service.NotificationService"
             android:enabled="true"

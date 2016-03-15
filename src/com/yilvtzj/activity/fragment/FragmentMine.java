@@ -12,12 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.LoginActivity;
+import com.yilvtzj.activity.friend.SearchFriendActivity;
 import com.yilvtzj.activity.mine.MyQrActivity;
 import com.yilvtzj.entity.Account;
 import com.yilvtzj.http.SocketHttpRequester.SocketListener;
@@ -29,12 +28,10 @@ import com.yilvtzj.util.StringUtil;
 import com.yilvtzj.util.ToastUtil;
 
 public class FragmentMine extends Fragment implements OnClickListener, SocketListener {
-	private ImageView loginBtn;
 	private SocketListener socketListener;
 	private TextView nicknameTV;
 	private final int SHOWINFO = 0;
 	private Account account;
-	private LinearLayout myqr;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +56,9 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 			break;
 		case R.id.myqr:
 			ActivityUtil.startActivity(new Intent(), this.getActivity(), MyQrActivity.class);
+			break;
+		case R.id.searchfriends:
+			ActivityUtil.startActivity(new Intent(), getActivity(), SearchFriendActivity.class);
 			break;
 		}
 	}
@@ -97,12 +97,11 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 	}
 
 	private void initView(View view) {
-		loginBtn = (ImageView) view.findViewById(R.id.loginBtn);
 		nicknameTV = (TextView) view.findViewById(R.id.nickname);
-		myqr = (LinearLayout) view.findViewById(R.id.myqr);
 
-		loginBtn.setOnClickListener(this);
-		myqr.setOnClickListener(this);
+		view.findViewById(R.id.myqr).setOnClickListener(this);
+		view.findViewById(R.id.loginBtn).setOnClickListener(this);
+		view.findViewById(R.id.searchfriends).setOnClickListener(this);
 	}
 
 	private void showInfo(Account account) {
