@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.yilvtzj.R;
-import com.yilvtzj.app.LocationApplication;
+import com.yilvtzj.app.MyApplication;
 import com.yilvtzj.volley.cache.LruBitmapCache;
 
 public class GridViewAdapter extends BaseAdapter {
@@ -36,7 +36,7 @@ public class GridViewAdapter extends BaseAdapter {
 		this.mContext = context;
 		this.mThumbIds = mThumbIds;
 		// 初始化mImageLoader，并且传入了自定义的内存缓存
-		mImageLoader = new ImageLoader(LocationApplication.requestQueue, new LruBitmapCache()); // 初始化一个loader对象，可以进行自定义配置
+		mImageLoader = new ImageLoader(MyApplication.requestQueue, new LruBitmapCache()); // 初始化一个loader对象，可以进行自定义配置
 		// 配置是否进行磁盘缓存
 		// mImageLoader.setShouldCache(true); // 设置允许磁盘缓存，默认是true
 	}

@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.androidpn.service.ServiceManager;
 import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -18,11 +19,13 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.yilvtzj.R;
 import com.yilvtzj.util.Global;
+import com.yilvtzj.util.SimpleHandler;
 
-public class LocationApplication extends Application {
+public class MyApplication extends Application {
 	public static ImageLoader imageLoader;
 	public static RequestQueue requestQueue;
 	public static int memoryCacheSize;
+	public static SimpleHandler handler;
 
 	@Override
 	public void onCreate() {
@@ -37,6 +40,11 @@ public class LocationApplication extends Application {
 		memoryCacheSize = getMemoryCacheSize();
 
 		Global.CONTEXT = this;
+
+		ServiceManager serviceManager = new ServiceManager(this);
+		serviceManager.setNotificationIcon(R.drawable.ic_launcher);
+		serviceManager.startService();
+		handler = new SimpleHandler(this);
 	}
 
 	/**

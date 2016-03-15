@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.yilvtzj.app.LocationApplication;
+import com.yilvtzj.app.MyApplication;
 
 public class MyImageLoader {
 	private ImageView mImageView;
@@ -16,7 +16,7 @@ public class MyImageLoader {
 
 	public void get(String uri, ImageView mImageView) {
 		this.mImageView = mImageView;
-		LocationApplication.imageLoader.displayImage(uri, mImageView, mImageLoadingListener);
+		MyApplication.imageLoader.displayImage(uri, mImageView, mImageLoadingListener);
 	}
 
 	public View getmProgress_View() {

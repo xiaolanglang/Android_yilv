@@ -56,7 +56,7 @@
     </instrumentation>
 
     <application
-        android:name="com.yilvtzj.app.LocationApplication"
+        android:name="com.yilvtzj.app.MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
@@ -132,6 +132,21 @@
             android:enabled="true"
             android:process=":remote" >
         </service>
+        
+        <service
+            android:name="com.androidpn.service.NotificationService"
+            android:enabled="true"
+            android:label="NotificationService" >
+            <intent-filter>
+                <action android:name="com.androidpn.service.NotificationService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.androidpn.receiver.MyReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

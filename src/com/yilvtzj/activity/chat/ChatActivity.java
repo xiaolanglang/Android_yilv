@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -36,6 +37,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.androidpn.service.NotificationReceiver;
+import com.androidpn.service.NotificationReceiver.NotificationReceiverListener;
+import com.androidpn.util.Constants;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.chat.FaceAdapter;
@@ -48,7 +52,7 @@ import com.yilvtzj.view.chat.CirclePageIndicator;
 import com.yilvtzj.view.chat.JazzyViewPager;
 import com.yilvtzj.view.chat.JazzyViewPager.TransitionEffect;
 
-public class ChatActivity extends MyActivity implements OnTouchListener, OnClickListener {
+public class ChatActivity extends MyActivity implements OnTouchListener, OnClickListener, NotificationReceiverListener {
 	public static final int NEW_MESSAGE = 0x001;// 收到消息
 	private TransitionEffect mEffects[] = { TransitionEffect.Standard, TransitionEffect.Tablet, TransitionEffect.CubeIn,
 			TransitionEffect.CubeOut, TransitionEffect.FlipVertical, TransitionEffect.FlipHorizontal, TransitionEffect.Stack,
@@ -85,14 +89,19 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 	@Override
 	protected void onResume() {
 		super.onResume();
+		NotificationReceiver receiver = (NotificationReceiver) Constants.notificationService.getNotificationReceiver();
+		receiver.setNotificationReceiverListener(this);
 	}
 
 	@Override
 	protected void onPause() {
+		super.onPause();
 		imm.hideSoftInputFromWindow(msgEt.getWindowToken(), 0);
 		faceLinearLayout.setVisibility(View.GONE);
 		isFaceShow = false;
-		super.onPause();
+
+		NotificationReceiver receiver = (NotificationReceiver) Constants.notificationService.getNotificationReceiver();
+		receiver.setNotificationReceiverListener(null);
 	}
 
 	@Override
@@ -357,6 +366,12 @@ public class ChatActivity extends MyActivity implements OnTouchListener, OnClick
 		cv.put("fromwho", "昵称");
 		cv.put("message", msg);
 		dbManager.insert(DBManager.MESSAGEITEM, cv);
+	}
+
+	@Override
+	public void receiverData(Intent intent) {
+		String notificationTitle = intent.getStringExtra(Constants.NOTIFICATION_TITLE);
+		String notificationMessage = intent.getStringExtra(Constants.NOTIFICATION_MESSAGE);
 	}
 
 }

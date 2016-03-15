@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
-import com.yilvtzj.app.LocationApplication;
+import com.yilvtzj.app.MyApplication;
 
 public class LruBitmapCache implements ImageCache {
 
@@ -13,7 +13,7 @@ public class LruBitmapCache implements ImageCache {
 	public static Bitmap cacheBitmap;
 
 	public LruBitmapCache() {
-		mMemoryCache = new LruCache<String, Bitmap>(LocationApplication.memoryCacheSize) {
+		mMemoryCache = new LruCache<String, Bitmap>(MyApplication.memoryCacheSize) {
 			@Override
 			protected int sizeOf(String key, Bitmap bitmap) {
 				return bitmap.getRowBytes() * bitmap.getHeight();
