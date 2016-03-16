@@ -25,12 +25,12 @@ import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.friends.SearchFriendAdapter;
 import com.yilvtzj.entity.Account;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.http.PostThread.PostThreadListener;
 import com.yilvtzj.service.SearchFriendService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.SimpleHandler;
-import com.yilvtzj.util.SimpleHandler.RunMethod;
+import com.yilvtzj.view.LoadingDialog;
 
 public class SearchFriendActivity extends MyActivity implements OnClickListener, OnItemClickListener {
 	private ListView listV;
@@ -40,6 +40,9 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 	private PullToRefreshScrollView mPullRefreshScrollView;
 	private List<Account> list = new ArrayList<>();
 	private SimpleHandler handler;
+	private SearchFriendService searchFriendService = SearchFriendService.newInstance();
+	private LoadingDialog loadingDialog;
+
 	private int pageNum = 1;
 	private boolean isLoading = false;
 	private String searchMsg;
@@ -51,6 +54,7 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 
 		setCommonActionBar("搜索好友");
 		handler = new SimpleHandler(this);
+		loadingDialog = new LoadingDialog(this);
 
 		initView();
 
@@ -61,7 +65,7 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 			@Override
 			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
 				if (!isLoading) {
-					new Thread(new GetListThread()).start();
+					searchFriendService.getList(pageNum, searchMsg, postThreadListener, null);
 				} else {
 					mPullRefreshScrollView.onRefreshComplete();
 				}
@@ -87,7 +91,6 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 		case R.id.search:
 			search();
 			break;
-
 		}
 
 	}
@@ -96,65 +99,46 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 		if (!isLoading) {
 			searchMsg = searchTv.getText().toString();
 			pageNum = 1;
-			new Thread(new GetListThread()).start();
+			searchFriendService.getList(pageNum, searchMsg, postThreadListener, loadingDialog);
 		}
 	}
 
-	private class GetListThread implements Runnable {
+	private PostThreadListener postThreadListener = new PostThreadListener() {
 
-		private void error() {
-			mPullRefreshScrollView.onRefreshComplete();
-			handler.sendMessage("获取数据失败");
-			isLoading = false;
-		}
-
-		private void setList(String JSON) throws JSONException {
-			JSONObject object = new JSONObject(JSON);
-			JSONArray array = object.getJSONArray("list");
-			final List<Account> listTemp = JSONHelper.JSONArrayToBeans(array, Account.class);
-			handler.runMethod(new RunMethod() {
-
-				@Override
-				public void run() {
-					if (listTemp != null && listTemp.size() > 0) {
-						for (Account comment : listTemp) {
-							list.add(comment);
-						}
-						pageNum += 1;
-						adapter.notifyDataSetChanged();
-					} else {
-						handler.sendMessage("暂无更多数据");
-					}
-
-					isLoading = false;
-					mPullRefreshScrollView.onRefreshComplete();
+		@Override
+		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
+			JSONArray array = JSON.getJSONArray("list");
+			List<Account> listTemp = JSONHelper.JSONArrayToBeans(array, Account.class);
+			if (listTemp != null && listTemp.size() > 0) {
+				if (pageNum == 1) {
+					list.clear();
 				}
-			});
+				for (Account comment : listTemp) {
+					list.add(comment);
+				}
+				pageNum += 1;
+				adapter.notifyDataSetChanged();
+			} else {
+				handler.sendMessage("暂无更多数据");
+			}
+
+			return false;
 		}
 
 		@Override
-		public void run() {
-			try {
-				isLoading = true;
-				SearchFriendService.getList(new SocketListener() {
-
-					@Override
-					public void result(String JSON) {
-						try {
-							setList(JSON);
-						} catch (JSONException e) {
-							error();
-							e.printStackTrace();
-						}
-					}
-				}, pageNum, searchMsg);
-			} catch (Exception e) {
-				error();
-				e.printStackTrace();
-			}
-
+		public boolean postThreadFinally() {
+			isLoading = false;
+			mPullRefreshScrollView.onRefreshComplete();
+			return false;
 		}
-	}
+
+		@Override
+		public boolean postThreadFailed() {
+			mPullRefreshScrollView.onRefreshComplete();
+			handler.sendMessage("获取数据失败");
+			return false;
+		}
+	};
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

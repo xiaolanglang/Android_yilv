@@ -22,7 +22,7 @@ public class SimpleHandler {
 				if (msg.obj != null) {
 					RunMethod method = (RunMethod) msg.obj;
 					if (method != null) {
-						method.run();
+						method.runMethod();
 					}
 				}
 				break;
@@ -58,6 +58,6 @@ public class SimpleHandler {
 	}
 
 	public interface RunMethod {
-		void run();
+		void runMethod();
 	}
 }

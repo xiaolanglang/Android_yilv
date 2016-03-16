@@ -30,13 +30,12 @@ import com.yilvtzj.adapter.dongtaicomment.ListAdapter;
 import com.yilvtzj.adapter.home.GridViewAdapter;
 import com.yilvtzj.entity.DongtaiComment;
 import com.yilvtzj.entity.DongtaiMsg;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.http.PostThread.PostThreadListener;
 import com.yilvtzj.service.DongTaiCommentService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.DateUtil;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.SimpleHandler;
-import com.yilvtzj.util.SimpleHandler.RunMethod;
 import com.yilvtzj.util.StringUtil;
 
 public class CommentActivity extends MyActivity implements OnClickListener {
@@ -52,6 +51,8 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 	private PullToRefreshScrollView mPullRefreshScrollView;
 	private List<DongtaiComment> list = new ArrayList<>();
 	private SimpleHandler handler;
+
+	private DongTaiCommentService commentService = DongTaiCommentService.newInstance();
 	private int pageNum = 1;
 	private boolean isLoading = false;
 
@@ -76,7 +77,7 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 			@Override
 			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
 				if (!isLoading) {
-					new Thread(new GetListThread()).start();
+					getList();
 				} else {
 					mPullRefreshScrollView.onRefreshComplete();
 				}
@@ -138,62 +139,43 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 
 		listAdapter = new ListAdapter(mActivity, list);
 		listView.setAdapter(listAdapter);
-		new Thread(new GetListThread()).start();
+		getList();
 	}
 
-	private class GetListThread implements Runnable {
+	private void getList() {
+		commentService.getList(postThreadListener, pageNum, msg.getId());
+	}
 
-		private void error() {
-			mPullRefreshScrollView.onRefreshComplete();
-			handler.sendMessage("获取数据失败");
-			isLoading = false;
-		}
+	private PostThreadListener postThreadListener = new PostThreadListener() {
 
-		private void setList(String JSON) throws JSONException {
-			JSONObject object = new JSONObject(JSON);
-			JSONArray array = object.getJSONArray("list");
-			final List<DongtaiComment> listTemp = JSONHelper.JSONArrayToBeans(array, DongtaiComment.class);
-			handler.runMethod(new RunMethod() {
-
-				@Override
-				public void run() {
-					if (listTemp != null && listTemp.size() > 0) {
-						for (DongtaiComment comment : listTemp) {
-							list.add(comment);
-						}
-						pageNum += 1;
-						listAdapter.notifyDataSetChanged();
-					} else {
-						handler.sendMessage("暂无更多数据");
-					}
-
-					isLoading = false;
-					mPullRefreshScrollView.onRefreshComplete();
+		@Override
+		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
+			JSONArray array = JSON.getJSONArray("list");
+			List<DongtaiComment> listTemp = JSONHelper.JSONArrayToBeans(array, DongtaiComment.class);
+			if (listTemp != null && listTemp.size() > 0) {
+				for (DongtaiComment comment : listTemp) {
+					list.add(comment);
 				}
-			});
+				pageNum += 1;
+				listAdapter.notifyDataSetChanged();
+			} else {
+				handler.sendMessage("暂无更多数据");
+			}
+			return false;
 		}
 
 		@Override
-		public void run() {
-			try {
-				isLoading = true;
-				DongTaiCommentService.getList(new SocketListener() {
-
-					@Override
-					public void result(String JSON) {
-						try {
-							setList(JSON);
-						} catch (JSONException e) {
-							error();
-							e.printStackTrace();
-						}
-					}
-				}, pageNum, msg.getId());
-			} catch (Exception e) {
-				error();
-				e.printStackTrace();
-			}
-
+		public boolean postThreadFinally() {
+			mPullRefreshScrollView.onRefreshComplete();
+			isLoading = false;
+			return false;
 		}
-	}
+
+		@Override
+		public boolean postThreadFailed() {
+			handler.sendMessage("获取数据失败");
+			return false;
+		}
+	};
+
 }

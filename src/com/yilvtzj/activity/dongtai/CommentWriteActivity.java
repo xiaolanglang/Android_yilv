@@ -3,6 +3,9 @@ package com.yilvtzj.activity.dongtai;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +16,11 @@ import android.widget.TextView;
 
 import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.http.PostThread.PostThreadListener;
 import com.yilvtzj.service.DongTaiCommentService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.LoadingDialogUtil;
-import com.yilvtzj.util.SimpleHandler;
+import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.LoadingDialog;
 
 public class CommentWriteActivity extends MyActivity implements OnClickListener {
@@ -27,7 +30,8 @@ public class CommentWriteActivity extends MyActivity implements OnClickListener 
 	private InputMethodManager imm;
 	private boolean send = true;
 	private LoadingDialog dialog;
-	private SimpleHandler simpleHandler = new SimpleHandler(CommentWriteActivity.this);
+
+	private DongTaiCommentService commentService = DongTaiCommentService.newInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,10 @@ public class CommentWriteActivity extends MyActivity implements OnClickListener 
 	private void send() {
 		if (send) {
 			dialog.show();
-			new Thread(new SendHread()).start();
+			Map<String, String> params = new HashMap<>();
+			params.put("dongtaiId", dongTaiId);
+			params.put("content", content.getText().toString());
+			commentService.saveComment(listener, params, dialog);
 		}
 	}
 
@@ -75,40 +82,27 @@ public class CommentWriteActivity extends MyActivity implements OnClickListener 
 		ActivityUtil.closeActivity(this);
 	}
 
-	private class SendHread implements Runnable {
+	private PostThreadListener listener = new PostThreadListener() {
 
-		private void canReSend() {
-			if (dialog != null) {
-				dialog.cancel();
+		@Override
+		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
+			if (JSON.getInt("code") == 200) {
+				close();
 			}
-			simpleHandler.sendMessage("评论失败");
-			send = true;
+			return false;
 		}
 
 		@Override
-		public void run() {
-			send = false;
-			Map<String, String> params = new HashMap<>();
-			params.put("dongtaiId", dongTaiId);
-			params.put("content", content.getText().toString());
-			try {
-				DongTaiCommentService.saveComment(new SocketListener() {
-
-					@Override
-					public void result(String JSON) {
-						if (JSON.indexOf("200") != -1) {
-							dialog.cancel();
-							close();
-						} else {
-							canReSend();
-						}
-					}
-				}, params);
-			} catch (Exception e) {
-				canReSend();
-				e.printStackTrace();
-			}
+		public boolean postThreadFinally() {
+			send = true;
+			return false;
 		}
-	}
+
+		@Override
+		public boolean postThreadFailed() {
+			ToastUtil.show(CommentWriteActivity.this, "评论失败", null);
+			return false;
+		}
+	};
 
 }

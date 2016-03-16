@@ -3,10 +3,8 @@ package com.yilvtzj.activity.fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,26 +17,24 @@ import com.yilvtzj.activity.LoginActivity;
 import com.yilvtzj.activity.friend.SearchFriendActivity;
 import com.yilvtzj.activity.mine.MyQrActivity;
 import com.yilvtzj.entity.Account;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.http.PostThread.PostThreadListener;
 import com.yilvtzj.service.UserService;
 import com.yilvtzj.util.AccountUtil;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.StringUtil;
-import com.yilvtzj.util.ToastUtil;
 
-public class FragmentMine extends Fragment implements OnClickListener, SocketListener {
-	private SocketListener socketListener;
+public class FragmentMine extends Fragment implements OnClickListener {
 	private TextView nicknameTV;
-	private final int SHOWINFO = 0;
 	private Account account;
+
+	private UserService userService = UserService.newInstance();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_mine, container, false);
 		initView(view);
-		socketListener = this;
 		return view;
 	}
 
@@ -63,17 +59,6 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 		}
 	}
 
-	@SuppressLint("HandlerLeak")
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case SHOWINFO:
-				showInfo(account);
-				break;
-			}
-		};
-	};
-
 	/**
 	 * 获得用户登录信息,并显示
 	 */
@@ -85,7 +70,7 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 				@Override
 				public void run() {
 					try {
-						UserService.getUserInfo(socketListener);
+						userService.getUserInfo(postThreadListener);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -110,19 +95,28 @@ public class FragmentMine extends Fragment implements OnClickListener, SocketLis
 		}
 		if (!StringUtil.isEmpty(account.getNickname())) {
 			nicknameTV.setText(account.getNickname());
-			ToastUtil.show(getActivity(), account.getNickname(), null);
 		}
 	}
 
-	@Override
-	public void result(String JSON) {
-		try {
-			account = JSONHelper.JSONToBean(new JSONObject(JSON), Account.class);
-			handler.sendEmptyMessage(SHOWINFO);
+	private PostThreadListener postThreadListener = new PostThreadListener() {
+
+		@Override
+		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
+			account = JSONHelper.JSONToBean(JSON, Account.class);
+			showInfo(account);
 			AccountUtil.setAccount(getActivity(), account);
-		} catch (JSONException e) {
-			e.printStackTrace();
+			return false;
 		}
-	}
+
+		@Override
+		public boolean postThreadFinally() {
+			return false;
+		}
+
+		@Override
+		public boolean postThreadFailed() {
+			return false;
+		}
+	};
 
 }

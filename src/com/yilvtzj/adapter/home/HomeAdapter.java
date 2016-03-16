@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,14 +19,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.FullPageImageViewActivity;
 import com.yilvtzj.activity.dongtai.CommentActivity;
 import com.yilvtzj.entity.DongtaiMsg;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.http.PostThread.PostThreadListener;
 import com.yilvtzj.service.DongTaiGoodService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.DateUtil;
@@ -37,6 +38,8 @@ public class HomeAdapter extends BaseAdapter {
 	private List<DongtaiMsg> list;
 	private static final int GOODSECESS = 0;
 	private static final int GOODFAILED = 1;
+
+	private static DongTaiGoodService goodService = DongTaiGoodService.newInstance();
 
 	public HomeAdapter(Context context, List<DongtaiMsg> list) {
 		HomeAdapter.context = context;
@@ -112,16 +115,15 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()),
-						position);
+				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()), position);
 			}
 		});
 
 		viewHolder.attitudesCountLay.setOnClickListener(new Animate(view));
 		if ("1".equals(dongtaiMsg.getIsGood())) {
-			good(view, false);
+			good(view, false, false);
 		} else {
-			notGood(view, false);
+			notGood(view, false, false);
 		}
 
 		viewHolder.content.setOnClickListener(new CommentListener(dongtaiMsg));
@@ -142,12 +144,12 @@ public class HomeAdapter extends BaseAdapter {
 	 * @param change
 	 *            是否向后台发起请求
 	 */
-	private static void good(View view, boolean change) {
+	private static void good(View view, boolean send, boolean changeCount) {
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
 		viewHolder.attitudesCount.setTextColor(view.getResources().getColor(R.color.like_on));
 		viewHolder.attitudesCountLay.setSelected(true);
-		if (change) {
-			changeCount(viewHolder.attitudesCount, view);
+		if (changeCount) {
+			changeCount(viewHolder.attitudesCount, view, send);
 		}
 	}
 
@@ -156,32 +158,16 @@ public class HomeAdapter extends BaseAdapter {
 	 * @param change
 	 *            是否向后台发起请求
 	 */
-	private static void notGood(View view, boolean change) {
+	private static void notGood(View view, boolean send, boolean changeCount) {
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
 		viewHolder.attitudesCount.setTextColor(view.getResources().getColor(R.color.ccc));
 		viewHolder.attitudesCountLay.setSelected(false);
-		if (change) {
-			changeCount(viewHolder.attitudesCount, view);
+		if (changeCount) {
+			changeCount(viewHolder.attitudesCount, view, send);
 		}
 	}
 
-	private static Handler handler = new Handler() {
-		private Toast toast;
-
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case GOODSECESS:
-				toast = ToastUtil.show(context, "点赞成功", toast);
-				break;
-			case GOODFAILED:
-				toast = ToastUtil.show(context, "点赞失败", toast);
-				break;
-
-			}
-		}
-	};
-
-	private static void changeCount(TextView attitudesCount, final View view) {
+	private static void changeCount(TextView attitudesCount, final View view, boolean send) {
 		String count = attitudesCount.getText().toString();
 		int count2 = 0;
 		if (attitudesCount.isSelected()) {
@@ -190,33 +176,36 @@ public class HomeAdapter extends BaseAdapter {
 			count2 = Integer.parseInt(count) - 1;
 		}
 		attitudesCount.setText(String.valueOf(count2));
-		final Map<String, String> params = new HashMap<>();
-		params.put("id", attitudesCount.getTag().toString());
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					DongTaiGoodService.saveGood(new SocketListener() {
 
-						@Override
-						public void result(String JSON) {
-							if (JSON.indexOf("200") != -1) {
-								handler.sendEmptyMessage(GOODSECESS);
-							} else {
-								handler.sendEmptyMessage(GOODFAILED);
-								notGood(view, true);
-							}
-						}
+		if (send) {
+			Map<String, String> params = new HashMap<>();
+			params.put("id", attitudesCount.getTag().toString());
+			goodService.saveGood(new PostThreadListener() {
 
-					}, params);
-				} catch (Exception e) {
-					handler.sendEmptyMessage(GOODFAILED);
-					notGood(view, true);
-					e.printStackTrace();
+				@Override
+				public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
+					if (JSON.getInt("code") == 200) {
+						ToastUtil.show(context, "点赞成功", null);
+					} else {
+						ToastUtil.show(context, "点赞失败", null);
+						notGood(view, false, false);
+					}
+					return false;
 				}
 
-			}
-		}).start();
+				@Override
+				public boolean postThreadFinally() {
+					return false;
+				}
+
+				@Override
+				public boolean postThreadFailed() {
+					ToastUtil.show(context, "点赞失败", null);
+					notGood(view, false, false);
+					return false;
+				}
+			}, params);
+		}
 	}
 
 	private class Animate implements OnClickListener {
@@ -238,9 +227,9 @@ public class HomeAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			if (!animatorX.isRunning() && !animatorY.isRunning()) {
 				if (viewHolder.attitudesCount.isSelected()) {
-					notGood(view, true);
+					notGood(view, true, true);
 				} else {
-					good(view, true);
+					good(view, true, true);
 					animatorX.start();
 					animatorY.start();
 				}

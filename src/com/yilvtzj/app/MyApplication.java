@@ -40,11 +40,11 @@ public class MyApplication extends Application {
 		memoryCacheSize = getMemoryCacheSize();
 
 		Global.CONTEXT = this;
+		handler = new SimpleHandler(this);
 
 		ServiceManager serviceManager = new ServiceManager(this);
 		serviceManager.setNotificationIcon(R.drawable.ic_launcher);
 		serviceManager.startService();
-		handler = new SimpleHandler(this);
 	}
 
 	/**

@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
@@ -22,7 +21,7 @@ import android.widget.Toast;
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.home.HomeAdapter;
 import com.yilvtzj.entity.DongtaiMsg;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
+import com.yilvtzj.http.PostThread.PostThreadListener;
 import com.yilvtzj.service.DongTaiService;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.SharePreferenceUtil;
@@ -41,6 +40,8 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	private final static int GETDATA_SUCCESS = 1;
 	private final static int GETDATA_FAILED = 2;
 	private AddPopWindow addPopWindow;
+
+	private DongTaiService dongTaiService = DongTaiService.newInstance();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 			@Override
 			public void run() {
 				// 更新数据
-				new Thread(new GetListThread()).start();
+				dongTaiService.getDongtaiList(postThreadListener);
 			}
 		}, 1000);
 
@@ -133,69 +134,34 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 		addTv.setOnClickListener(this);
 
-		// iv_add.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// AddPopWindow addPopWindow = new AddPopWindow(MainActivity.this);
-		// addPopWindow.showPopupWindow(iv_add);
-		// }
-		//
-		// });
-
 	}
 
-	class GetListThread implements Runnable {
+	private PostThreadListener postThreadListener = new PostThreadListener() {
 
 		@Override
-		public void run() {
-			try {
-				DongTaiService.getDongtaiList(new SocketListener() {
-
-					@Override
-					public void result(String JSON) {
-						try {
-							JSONObject jsonObject = new JSONObject(JSON);
-							JSONArray jsonArray = jsonObject.getJSONArray("list");
-
-							list.clear();
-							list = JSONHelper.JSONArrayToBeans(jsonArray, DongtaiMsg.class);
-							SharePreferenceUtil.put(SharePreferenceUtil.HOMEPAGE, "pageList", jsonArray.toString());
-							handler.sendEmptyMessage(GETDATA_SUCCESS);
-						} catch (JSONException e) {
-							handler.sendEmptyMessage(GETDATA_FAILED);
-							e.printStackTrace();
-						}
-
-					}
-
-				});
-			} catch (Exception e) {
-				handler.sendEmptyMessage(GETDATA_FAILED);
-				e.printStackTrace();
+		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
+			JSONArray jsonArray = JSON.getJSONArray("list");
+			list = JSONHelper.JSONArrayToBeans(jsonArray, DongtaiMsg.class);
+			if (list != null || list.size() > 0) {
+				homeAdapter.setList(list);
+				homeAdapter.notifyDataSetChanged();
+				// 将得到的数据保存起来
+				SharePreferenceUtil.put(SharePreferenceUtil.HOMEPAGE, "pageList", jsonArray.toString());
 			}
-
+			return false;
 		}
 
-	}
+		@Override
+		public boolean postThreadFinally() {
+			myRefreshListView.setRefreshing(false);
+			return false;
+		}
 
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case GETDATA_SUCCESS:
-				if (list.size() > 0) {
-					homeAdapter.setList(list);
-					homeAdapter.notifyDataSetChanged();
-					// 更新完后调用该方法结束刷新
-					myRefreshListView.setRefreshing(false);
-				}
-				break;
-			case GETDATA_FAILED:
-				myRefreshListView.setRefreshing(false);
-				ToastUtil.show(getActivity(), "获取数据失败,稍后再试", null);
-				break;
-			}
-		};
+		@Override
+		public boolean postThreadFailed() {
+			ToastUtil.show(getActivity(), "获取数据失败,稍后再试", null);
+			return false;
+		}
 	};
 
 }
