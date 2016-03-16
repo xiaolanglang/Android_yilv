@@ -26,7 +26,7 @@ import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.friends.SearchFriendAdapter;
 import com.yilvtzj.entity.Account;
 import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.SearchFriendService;
+import com.yilvtzj.service.FriendService;
 import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.util.JSONHelper;
 import com.yilvtzj.util.SimpleHandler;
@@ -40,7 +40,7 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 	private PullToRefreshScrollView mPullRefreshScrollView;
 	private List<Account> list = new ArrayList<>();
 	private SimpleHandler handler;
-	private SearchFriendService searchFriendService = SearchFriendService.newInstance();
+	private FriendService searchFriendService = FriendService.newInstance();
 	private LoadingDialog loadingDialog;
 
 	private int pageNum = 1;
@@ -65,7 +65,7 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 			@Override
 			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
 				if (!isLoading) {
-					searchFriendService.getList(pageNum, searchMsg, postThreadListener, null);
+					searchFriendService.searchFriend(pageNum, searchMsg, postThreadListener, null);
 				} else {
 					mPullRefreshScrollView.onRefreshComplete();
 				}
@@ -99,7 +99,7 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 		if (!isLoading) {
 			searchMsg = searchTv.getText().toString();
 			pageNum = 1;
-			searchFriendService.getList(pageNum, searchMsg, postThreadListener, loadingDialog);
+			searchFriendService.searchFriend(pageNum, searchMsg, postThreadListener, loadingDialog);
 		}
 	}
 

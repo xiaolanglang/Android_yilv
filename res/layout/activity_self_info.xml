@@ -89,6 +89,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/selfinfo_sendmsg_btn"
+        android:visibility="gone"
         android:text="发送消息" />
 
     <Button
@@ -98,6 +99,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/selfinfo_addfriend_btn"
+        android:visibility="gone"
         android:text="加为好友" />
 
 </LinearLayout>
