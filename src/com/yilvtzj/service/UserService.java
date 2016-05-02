@@ -19,4 +19,8 @@ public class UserService {
 	public void getUserInfo(PostThreadListener listener) {
 		new Thread(new PostThread(null, getUserInfo, null).setListener(listener)).start();
 	}
+
+	public void login(PostThreadListener listener) {
+		new Thread(new PostThread(null, getUserInfo, null).setListener(listener)).start();
+	}
 }

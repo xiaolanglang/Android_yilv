@@ -108,8 +108,7 @@
 		});
 
 		function basePath(type) {
-			var basePath = "http://192.168.42.230:8080/yilv/" + type;
-			// var basePath = "http://192.168.0.102:8080/yilv/" + type;
+			var basePath = "http://yilv.cgotravel.com/" + type;
 			return basePath;
 		}
 

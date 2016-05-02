@@ -89,4 +89,10 @@
         <item name="android:paddingLeft">15dp</item>
     </style>
     
+    <style name="login_editText">
+        <item name="android:textColorHint">@color/light_black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    
 </resources>

@@ -142,7 +142,7 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
 			JSONArray jsonArray = JSON.getJSONArray("list");
 			list = JSONHelper.JSONArrayToBeans(jsonArray, DongtaiMsg.class);
-			if (list != null || list.size() > 0) {
+			if (list != null && list.size() > 0) {
 				homeAdapter.setList(list);
 				homeAdapter.notifyDataSetChanged();
 				// 将得到的数据保存起来
