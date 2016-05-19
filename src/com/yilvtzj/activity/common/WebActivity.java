@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 
+import com.common.util.ActivityUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.util.ActivityUtil;
 import com.yilvtzj.webview.JsInterface;
 import com.yilvtzj.webview.MyWebChromeClient;
 import com.yilvtzj.webview.MyWebViewClient;

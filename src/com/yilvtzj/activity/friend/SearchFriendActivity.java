@@ -1,11 +1,8 @@
 package com.yilvtzj.activity.friend;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +15,8 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.common.util.ActivityUtil;
+import com.common.util.ToastUtil;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
@@ -25,11 +24,10 @@ import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.friends.SearchFriendAdapter;
 import com.yilvtzj.entity.Account;
-import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.FriendService;
-import com.yilvtzj.util.ActivityUtil;
-import com.yilvtzj.util.JSONHelper;
-import com.yilvtzj.util.SimpleHandler;
+import com.yilvtzj.entity.DataResult;
+import com.yilvtzj.service.IFriendService;
+import com.yilvtzj.service.ServiceListener;
+import com.yilvtzj.service.impl.FriendService;
 import com.yilvtzj.view.LoadingDialog;
 
 public class SearchFriendActivity extends MyActivity implements OnClickListener, OnItemClickListener {
@@ -39,9 +37,9 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 	private SearchFriendAdapter adapter;
 	private PullToRefreshScrollView mPullRefreshScrollView;
 	private List<Account> list = new ArrayList<>();
-	private SimpleHandler handler;
-	private FriendService searchFriendService = FriendService.newInstance();
+	private IFriendService searchFriendService = FriendService.newInstance();
 	private LoadingDialog loadingDialog;
+	HashMap<String, Object> param = new HashMap<>();
 
 	private int pageNum = 1;
 	private boolean isLoading = false;
@@ -53,7 +51,6 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 		setContentView(R.layout.activity_search_friends);
 
 		setCommonActionBar("搜索好友");
-		handler = new SimpleHandler(this);
 		loadingDialog = new LoadingDialog(this);
 
 		initView();
@@ -65,7 +62,10 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 			@Override
 			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
 				if (!isLoading) {
-					searchFriendService.searchFriend(pageNum, searchMsg, postThreadListener, null);
+					param.clear();
+					param.put("pageNum", pageNum);
+					param.put("nickname", searchMsg);
+					searchFriendService.searchFriend(param, listener);
 				} else {
 					mPullRefreshScrollView.onRefreshComplete();
 				}
@@ -99,16 +99,23 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 		if (!isLoading) {
 			searchMsg = searchTv.getText().toString();
 			pageNum = 1;
-			searchFriendService.searchFriend(pageNum, searchMsg, postThreadListener, loadingDialog);
+			param.clear();
+			param.put("pageNum", pageNum);
+			param.put("nickname", searchMsg);
+			searchFriendService.searchFriend(param, listener);
 		}
 	}
 
-	private PostThreadListener postThreadListener = new PostThreadListener() {
+	private ServiceListener<DataResult<Account>> listener = new ServiceListener<DataResult<Account>>() {
 
 		@Override
-		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
-			JSONArray array = JSON.getJSONArray("list");
-			List<Account> listTemp = JSONHelper.JSONArrayToBeans(array, Account.class);
+		public void preExecute() {
+			loadingDialog.show();
+		}
+
+		@Override
+		public void onSuccess(DataResult<Account> result) {
+			List<Account> listTemp = result.getList();
 			if (listTemp != null && listTemp.size() > 0) {
 				if (pageNum == 1) {
 					list.clear();
@@ -119,24 +126,21 @@ public class SearchFriendActivity extends MyActivity implements OnClickListener,
 				pageNum += 1;
 				adapter.notifyDataSetChanged();
 			} else {
-				handler.sendMessage("暂无更多数据");
+				ToastUtil.show(SearchFriendActivity.this, "暂无更多数据", null).show();
 			}
-
-			return false;
 		}
 
 		@Override
-		public boolean postThreadFinally() {
+		public void onFinally() {
 			isLoading = false;
 			mPullRefreshScrollView.onRefreshComplete();
-			return false;
+			loadingDialog.cancel();
 		}
 
 		@Override
-		public boolean postThreadFailed() {
+		public void onFailed(int code, String message) {
 			mPullRefreshScrollView.onRefreshComplete();
-			handler.sendMessage("获取数据失败");
-			return false;
+			ToastUtil.show(SearchFriendActivity.this, "获取数据失败", null).show();
 		}
 	};
 

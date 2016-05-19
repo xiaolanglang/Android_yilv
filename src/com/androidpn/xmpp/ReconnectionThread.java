@@ -17,8 +17,6 @@ package com.androidpn.xmpp;
 
 import android.util.Log;
 
-import com.androidpn.util.LogUtil;
-
 /**
  * A thread class for recennecting the server.
  *
@@ -26,7 +24,7 @@ import com.androidpn.util.LogUtil;
  */
 public class ReconnectionThread extends Thread {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(ReconnectionThread.class);
+	private static final String LOGTAG = ReconnectionThread.class.getSimpleName();
 
 	private final XmppManager xmppManager;
 

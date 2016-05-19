@@ -33,7 +33,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 import com.androidpn.xmpp.XmppManager;
 
 /**
@@ -45,7 +44,7 @@ import com.androidpn.xmpp.XmppManager;
  */
 public class NotificationService extends Service {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(NotificationService.class);
+	private static final String LOGTAG = NotificationService.class.getSimpleName();
 
 	public static final String SERVICE_NAME = NotificationService.class.getName();
 
@@ -98,7 +97,8 @@ public class NotificationService extends Service {
 			if (sharedPrefs.contains(Constants.EMULATOR_DEVICE_ID)) {
 				deviceId = sharedPrefs.getString(Constants.EMULATOR_DEVICE_ID, "");
 			} else {
-				deviceId = (new StringBuilder("EMU")).append((new Random(System.currentTimeMillis())).nextLong()).toString();
+				deviceId = (new StringBuilder("EMU")).append((new Random(System.currentTimeMillis())).nextLong())
+						.toString();
 				editor.putString(Constants.EMULATOR_DEVICE_ID, deviceId);
 				editor.commit();
 			}
@@ -246,8 +246,8 @@ public class NotificationService extends Service {
 
 		public Future<?> submit(Runnable task) {
 			Future<?> result = null;
-			if (!notificationService.getExecutorService().isTerminated() && !notificationService.getExecutorService().isShutdown()
-					&& task != null) {
+			if (!notificationService.getExecutorService().isTerminated()
+					&& !notificationService.getExecutorService().isShutdown() && task != null) {
 				result = notificationService.getExecutorService().submit(task);
 			}
 			return result;

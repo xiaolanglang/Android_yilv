@@ -9,11 +9,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.yilvtzj.R;
-import com.yilvtzj.activity.fragment.FragmentIndex;
-import com.yilvtzj.activity.fragment.FragmentMine;
-import com.yilvtzj.activity.fragment.FragmentFriends;
-import com.yilvtzj.activity.fragment.FragmentNews;
-import com.yilvtzj.util.ClassManagerUtil;
 
 public class WelcomeActivity extends Activity {
 	private ImageView welcomeImg = null;
@@ -30,14 +25,6 @@ public class WelcomeActivity extends Activity {
 		anima.setAnimationListener(new AnimationImpl());
 		welcomeImg.startAnimation(anima);
 
-		newInstance();
-	}
-
-	private void newInstance() {
-		ClassManagerUtil.newInstance(FragmentIndex.class);
-		ClassManagerUtil.newInstance(FragmentNews.class);
-		ClassManagerUtil.newInstance(FragmentFriends.class);
-		ClassManagerUtil.newInstance(FragmentMine.class);
 	}
 
 	private class AnimationImpl implements AnimationListener {

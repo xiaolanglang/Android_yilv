@@ -1,7 +1,7 @@
 package com.yilvtzj.activity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,11 +10,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.common.util.AccountUtil;
+import com.common.util.StringUtil;
+import com.common.util.ToastUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.UserService;
+import com.yilvtzj.entity.Account;
+import com.yilvtzj.service.ServiceListener;
+import com.yilvtzj.service.impl.UserService;
 
-public class LoginActivity extends Activity implements OnClickListener, PostThreadListener {
+public class LoginActivity extends Activity implements OnClickListener {
 	private EditText username, password;
 	private Button login, register;
 	private UserService userService = UserService.newInstance();
@@ -44,7 +48,10 @@ public class LoginActivity extends Activity implements OnClickListener, PostThre
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.login:
-			userService.login(this);
+			Map<String, Object> param = new HashMap<>();
+			param.put("username", username.getText().toString());
+			param.put("password", password.getText().toString());
+			userService.login(serviceResult, param);
 			break;
 		case R.id.register:
 
@@ -52,19 +59,33 @@ public class LoginActivity extends Activity implements OnClickListener, PostThre
 		}
 	}
 
-	@Override
-	public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
-		return false;
-	}
+	private ServiceListener<Account> serviceResult = new ServiceListener<Account>() {
 
-	@Override
-	public boolean postThreadFailed() {
-		return false;
-	}
+		@Override
+		public void preExecute() {
 
-	@Override
-	public boolean postThreadFinally() {
-		return false;
-	}
+		}
+
+		@Override
+		public void onSuccess(Account account) {
+			if (StringUtil.isEmpty(account.getId())) {
+				ToastUtil.show(LoginActivity.this, account.getMessage(), null);
+			} else {
+				AccountUtil.setAccount(account);
+				finish();
+			}
+
+		}
+
+		@Override
+		public void onFinally() {
+
+		}
+
+		@Override
+		public void onFailed(int code, String message) {
+
+		}
+	};
 
 }

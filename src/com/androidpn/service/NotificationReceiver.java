@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 
 /**
  * Broadcast receiver that handles push notification messages from the server.
@@ -31,7 +30,7 @@ import com.androidpn.util.LogUtil;
  */
 public final class NotificationReceiver extends BroadcastReceiver {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(NotificationReceiver.class);
+	private static final String LOGTAG = NotificationReceiver.class.getSimpleName();
 	private NotificationReceiverListener notificationReceiverListener;
 
 	// private NotificationService notificationService;
@@ -68,8 +67,8 @@ public final class NotificationReceiver extends BroadcastReceiver {
 				notificationReceiverListener.receiverData(intent);
 			} else {
 				Notifier notifier = new Notifier(context);
-				notifier.notify(notificationId, notificationApiKey, notificationTitle, notificationMessage, notificationUri,
-						notificationFrom, packetId);
+				notifier.notify(notificationId, notificationApiKey, notificationTitle, notificationMessage,
+						notificationUri, notificationFrom, packetId);
 			}
 		}
 

@@ -19,8 +19,6 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.androidpn.util.LogUtil;
-
 /**
  * A listener class for monitoring changes in phone connection states.
  *
@@ -28,7 +26,7 @@ import com.androidpn.util.LogUtil;
  */
 public class PhoneStateChangeListener extends PhoneStateListener {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(PhoneStateChangeListener.class);
+	private static final String LOGTAG = PhoneStateChangeListener.class.getSimpleName();
 
 	private final NotificationService notificationService;
 

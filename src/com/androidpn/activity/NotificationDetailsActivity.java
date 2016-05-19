@@ -33,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 
 /**
  * Activity for displaying the notification details view.
@@ -42,7 +41,7 @@ import com.androidpn.util.LogUtil;
  */
 public class NotificationDetailsActivity extends Activity {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(NotificationDetailsActivity.class);
+	private static final String LOGTAG = NotificationDetailsActivity.class.getSimpleName();
 
 	private String callbackActivityPackageName;
 
@@ -55,7 +54,8 @@ public class NotificationDetailsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		SharedPreferences sharedPrefs = this.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+		SharedPreferences sharedPrefs = this.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,
+				Context.MODE_PRIVATE);
 		callbackActivityPackageName = sharedPrefs.getString(Constants.CALLBACK_ACTIVITY_PACKAGE_NAME, "");
 		callbackActivityClassName = sharedPrefs.getString(Constants.CALLBACK_ACTIVITY_CLASS_NAME, "");
 
@@ -110,7 +110,8 @@ public class NotificationDetailsActivity extends Activity {
 		textTitle.setTextColor(0xff000000);
 		textTitle.setGravity(Gravity.CENTER);
 
-		layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
 		layoutParams.setMargins(30, 30, 30, 0);
 		textTitle.setLayoutParams(layoutParams);
 		linearLayout.addView(textTitle);
@@ -121,7 +122,8 @@ public class NotificationDetailsActivity extends Activity {
 		textDetails.setTextColor(0xff333333);
 		textDetails.setGravity(Gravity.CENTER);
 
-		layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
 		layoutParams.setMargins(30, 10, 30, 20);
 		textDetails.setLayoutParams(layoutParams);
 		linearLayout.addView(textDetails);
@@ -133,8 +135,10 @@ public class NotificationDetailsActivity extends Activity {
 		okButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Intent intent;
-				if (uri != null && uri.length() > 0
-						&& (uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("tel:") || uri.startsWith("geo:"))) {
+				if (uri != null
+						&& uri.length() > 0
+						&& (uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("tel:") || uri
+								.startsWith("geo:"))) {
 					intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 				} else {
 					intent = new Intent().setClassName(callbackActivityPackageName, callbackActivityClassName);

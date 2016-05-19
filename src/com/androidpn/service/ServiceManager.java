@@ -26,7 +26,6 @@ import android.util.Log;
 
 import com.androidpn.activity.NotificationSettingsActivity;
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 
 /**
  * This class is to manage the notificatin service and to load the
@@ -36,7 +35,7 @@ import com.androidpn.util.LogUtil;
  */
 public final class ServiceManager {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(ServiceManager.class);
+	private static final String LOGTAG = ServiceManager.class.getSimpleName();
 
 	private Context context;
 
@@ -97,6 +96,8 @@ public final class ServiceManager {
 			@Override
 			public void run() {
 				Intent intent = NotificationService.getIntent();
+				String packageName = context.getPackageName();
+				intent.setPackage(packageName);
 				context.startService(intent);
 			}
 		});

@@ -3,10 +3,6 @@ package com.yilvtzj.activity.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -18,14 +14,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.common.util.SharePreferenceUtil;
+import com.common.util.StringUtil;
+import com.common.util.ToastUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.home.HomeAdapter;
+import com.yilvtzj.entity.DataResult;
 import com.yilvtzj.entity.DongtaiMsg;
-import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.DongTaiService;
-import com.yilvtzj.util.JSONHelper;
-import com.yilvtzj.util.SharePreferenceUtil;
-import com.yilvtzj.util.ToastUtil;
+import com.yilvtzj.service.IDongTaiService;
+import com.yilvtzj.service.ServiceListener;
+import com.yilvtzj.service.impl.DongTaiService;
 import com.yilvtzj.view.MySwipeRefreshLayout;
 import com.yilvtzj.view.MySwipeRefreshLayout.OnLoadListener;
 import com.yilvtzj.view.fragmentindex.AddPopWindow;
@@ -35,13 +35,13 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	private MySwipeRefreshLayout myRefreshListView;
 	private ListView listView;
 	private ImageView addTv;
-	private List<DongtaiMsg> list;
+	private List<DongtaiMsg> list = new ArrayList<>();
 	private HomeAdapter homeAdapter;
 	private final static int GETDATA_SUCCESS = 1;
 	private final static int GETDATA_FAILED = 2;
 	private AddPopWindow addPopWindow;
 
-	private DongTaiService dongTaiService = DongTaiService.newInstance();
+	private IDongTaiService dongTaiService = DongTaiService.newInstance();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,17 +56,17 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	}
 
 	private void loadLocalData() {
-		String JSONArray = SharePreferenceUtil.get(SharePreferenceUtil.HOMEPAGE, "pageList", "");
-
-		try {
-			list = JSONHelper.JSONArrayToBeans(new JSONArray(JSONArray), DongtaiMsg.class);
-		} catch (JSONException e) {
-			e.printStackTrace();
+		String json = SharePreferenceUtil.get(SharePreferenceUtil.HOMEPAGE, "pageList", "");
+		if (StringUtil.isEmpty(json)) {
+			return;
+		}
+		Gson gson = new Gson();
+		DataResult<DongtaiMsg> result = gson.fromJson(json, new TypeToken<DataResult<DongtaiMsg>>() {
+		}.getType());
+		if (result.getList() != null) {
+			list = result.getList();
 		}
 
-		if (list == null) {
-			list = new ArrayList<>();
-		}
 	}
 
 	// 设置下拉刷新监听器
@@ -136,32 +136,38 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 	}
 
-	private PostThreadListener postThreadListener = new PostThreadListener() {
+	private ServiceListener<DataResult<DongtaiMsg>> postThreadListener = new ServiceListener<DataResult<DongtaiMsg>>() {
 
 		@Override
-		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
-			JSONArray jsonArray = JSON.getJSONArray("list");
-			list = JSONHelper.JSONArrayToBeans(jsonArray, DongtaiMsg.class);
+		public void preExecute() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onSuccess(DataResult<DongtaiMsg> result) {
+			list = result.getList();
 			if (list != null && list.size() > 0) {
 				homeAdapter.setList(list);
 				homeAdapter.notifyDataSetChanged();
-				// 将得到的数据保存起来
-				SharePreferenceUtil.put(SharePreferenceUtil.HOMEPAGE, "pageList", jsonArray.toString());
+				// TODO 把得到的数据缓存起来
+				Gson gson = new Gson();
+				String json = gson.toJson(result, new TypeToken<DataResult<DongtaiMsg>>() {
+				}.getType());
+				SharePreferenceUtil.put(SharePreferenceUtil.HOMEPAGE, "pageList", json);
 			}
-			return false;
 		}
 
 		@Override
-		public boolean postThreadFinally() {
-			myRefreshListView.setRefreshing(false);
-			return false;
-		}
-
-		@Override
-		public boolean postThreadFailed() {
+		public void onFailed(int code, String message) {
 			ToastUtil.show(getActivity(), "获取数据失败,稍后再试", null);
-			return false;
 		}
+
+		@Override
+		public void onFinally() {
+			myRefreshListView.setRefreshing(false);
+		}
+
 	};
 
 }

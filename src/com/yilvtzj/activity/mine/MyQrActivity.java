@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.common.util.ImageUtil;
+import com.common.util.Utils;
 import com.google.zxing.WriterException;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
-import com.yilvtzj.util.ImageUtil;
-import com.yilvtzj.util.Utils;
 
 public class MyQrActivity extends MyActivity {
 	private ImageView qrIv;

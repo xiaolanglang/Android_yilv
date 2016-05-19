@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yilvtzj"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="2.0" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -88,7 +88,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.WebViewActivity"
+            android:name="com.yilvtzj.activity.common.WebViewActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -101,7 +101,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.FullPageImageViewActivity"
+            android:name="com.yilvtzj.activity.common.FullPageImageViewActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity android:name="com.yilvtzj.activity.dongtai.CommentActivity" >
@@ -130,7 +130,7 @@
         </activity>
 
         <!-- 扫描 -->
-        <activity android:name="com.mining.app.zxing.activity.MipcaActivityCapture" >
+        <activity android:name="com.zxing.activity.MipcaActivityCapture" >
         </activity>
 
         <service

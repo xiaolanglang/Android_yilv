@@ -19,8 +19,6 @@ import org.jivesoftware.smack.ConnectionListener;
 
 import android.util.Log;
 
-import com.androidpn.util.LogUtil;
-
 /**
  * A listener class for monitoring connection closing and reconnection events.
  *
@@ -28,7 +26,7 @@ import com.androidpn.util.LogUtil;
  */
 public class PersistentConnectionListener implements ConnectionListener {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(PersistentConnectionListener.class);
+	private static final String LOGTAG = PersistentConnectionListener.class.getSimpleName();
 
 	private final XmppManager xmppManager;
 

@@ -22,8 +22,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.androidpn.util.LogUtil;
-
 /**
  * A broadcast receiver to handle the changes in network connectiion states.
  *
@@ -31,7 +29,7 @@ import com.androidpn.util.LogUtil;
  */
 public class ConnectivityReceiver extends BroadcastReceiver {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(ConnectivityReceiver.class);
+	private static final String LOGTAG = ConnectivityReceiver.class.getSimpleName();
 
 	private NotificationService notificationService;
 
@@ -45,7 +43,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 		Log.d(LOGTAG, "action=" + action);
 
-		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 

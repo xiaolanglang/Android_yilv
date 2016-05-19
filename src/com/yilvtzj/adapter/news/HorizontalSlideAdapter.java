@@ -20,10 +20,10 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.common.util.ActivityUtil;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.chat.ChatActivity;
 import com.yilvtzj.entity.MessageItem;
-import com.yilvtzj.util.ActivityUtil;
 
 public class HorizontalSlideAdapter extends BaseAdapter {
 

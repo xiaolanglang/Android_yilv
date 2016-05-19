@@ -1,11 +1,9 @@
 package com.yilvtzj.activity.dongtai;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,23 +18,24 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.common.util.ActivityUtil;
+import com.common.util.DateUtil;
+import com.common.util.StringUtil;
+import com.common.util.ToastUtil;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.yilvtzj.R;
-import com.yilvtzj.activity.FullPageImageViewActivity;
+import com.yilvtzj.activity.common.FullPageImageViewActivity;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.adapter.dongtaicomment.ListAdapter;
 import com.yilvtzj.adapter.home.GridViewAdapter;
+import com.yilvtzj.entity.DataResult;
 import com.yilvtzj.entity.DongtaiComment;
 import com.yilvtzj.entity.DongtaiMsg;
-import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.DongTaiCommentService;
-import com.yilvtzj.util.ActivityUtil;
-import com.yilvtzj.util.DateUtil;
-import com.yilvtzj.util.JSONHelper;
-import com.yilvtzj.util.SimpleHandler;
-import com.yilvtzj.util.StringUtil;
+import com.yilvtzj.service.IDongTaiService;
+import com.yilvtzj.service.ServiceListener;
+import com.yilvtzj.service.impl.DongTaiService;
 
 public class CommentActivity extends MyActivity implements OnClickListener {
 
@@ -50,9 +49,8 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 	private GridViewAdapter wallAdapter;
 	private PullToRefreshScrollView mPullRefreshScrollView;
 	private List<DongtaiComment> list = new ArrayList<>();
-	private SimpleHandler handler;
 
-	private DongTaiCommentService commentService = DongTaiCommentService.newInstance();
+	private IDongTaiService commentService = DongTaiService.newInstance();
 	private int pageNum = 1;
 	private boolean isLoading = false;
 
@@ -62,7 +60,6 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 		setContentView(R.layout.activity_dongtai_comment);
 		setCommonActionBar("动态正文");
 		mActivity = this;
-		handler = new SimpleHandler(this);
 
 		Intent intent = getIntent();
 		msg = (DongtaiMsg) intent.getExtras().getSerializable("msg");
@@ -143,15 +140,22 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void getList() {
-		commentService.getList(postThreadListener, pageNum, msg.getId());
+		Map<String, Object> params = new HashMap<>();
+		params.put("pageNum", pageNum);
+		params.put("dongtaiId", msg.getId());
+		commentService.getList(postThreadListener, params);
 	}
 
-	private PostThreadListener postThreadListener = new PostThreadListener() {
+	private ServiceListener<DataResult<DongtaiComment>> postThreadListener = new ServiceListener<DataResult<DongtaiComment>>() {
 
 		@Override
-		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
-			JSONArray array = JSON.getJSONArray("list");
-			List<DongtaiComment> listTemp = JSONHelper.JSONArrayToBeans(array, DongtaiComment.class);
+		public void preExecute() {
+
+		}
+
+		@Override
+		public void onSuccess(DataResult<DongtaiComment> result) {
+			List<DongtaiComment> listTemp = result.getList();
 			if (listTemp != null && listTemp.size() > 0) {
 				for (DongtaiComment comment : listTemp) {
 					list.add(comment);
@@ -159,23 +163,21 @@ public class CommentActivity extends MyActivity implements OnClickListener {
 				pageNum += 1;
 				listAdapter.notifyDataSetChanged();
 			} else {
-				handler.sendMessage("暂无更多数据");
+				ToastUtil.show(CommentActivity.this, "暂无更多数据", null);
 			}
-			return false;
 		}
 
 		@Override
-		public boolean postThreadFinally() {
+		public void onFailed(int code, String message) {
+			ToastUtil.show(CommentActivity.this, "获取数据失败", null);
+		}
+
+		@Override
+		public void onFinally() {
 			mPullRefreshScrollView.onRefreshComplete();
 			isLoading = false;
-			return false;
 		}
 
-		@Override
-		public boolean postThreadFailed() {
-			handler.sendMessage("获取数据失败");
-			return false;
-		}
 	};
 
 }

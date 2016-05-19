@@ -7,8 +7,8 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.util.ActivityUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.util.ActivityUtil;
 
 public class MyActivity extends Activity {
 	private TextView titleTV;

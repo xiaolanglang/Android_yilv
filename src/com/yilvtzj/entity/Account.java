@@ -2,14 +2,13 @@ package com.yilvtzj.entity;
 
 import java.io.Serializable;
 
-public class Account implements Serializable {
+public class Account extends Result implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String nickname;
 	private String img;
-	private String id;
 
 	public String getNickname() {
 		return nickname;
@@ -25,14 +24,6 @@ public class Account implements Serializable {
 
 	public void setImg(String img) {
 		this.img = img;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 }

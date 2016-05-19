@@ -2,7 +2,7 @@ package com.yilvtzj.entity;
 
 import java.io.Serializable;
 
-public class DongtaiComment implements Serializable {
+public class DongtaiComment extends Result implements Serializable {
 
 	/**
 	 * 
@@ -10,7 +10,6 @@ public class DongtaiComment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Account user;
 	private String createDate;
-	private String id;
 	private String content;
 
 	public Account getUser() {
@@ -27,14 +26,6 @@ public class DongtaiComment implements Serializable {
 
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getContent() {

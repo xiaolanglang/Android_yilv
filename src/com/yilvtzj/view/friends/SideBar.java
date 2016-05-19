@@ -11,9 +11,9 @@ import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.common.util.Utils;
 import com.yilvtzj.R;
 import com.yilvtzj.adapter.friends.ContactAdapter;
-import com.yilvtzj.util.Utils;
 
 public class SideBar extends View {
 	private char[] l;

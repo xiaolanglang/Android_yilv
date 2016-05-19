@@ -1,7 +1,6 @@
 package com.yilvtzj.activity.friend;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +9,16 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.common.util.ActivityUtil;
+import com.common.util.ToastUtil;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.chat.ChatActivity;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.entity.Account;
-import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.FriendService;
-import com.yilvtzj.util.ActivityUtil;
-import com.yilvtzj.util.ToastUtil;
+import com.yilvtzj.entity.Result;
+import com.yilvtzj.service.IFriendService;
+import com.yilvtzj.service.ServiceListener;
+import com.yilvtzj.service.impl.FriendService;
 import com.yilvtzj.view.LoadingDialog;
 
 public class SelfInfoActivity extends MyActivity implements OnClickListener {
@@ -25,8 +26,9 @@ public class SelfInfoActivity extends MyActivity implements OnClickListener {
 	private TextView nickname, mark;
 	private Account account;
 	private LoadingDialog loadingDialog;
+	HashMap<String, Object> param = new HashMap<>();
 
-	private FriendService friendService = FriendService.newInstance();
+	private IFriendService friendService = FriendService.newInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +88,21 @@ public class SelfInfoActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void checkFriend() {
-		friendService.checkFriend(account.getId(), listener, loadingDialog);
+		param.clear();
+		param.put("friendId", account.getId());
+		friendService.checkFriend(param, listener);
 	}
 
-	private PostThreadListener listener = new PostThreadListener() {
+	private ServiceListener<Result> listener = new ServiceListener<Result>() {
 
 		@Override
-		public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
-			int type = JSON.getInt("type");
+		public void preExecute() {
+			loadingDialog.show();
+		}
+
+		@Override
+		public void onSuccess(Result result) {
+			int type = result.getCode();
 			switch (type) {
 			case 0:
 				// 搜索到的是自己
@@ -107,18 +116,16 @@ public class SelfInfoActivity extends MyActivity implements OnClickListener {
 				addFriendBtn.setVisibility(View.VISIBLE);
 				break;
 			}
-			return false;
 		}
 
 		@Override
-		public boolean postThreadFinally() {
-			return false;
+		public void onFinally() {
+			loadingDialog.cancel();
 		}
 
 		@Override
-		public boolean postThreadFailed() {
+		public void onFailed(int code, String message) {
 			ToastUtil.show(SelfInfoActivity.this, "获取信息失败", null);
-			return false;
 		}
 	};
 

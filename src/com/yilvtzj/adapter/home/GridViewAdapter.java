@@ -9,9 +9,9 @@ import android.widget.BaseAdapter;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.common.volley.cache.LruBitmapCache;
 import com.yilvtzj.R;
 import com.yilvtzj.app.MyApplication;
-import com.yilvtzj.volley.cache.LruBitmapCache;
 
 public class GridViewAdapter extends BaseAdapter {
 

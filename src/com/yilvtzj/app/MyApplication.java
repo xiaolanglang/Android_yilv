@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.androidpn.service.ServiceManager;
 import com.baidu.mapapi.SDKInitializer;
+import com.common.util.Global;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -18,14 +19,11 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.yilvtzj.R;
-import com.yilvtzj.util.Global;
-import com.yilvtzj.util.SimpleHandler;
 
 public class MyApplication extends Application {
 	public static ImageLoader imageLoader;
 	public static RequestQueue requestQueue;
 	public static int memoryCacheSize;
-	public static SimpleHandler handler;
 
 	@Override
 	public void onCreate() {
@@ -40,7 +38,6 @@ public class MyApplication extends Application {
 		memoryCacheSize = getMemoryCacheSize();
 
 		Global.CONTEXT = this;
-		handler = new SimpleHandler(this);
 
 		ServiceManager serviceManager = new ServiceManager(this);
 		serviceManager.setNotificationIcon(R.drawable.ic_launcher);
@@ -69,8 +66,8 @@ public class MyApplication extends Application {
 				.defaultDisplayImageOptions(getDefaultDisplayOption()).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory().memoryCache(new UsingFreqLimitedMemoryCache(10 * 1024 * 1024))
 				// 你可以通过自己的内存缓存实现
-				.memoryCacheSize(10 * 1024 * 1024).diskCacheFileCount(500).imageDownloader(new BaseImageDownloader(context))
-				.writeDebugLogs()
+				.memoryCacheSize(10 * 1024 * 1024).diskCacheFileCount(500)
+				.imageDownloader(new BaseImageDownloader(context)).writeDebugLogs()
 				// Remove for releaseapp
 				.discCache(new UnlimitedDiskCache(cacheDir)).tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		ImageLoader imageLoader = ImageLoader.getInstance();

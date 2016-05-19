@@ -1,7 +1,8 @@
 package com.yilvtzj.entity;
 
-public class MessageItem extends BaseEntity {
+public class MessageItem {
 
+	private String id;
 	private String fromWho;// 消息来自
 	private long time;// 消息日期
 	private String message;// 消息内容
@@ -19,6 +20,22 @@ public class MessageItem extends BaseEntity {
 		this.headImg = headImg;
 		this.isComMeg = isComMeg;
 		this.isNew = isNew;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	public String getFromWho() {

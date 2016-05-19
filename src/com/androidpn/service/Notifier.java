@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.androidpn.activity.NotificationDetailsActivity;
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 
 /**
  * This class is to notify the user of messages with NotificationManager.
@@ -36,7 +35,7 @@ import com.androidpn.util.LogUtil;
  */
 public class Notifier {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(Notifier.class);
+	private static final String LOGTAG = Notifier.class.getSimpleName();
 
 	private static final Random random = new Random(System.currentTimeMillis());
 
@@ -52,7 +51,8 @@ public class Notifier {
 		this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	public void notify(String notificationId, String apiKey, String title, String message, String uri, String from, String packetId) {
+	public void notify(String notificationId, String apiKey, String title, String message, String uri, String from,
+			String packetId) {
 		Log.d(LOGTAG, "notify()...");
 
 		Log.d(LOGTAG, "notificationId=" + notificationId);
@@ -96,7 +96,8 @@ public class Notifier {
 			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-			PendingIntent contentIntent = PendingIntent.getActivity(context, random.nextInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, random.nextInt(), intent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 
 			notification.setLatestEventInfo(context, title, message, contentIntent);
 			notificationManager.notify(random.nextInt(), notification);

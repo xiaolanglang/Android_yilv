@@ -17,16 +17,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.http.FormFile;
+import com.common.http.HttpRequest;
+import com.common.http.HttpRequest.SocketListener;
+import com.common.util.Global;
+import com.common.util.LoadingDialogUtil;
+import com.common.util.PhotoGalleryUtil;
+import com.common.util.ToastUtil;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.common.MyActivity;
 import com.yilvtzj.baidumap.MyAddress;
-import com.yilvtzj.http.FormFile;
-import com.yilvtzj.http.SocketHttpRequester;
-import com.yilvtzj.http.SocketHttpRequester.SocketListener;
-import com.yilvtzj.util.Global;
-import com.yilvtzj.util.LoadingDialogUtil;
-import com.yilvtzj.util.PhotoGalleryUtil;
-import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.LoadingDialog;
 import com.yilvtzj.webview.JsInterface;
 import com.yilvtzj.webview.JsInterface.JsInterfaceMethod;
@@ -169,7 +169,7 @@ public class WriteActivity extends MyActivity implements OnClickListener, JsInte
 			}
 			try {
 				handler.sendEmptyMessage(MESSAGE_UPLOAD_ING);
-				new SocketHttpRequester().setSocketListener(new SocketListener() {
+				new HttpRequest().setSocketListener(new SocketListener() {
 
 					@Override
 					public void result(String JSON) {

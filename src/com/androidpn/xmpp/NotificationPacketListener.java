@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 
 /**
  * This class notifies the receiver of incoming notifcation packets
@@ -33,7 +32,7 @@ import com.androidpn.util.LogUtil;
  */
 public class NotificationPacketListener implements PacketListener {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(NotificationPacketListener.class);
+	private static final String LOGTAG = NotificationPacketListener.class.getSimpleName();
 
 	private final XmppManager xmppManager;
 

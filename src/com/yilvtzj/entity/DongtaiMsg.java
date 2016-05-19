@@ -3,7 +3,7 @@ package com.yilvtzj.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class DongtaiMsg implements Serializable {
+public class DongtaiMsg extends Result implements Serializable {
 	/**
 	 * 
 	 */
@@ -11,7 +11,6 @@ public class DongtaiMsg implements Serializable {
 	// 用户信息
 	private Account account;
 	// 动态信息
-	private String id;
 	private String content;
 	private String createTime;
 	private String position;
@@ -25,14 +24,6 @@ public class DongtaiMsg implements Serializable {
 
 	public DongtaiMsg(Account account) {
 		this.account = account;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public int getAttitudesCount() {

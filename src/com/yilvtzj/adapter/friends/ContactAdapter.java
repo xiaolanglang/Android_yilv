@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.common.util.PingYinUtil;
 import com.yilvtzj.R;
 import com.yilvtzj.entity.Account;
-import com.yilvtzj.util.PingYinUtil;
 
 public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 	private Context mContext;

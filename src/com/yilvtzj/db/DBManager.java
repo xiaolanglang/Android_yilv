@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yilvtzj.util.Reflections;
+import com.common.util.reflections.Reflections;
 
 /**
  * DBManager是建立在DBHelper之上，封装了常用的业务方法

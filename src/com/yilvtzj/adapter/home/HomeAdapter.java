@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,17 +17,19 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.common.util.ActivityUtil;
+import com.common.util.DateUtil;
+import com.common.util.StringUtil;
+import com.common.util.ToastUtil;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.yilvtzj.R;
-import com.yilvtzj.activity.FullPageImageViewActivity;
+import com.yilvtzj.activity.common.FullPageImageViewActivity;
 import com.yilvtzj.activity.dongtai.CommentActivity;
 import com.yilvtzj.entity.DongtaiMsg;
-import com.yilvtzj.http.PostThread.PostThreadListener;
-import com.yilvtzj.service.DongTaiGoodService;
-import com.yilvtzj.util.ActivityUtil;
-import com.yilvtzj.util.DateUtil;
-import com.yilvtzj.util.StringUtil;
-import com.yilvtzj.util.ToastUtil;
+import com.yilvtzj.entity.Result;
+import com.yilvtzj.service.IDongTaiService;
+import com.yilvtzj.service.ServiceListener;
+import com.yilvtzj.service.impl.DongTaiService;
 import com.yilvtzj.view.NoScrolGridView;
 
 public class HomeAdapter extends BaseAdapter {
@@ -39,7 +38,7 @@ public class HomeAdapter extends BaseAdapter {
 	private static final int GOODSECESS = 0;
 	private static final int GOODFAILED = 1;
 
-	private static DongTaiGoodService goodService = DongTaiGoodService.newInstance();
+	private static IDongTaiService goodService = DongTaiService.newInstance();
 
 	public HomeAdapter(Context context, List<DongtaiMsg> list) {
 		HomeAdapter.context = context;
@@ -115,7 +114,8 @@ public class HomeAdapter extends BaseAdapter {
 		viewHolder.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()), position);
+				FullPageImageViewActivity.actionStart(context, StringUtil.toStrings(dongtaiMsg.getImageUrls()),
+						position);
 			}
 		});
 
@@ -178,31 +178,36 @@ public class HomeAdapter extends BaseAdapter {
 		attitudesCount.setText(String.valueOf(count2));
 
 		if (send) {
-			Map<String, String> params = new HashMap<>();
+			Map<String, Object> params = new HashMap<>();
 			params.put("id", attitudesCount.getTag().toString());
-			goodService.saveGood(new PostThreadListener() {
+			goodService.saveGood(new ServiceListener<Result>() {
 
 				@Override
-				public boolean postThreadSuccess(JSONObject JSON) throws JSONException {
-					if (JSON.getInt("code") == 200) {
+				public void preExecute() {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void onSuccess(Result result) {
+					if (result.getCode() == 200) {
 						ToastUtil.show(context, "点赞成功", null);
 					} else {
 						ToastUtil.show(context, "点赞失败", null);
 						notGood(view, false, false);
 					}
-					return false;
 				}
 
 				@Override
-				public boolean postThreadFinally() {
-					return false;
-				}
-
-				@Override
-				public boolean postThreadFailed() {
+				public void onFailed(int code, String message) {
 					ToastUtil.show(context, "点赞失败", null);
 					notGood(view, false, false);
-					return false;
+				}
+
+				@Override
+				public void onFinally() {
+					// TODO Auto-generated method stub
+
 				}
 			}, params);
 		}

@@ -19,11 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
+import com.common.util.ImageUtil;
 import com.nostra13.universalimageloader.utils.L;
 import com.yilvtzj.R;
 import com.yilvtzj.entity.MessageItem;
 import com.yilvtzj.util.FaceUtil;
-import com.yilvtzj.util.ImageUtil;
 
 public class MessageAdapter extends BaseAdapter {
 

@@ -10,10 +10,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.mining.app.zxing.activity.MipcaActivityCapture;
+import com.common.util.Global;
+import com.common.util.ToastUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.util.Global;
-import com.yilvtzj.util.ToastUtil;
+import com.zxing.activity.MipcaActivityCapture;
 
 public class AddPopWindow extends PopupWindow implements OnClickListener {
 	private View conentView;

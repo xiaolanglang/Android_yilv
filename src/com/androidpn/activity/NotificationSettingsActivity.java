@@ -25,7 +25,6 @@ import android.preference.PreferenceScreen;
 import android.util.Log;
 
 import com.androidpn.util.Constants;
-import com.androidpn.util.LogUtil;
 
 /**
  * Activity for displaying the notification setting view.
@@ -34,7 +33,7 @@ import com.androidpn.util.LogUtil;
  */
 public class NotificationSettingsActivity extends PreferenceActivity {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(NotificationSettingsActivity.class);
+	private static final String LOGTAG = NotificationSettingsActivity.class.getSimpleName();
 
 	public NotificationSettingsActivity() {
 	}
@@ -45,7 +44,8 @@ public class NotificationSettingsActivity extends PreferenceActivity {
 		setPreferenceScreen(createPreferenceHierarchy());
 		setPreferenceDependencies();
 
-		CheckBoxPreference notifyPref = (CheckBoxPreference) getPreferenceManager().findPreference(Constants.SETTINGS_NOTIFICATION_ENABLED);
+		CheckBoxPreference notifyPref = (CheckBoxPreference) getPreferenceManager().findPreference(
+				Constants.SETTINGS_NOTIFICATION_ENABLED);
 		if (notifyPref.isChecked()) {
 			notifyPref.setTitle("Notifications Enabled");
 		} else {

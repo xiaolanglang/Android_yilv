@@ -15,23 +15,22 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.common.util.Global;
+import com.common.util.ToastUtil;
 import com.yilvtzj.R;
 import com.yilvtzj.activity.fragment.FragmentFriends;
 import com.yilvtzj.activity.fragment.FragmentIndex;
 import com.yilvtzj.activity.fragment.FragmentMine;
 import com.yilvtzj.activity.fragment.FragmentNews;
 import com.yilvtzj.baidumap.MyBaiduMap;
-import com.yilvtzj.util.ClassManagerUtil;
-import com.yilvtzj.util.Global;
-import com.yilvtzj.util.ToastUtil;
 import com.yilvtzj.view.PopupWindowView;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	// 定义Fragment页面
-	private Fragment fragmentIndex = ClassManagerUtil.newInstance(FragmentIndex.class);
-	private Fragment fragmentZiXun = ClassManagerUtil.newInstance(FragmentNews.class);
-	private Fragment fragmentNews = ClassManagerUtil.newInstance(FragmentFriends.class);
-	private Fragment fragmentMine = ClassManagerUtil.newInstance(FragmentMine.class);
+	private Fragment fragmentIndex = new FragmentIndex();
+	private Fragment fragmentZiXun = new FragmentNews();
+	private Fragment fragmentNews = new FragmentFriends();
+	private Fragment fragmentMine = new FragmentMine();
 	private Fragment currentFragment = null;
 	// 定义布局对象
 	private FrameLayout indexFl, ziXunFl, fastFl, newsFl, mineFl;
