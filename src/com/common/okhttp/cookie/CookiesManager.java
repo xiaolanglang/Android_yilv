@@ -31,4 +31,8 @@ public class CookiesManager implements CookieJar {
 		return cookies;
 	}
 
+	public void removeAll() {
+		cookieStore.removeAll();
+	}
+
 }

@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="3"
-            android:background="@drawable/btn_bk"
+            android:background="@drawable/bg_btn_transparent_selector"
             android:text="搜索"
             android:textColor="@color/light_black" />
     </LinearLayout>
@@ -62,7 +62,7 @@
             android:cacheColorHint="#00000000"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"
-            android:listSelector="@drawable/btn_bk" >
+            android:listSelector="@drawable/bg_btn_transparent_selector" >
         </com.yilvtzj.view.ListViewNoScroll>
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 

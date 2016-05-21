@@ -3,5 +3,4 @@
 
     <item android:drawable="@drawable/clr_normal" android:state_pressed="false"/>
     <item android:drawable="@drawable/clr_pressed" android:state_pressed="true"/>
-
 </selector>

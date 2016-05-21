@@ -18,6 +18,9 @@ public class AccountUtil {
 	}
 
 	public static void setAccount(Account account) {
+		if (account == null) {
+			SharePreferenceUtil.put(SharePreferenceUtil.COOKIE_ACCOUNT, "account", null);
+		}
 		Gson gson = new Gson();
 		String json = gson.toJson(account, new TypeToken<Account>() {
 		}.getType());

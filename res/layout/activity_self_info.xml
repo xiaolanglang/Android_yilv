@@ -88,7 +88,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/selfinfo_sendmsg_btn"
+        android:background="@drawable/bg_btn_selfinfo_sendmsg_selector"
         android:visibility="gone"
         android:text="发送消息" />
 
@@ -98,7 +98,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/selfinfo_addfriend_btn"
+        android:background="@drawable/bg_btn_selfinfo_addfriend_selector"
         android:visibility="gone"
         android:text="加为好友" />
 

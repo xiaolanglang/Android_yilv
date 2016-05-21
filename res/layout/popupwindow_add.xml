@@ -20,7 +20,7 @@
             android:id="@+id/addfriends"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/btn_bk_black" >
+            android:background="@drawable/bg_btn_black_selector" >
 
             <ImageView
                 android:layout_width="30dp"
@@ -49,7 +49,7 @@
             android:id="@+id/scan"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/btn_bk_black" >
+            android:background="@drawable/bg_btn_black_selector" >
 
             <ImageView
                 android:layout_width="30dp"

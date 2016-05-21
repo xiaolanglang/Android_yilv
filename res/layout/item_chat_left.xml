@@ -21,7 +21,7 @@
         android:layout_marginLeft="5dip"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/icon"
-        android:background="@drawable/balloon_l_selector"
+        android:background="@drawable/bg_balloon_left_selector"
         android:clickable="true"
         android:minHeight="44.0dip" >
 

@@ -73,7 +73,7 @@
                     android:textColor="#737373"
                     android:lineSpacingExtra="5dp"
                     android:textSize="14sp"
-                    android:background="@drawable/btn_bk"
+                    android:background="@drawable/bg_btn_transparent_selector"
                     />
 
             <com.yilvtzj.view.NoScrolGridView
@@ -121,7 +121,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@drawable/btn_bk"
+                    android:background="@drawable/bg_btn_transparent_selector"
                     >
 
                 <ImageView
@@ -155,13 +155,13 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@drawable/btn_bk"
+                    android:background="@drawable/bg_btn_transparent_selector"
                     >
 
                 <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/icon_discovery_like_select"
+                        android:src="@drawable/bg_img_discovery_like_select"
                         android:layout_gravity="center_vertical"
                         />
 

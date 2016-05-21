@@ -97,7 +97,7 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.LoginActivity"
+            android:name="com.yilvtzj.activity.mine.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -114,9 +114,9 @@
         </activity>
         <activity android:name="com.yilvtzj.activity.mine.MyQrActivity" >
         </activity>
-        <activity
-            android:name="com.yilvtzj.activity.friend.SearchFriendActivity"
-            android:windowSoftInputMode="adjustPan" >
+        <activity android:name="com.yilvtzj.activity.friend.SearchFriendActivity" android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity android:name="com.yilvtzj.activity.mine.SetActivity">
         </activity>
 
         <!-- 相册选取，开始 -->

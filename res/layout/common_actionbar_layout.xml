@@ -10,7 +10,7 @@
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:orientation="vertical" 
-        android:background="@drawable/action_bar_image_btn_press"
+        android:background="@drawable/bg_btn_actionbar_image_selector"
         >
          <ImageView
             android:layout_width="16dp"

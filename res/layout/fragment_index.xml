@@ -35,7 +35,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="fitXY"
-            android:background="@drawable/btn_main_activtiy_add" />
+            android:background="@drawable/bg_btn_activtiy_main_add_selector" />
     </LinearLayout>
 
     <View

@@ -62,7 +62,7 @@ public class FaceAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		if (position == 20) {
-			viewHolder.faceIV.setImageResource(R.drawable.emotion_del_selector);
+			viewHolder.faceIV.setImageResource(R.drawable.bg_img_emotion_del_selector);
 			viewHolder.faceIV.setBackgroundDrawable(null);
 		} else {
 			int count = 20 * currentPage + position;

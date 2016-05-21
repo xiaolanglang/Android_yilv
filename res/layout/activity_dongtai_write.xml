@@ -30,7 +30,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_bk" >
+            android:background="@drawable/bg_btn_transparent_selector" >
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_bk" >
+            android:background="@drawable/bg_btn_transparent_selector" >
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/btn_position_select"
+                    android:background="@drawable/bg_btn_position_selector"
                     android:scaleType="center" />
 
                 <TextView

@@ -13,9 +13,10 @@ import com.common.util.AccountUtil;
 import com.common.util.ActivityUtil;
 import com.common.util.StringUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.activity.LoginActivity;
 import com.yilvtzj.activity.friend.SearchFriendActivity;
+import com.yilvtzj.activity.mine.LoginActivity;
 import com.yilvtzj.activity.mine.MyQrActivity;
+import com.yilvtzj.activity.mine.SetActivity;
 import com.yilvtzj.entity.Account;
 
 public class FragmentMine extends Fragment implements OnClickListener {
@@ -40,13 +41,19 @@ public class FragmentMine extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.loginBtn:
-			ActivityUtil.startActivity(new Intent(), getActivity(), LoginActivity.class);
+			Account account = AccountUtil.getAccount();
+			if (account == null) {
+				ActivityUtil.startActivity(new Intent(), getActivity(), LoginActivity.class);
+			}
 			break;
 		case R.id.myqr:
 			ActivityUtil.startActivity(new Intent(), this.getActivity(), MyQrActivity.class);
 			break;
 		case R.id.searchfriends:
 			ActivityUtil.startActivity(new Intent(), getActivity(), SearchFriendActivity.class);
+			break;
+		case R.id.setting:
+			ActivityUtil.startActivity(new Intent(), getActivity(), SetActivity.class);
 			break;
 		}
 	}
@@ -56,9 +63,7 @@ public class FragmentMine extends Fragment implements OnClickListener {
 	 */
 	private void refreshInfo() {
 		account = AccountUtil.getAccount();
-		if (account != null) {
-			showInfo(account);
-		}
+		showInfo(account);
 	}
 
 	private void initView(View view) {
@@ -67,9 +72,14 @@ public class FragmentMine extends Fragment implements OnClickListener {
 		view.findViewById(R.id.myqr).setOnClickListener(this);
 		view.findViewById(R.id.loginBtn).setOnClickListener(this);
 		view.findViewById(R.id.searchfriends).setOnClickListener(this);
+		view.findViewById(R.id.setting).setOnClickListener(this);
 	}
 
 	private void showInfo(Account account) {
+		if (account == null) {
+			nicknameTV.setText(getString(R.string.login_more));
+			return;
+		}
 		if (!StringUtil.isEmpty(account.getNickname())) {
 			nicknameTV.setText(account.getNickname());
 		}

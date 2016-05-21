@@ -151,7 +151,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_bk"
+            android:background="@drawable/bg_btn_transparent_selector"
             android:clickable="true" >
 
             <FrameLayout
@@ -186,7 +186,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_bk"
+            android:background="@drawable/bg_btn_transparent_selector"
             android:clickable="true" >
 
             <FrameLayout

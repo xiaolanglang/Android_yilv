@@ -10,11 +10,5 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         />
-    <View
-        android:id="@+id/press"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/item_press_bg"
-        />
 
 </RelativeLayout>

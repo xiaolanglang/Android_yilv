@@ -39,7 +39,7 @@
             android:background="@android:color/transparent"
             android:paddingLeft="5.0dip"
             android:paddingRight="5.0dip"
-            android:src="@drawable/pop_btn_face_selector" />
+            android:src="@drawable/bg_img_pop_face_selector" />
 
         <EditText
             android:id="@+id/msg_et"
@@ -71,7 +71,7 @@
                 android:layout_width="42.0dip"
                 android:layout_height="34.0dip"
                 android:layout_marginLeft="4.0dip"
-                android:background="@drawable/chat_bottombar_btn_selector"
+                android:background="@drawable/bg_btn_send_chat_selector"
                 android:enabled="false"
                 android:shadowColor="#ff568ab5"
                 android:shadowDx="0.0"

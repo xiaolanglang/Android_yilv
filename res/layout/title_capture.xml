@@ -8,7 +8,7 @@
         android:id="@+id/button_back"
         android:layout_width="75.0dip"
         android:text="返回"
-        android:background="@drawable/mm_title_back_btn"
+        android:background="@drawable/bg_img_zxing_back_selector"
         android:textColor="@android:color/white"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

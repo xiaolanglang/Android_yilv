@@ -11,6 +11,7 @@ import com.yilvtzj.service.ServiceListener;
 public class UserService implements IUserService {
 
 	private static final UserService service = new UserService();
+	private HttpConnect connect = HttpConnect.getInstance();
 
 	private UserService() {
 	}
@@ -21,7 +22,8 @@ public class UserService implements IUserService {
 
 	@Override
 	public void login(ServiceListener<Account> listener, Map<String, Object> param) {
-		HttpConnect.getInstance().connect(listener, loginUrl, param, new TypeToken<Account>() {
+		connect.connect(listener, loginUrl, param, new TypeToken<Account>() {
 		});
 	}
+
 }
