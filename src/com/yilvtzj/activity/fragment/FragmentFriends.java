@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 import com.common.util.ActivityUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.activity.friend.SelfInfoActivity;
-import com.yilvtzj.adapter.friends.ContactAdapter;
+import com.yilvtzj.activity.UserInfoActivity;
+import com.yilvtzj.adapter.ContactAdapter;
 import com.yilvtzj.entity.Account;
 import com.yilvtzj.view.friends.SideBar;
 
@@ -57,7 +57,7 @@ public class FragmentFriends extends Fragment implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ActivityUtil.startActivity(new Intent(), FragmentFriends.this.getActivity(), SelfInfoActivity.class);
+		ActivityUtil.startActivity(new Intent(), FragmentFriends.this.getActivity(), UserInfoActivity.class);
 	}
 
 	private void initTxtSearchListen(View view) {

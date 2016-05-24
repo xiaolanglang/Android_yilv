@@ -56,7 +56,7 @@
     </instrumentation>
 
     <application
-        android:name="com.yilvtzj.app.MyApplication"
+        android:name="com.yilvtzj.aplication.MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
@@ -71,7 +71,7 @@
             android:value="@string/baiduMapAK" />
 
         <activity
-            android:name="com.yilvtzj.activity.main.WelcomeActivity"
+            android:name="com.yilvtzj.activity.WelcomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
@@ -82,7 +82,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.main.MainActivity"
+            android:name="com.yilvtzj.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustPan" >
@@ -92,31 +92,29 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.dongtai.WriteActivity"
+            android:name="com.yilvtzj.activity.WriteDongtaiActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.yilvtzj.activity.mine.LoginActivity"
+            android:name="com.yilvtzj.activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.yilvtzj.activity.common.FullPageImageViewActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.dongtai.CommentActivity" >
+        <activity android:name="com.yilvtzj.activity.CommentActivity" ></activity>
+        <activity android:name="com.yilvtzj.activity.CommentWriteActivity"/>
+        <activity android:name="com.yilvtzj.activity.ChatActivity" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.dongtai.CommentWriteActivity" >
+        <activity android:name="com.yilvtzj.activity.UserInfoActivity" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.chat.ChatActivity" >
+        <activity android:name="com.yilvtzj.activity.MyQrActivity" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.friend.SelfInfoActivity" >
+        <activity android:name="com.yilvtzj.activity.SearchFriendActivity" android:windowSoftInputMode="adjustPan" >
         </activity>
-        <activity android:name="com.yilvtzj.activity.mine.MyQrActivity" >
-        </activity>
-        <activity android:name="com.yilvtzj.activity.friend.SearchFriendActivity" android:windowSoftInputMode="adjustPan" >
-        </activity>
-        <activity android:name="com.yilvtzj.activity.mine.SetActivity">
+        <activity android:name="com.yilvtzj.activity.SettingActivity">
         </activity>
 
         <!-- 相册选取，开始 -->

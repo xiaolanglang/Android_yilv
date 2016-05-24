@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
-import com.yilvtzj.app.MyApplication;
+import com.yilvtzj.aplication.MyApplication;
 
 public class LruBitmapCache implements ImageCache {
 

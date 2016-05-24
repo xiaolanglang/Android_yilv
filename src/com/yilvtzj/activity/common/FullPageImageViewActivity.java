@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.yilvtzj.R;
-import com.yilvtzj.app.MyApplication;
+import com.yilvtzj.aplication.MyApplication;
 import com.yilvtzj.view.ZoomImageView;
 
 /**

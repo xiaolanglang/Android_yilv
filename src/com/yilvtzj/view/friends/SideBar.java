@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.common.util.Utils;
 import com.yilvtzj.R;
-import com.yilvtzj.adapter.friends.ContactAdapter;
+import com.yilvtzj.adapter.ContactAdapter;
 
 public class SideBar extends View {
 	private char[] l;

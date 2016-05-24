@@ -1,13 +1,18 @@
 package com.common.okhttp;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import android.os.AsyncTask;
 
 import com.common.okhttp.cookie.CookiesManager;
@@ -22,6 +27,7 @@ public class HttpConnect {
 	private static final String TAG = HttpConnect.class.getSimpleName();
 	private static final okhttp3.OkHttpClient.Builder builder = new OkHttpClient.Builder();
 	private static HttpConnect connect = new HttpConnect();
+	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
 	private HttpConnect() {
 	}
@@ -32,23 +38,46 @@ public class HttpConnect {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void connect(ServiceListener<?> callback, String url, Map<String, Object> param, TypeToken<?> type) {
-		OkHttpClient mOkHttpClient = builder.connectTimeout(60, TimeUnit.SECONDS)
-				.cookieJar(new CookiesManager(Global.CONTEXT)).build();
-		// OkHttpClient mOkHttpClient = builder.connectTimeout(60,
-		// TimeUnit.SECONDS).build();
-		new MyAsyMask(mOkHttpClient, callback, type).execute(url, param);
+		new MyAsyMask(getClient(), callback, type).execute(url, param, null);
 	}
 
-	private Request getPraRequest(String url, Map<String, Object> param) {
-		okhttp3.FormBody.Builder builder = new FormBody.Builder(); // 表单
-		if (param != null) {
-			Set<String> keys = param.keySet();
-			for (String key : keys) {
-				builder.add(key, param.get(key).toString());
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void connect(ServiceListener<?> callback, String url, Map<String, Object> param, List<File> files,
+			TypeToken<?> type) {
+		new MyAsyMask(getClient(), callback, type).execute(url, param, files);
+	}
+
+	private OkHttpClient getClient() {
+		OkHttpClient mOkHttpClient = builder.connectTimeout(60, TimeUnit.SECONDS)
+				.cookieJar(new CookiesManager(Global.CONTEXT)).build();
+		return mOkHttpClient;
+	}
+
+	private Request getPraRequest(String url, Map<String, Object> param, List<File> files) {
+
+		if (files != null && files.size() > 0) {
+			okhttp3.MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+			if (param != null) {
+				Set<String> keys = param.keySet();
+				for (String key : keys) {
+					builder.addFormDataPart(key, param.get(key).toString());
+				}
 			}
+			for (File file : files) {
+				builder.addFormDataPart(file.getName(), file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+			}
+			return new Request.Builder().url(url).post(builder.build()).build();
+		} else {
+			okhttp3.FormBody.Builder builder = new FormBody.Builder(); // 表单
+			if (param != null) {
+				Set<String> keys = param.keySet();
+				for (String key : keys) {
+					builder.add(key, param.get(key).toString());
+				}
+			}
+			return new Request.Builder().url(url).post(builder.build()).build();
 		}
-		// 通过Request.Builder()去build()一个实例
-		return new Request.Builder().url(url).post(builder.build()).build();
+
 	}
 
 	private class MyAsyMask<Result> extends AsyncTask<Object, Void, Result> {
@@ -57,10 +86,7 @@ public class HttpConnect {
 		private ServiceListener<Result> callback;
 		private TypeToken<?> type;
 
-		private static final int JSONException = 0;
-		private static final int IOException = 1;
-
-		private int resultCode = -1;
+		private String errorMsg = null;
 
 		public MyAsyMask(OkHttpClient mOkHttpClient, ServiceListener<Result> callback, TypeToken<Result> type) {
 			this.mOkHttpClient = mOkHttpClient;
@@ -78,7 +104,8 @@ public class HttpConnect {
 		protected Result doInBackground(Object... params) {
 			okhttp3.Response response = null;
 			try {
-				response = mOkHttpClient.newCall(getPraRequest(params[0].toString(), (Map<String, Object>) params[1]))
+				response = mOkHttpClient.newCall(
+						getPraRequest(params[0].toString(), (Map<String, Object>) params[1], (List<File>) params[2]))
 						.execute();
 				if (response.isSuccessful()) {
 					String json = response.body().string();
@@ -87,11 +114,14 @@ public class HttpConnect {
 					return gson.fromJson(json, type.getType());
 				}
 
+				String a = response.body().string();
+				System.out.println(">>>>>>>>>>>" + a);
+
 			} catch (IOException e) {
-				resultCode = IOException;
+				errorMsg = e.getMessage();
 				e.printStackTrace();
 			} catch (JsonSyntaxException e) {
-				resultCode = JSONException;
+				errorMsg = e.getMessage();
 				e.printStackTrace();
 			}
 			return null;
@@ -100,18 +130,7 @@ public class HttpConnect {
 		@Override
 		protected void onPostExecute(Result result) {
 			if (result == null) {
-				String msg = "未知错误";
-				if (resultCode != -1) {
-					switch (resultCode) {
-					case JSONException:
-						msg = "解析JSON错误";
-						break;
-					case IOException:
-						msg = "IO异常";
-						break;
-					}
-				}
-				callback.onFailed(500, msg);
+				callback.onFailed(500, errorMsg);
 			} else {
 				callback.onSuccess(result);
 			}

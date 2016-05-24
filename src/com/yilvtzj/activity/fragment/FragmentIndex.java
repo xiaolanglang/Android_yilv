@@ -1,7 +1,9 @@
 package com.yilvtzj.activity.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +22,7 @@ import com.common.util.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yilvtzj.R;
-import com.yilvtzj.adapter.home.HomeAdapter;
+import com.yilvtzj.adapter.HomeAdapter;
 import com.yilvtzj.entity.DataResult;
 import com.yilvtzj.entity.DongtaiMsg;
 import com.yilvtzj.service.IDongTaiService;
@@ -37,11 +39,11 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 	private ImageView addTv;
 	private List<DongtaiMsg> list = new ArrayList<>();
 	private HomeAdapter homeAdapter;
-	private final static int GETDATA_SUCCESS = 1;
-	private final static int GETDATA_FAILED = 2;
 	private AddPopWindow addPopWindow;
 
 	private IDongTaiService dongTaiService = DongTaiService.newInstance();
+	private Map<String, Object> params = new HashMap<>();
+	private int pageNum = 1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,7 +81,9 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 			@Override
 			public void run() {
 				// 更新数据
-				dongTaiService.getDongtaiList(postThreadListener);
+				pageNum = 1;
+				params.put("pageNum", pageNum);
+				dongTaiService.getDongtaiList(postThreadListener, params);
 			}
 		}, 1000);
 
@@ -95,7 +99,8 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 			@Override
 			public void run() {
 				myRefreshListView.setLoading(false);
-				// getData();
+				params.put("pageNum", pageNum);
+				dongTaiService.getDongtaiList(postThreadListener, params);
 				homeAdapter.notifyDataSetChanged();
 			}
 		}, 1500);
@@ -146,15 +151,21 @@ public class FragmentIndex extends Fragment implements OnRefreshListener, OnLoad
 
 		@Override
 		public void onSuccess(DataResult<DongtaiMsg> result) {
-			list = result.getList();
-			if (list != null && list.size() > 0) {
-				homeAdapter.setList(list);
+			List<DongtaiMsg> liteTemp = result.getList();
+			if (liteTemp != null && liteTemp.size() > 0) {
+				if (pageNum == 1) {
+					list.clear();
+				}
+				for (DongtaiMsg msg : liteTemp) {
+					list.add(msg);
+				}
 				homeAdapter.notifyDataSetChanged();
 				// TODO 把得到的数据缓存起来
 				Gson gson = new Gson();
 				String json = gson.toJson(result, new TypeToken<DataResult<DongtaiMsg>>() {
 				}.getType());
 				SharePreferenceUtil.put(SharePreferenceUtil.HOMEPAGE, "pageList", json);
+				pageNum++;
 			}
 		}
 

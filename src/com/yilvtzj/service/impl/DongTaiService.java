@@ -1,5 +1,7 @@
 package com.yilvtzj.service.impl;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import com.common.okhttp.HttpConnect;
@@ -23,8 +25,8 @@ public class DongTaiService implements IDongTaiService {
 	}
 
 	@Override
-	public void getDongtaiList(ServiceListener<DataResult<DongtaiMsg>> listener) {
-		HttpConnect.getInstance().connect(listener, getDongtaiList, null, new TypeToken<DataResult<DongtaiMsg>>() {
+	public void getDongtaiList(ServiceListener<DataResult<DongtaiMsg>> listener, Map<String, Object> params) {
+		HttpConnect.getInstance().connect(listener, getDongtaiList, params, new TypeToken<DataResult<DongtaiMsg>>() {
 		});
 	}
 
@@ -37,13 +39,19 @@ public class DongTaiService implements IDongTaiService {
 	@Override
 	public void saveComment(ServiceListener<Result> listener, Map<String, Object> params) {
 		listener.preExecute();
-		HttpConnect.getInstance().connect(listener, saveUrl, params, new TypeToken<Result>() {
+		HttpConnect.getInstance().connect(listener, saveComment, params, new TypeToken<Result>() {
 		});
 	}
 
 	@Override
 	public void getList(ServiceListener<DataResult<DongtaiComment>> listener, Map<String, Object> params) {
-		HttpConnect.getInstance().connect(listener, listUrl, params, new TypeToken<DataResult<DongtaiComment>>() {
+		HttpConnect.getInstance().connect(listener, commentList, params, new TypeToken<DataResult<DongtaiComment>>() {
+		});
+	}
+
+	@Override
+	public void save(ServiceListener<Result> listener, Map<String, Object> params, List<File> files) {
+		HttpConnect.getInstance().connect(listener, saveDongtai, params, files, new TypeToken<DataResult<Result>>() {
 		});
 	}
 }

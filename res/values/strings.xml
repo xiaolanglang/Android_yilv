@@ -21,9 +21,14 @@
     <string name="cancel">取消</string>
     <string name="send">发送</string>
     <string name="fapinglun">发评论</string>
+    <string name="fadongtai">发动态</string>
     <string name="xiepinglun">写评论...</string>
     <string name="pinglunlist">评论列表</string>
     <string name="search">搜索</string>
+    <string name="shownewdt">秀动态</string>
+    <string name="range_public">公开</string>
+    <string name="range_friends">好友圈</string>
+    <string name="range_self">仅自己</string>
     
     <string name="btn_fawenzi">发文字</string>
     <string name="btn_fapic">发图片</string>

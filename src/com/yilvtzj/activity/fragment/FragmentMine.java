@@ -13,10 +13,10 @@ import com.common.util.AccountUtil;
 import com.common.util.ActivityUtil;
 import com.common.util.StringUtil;
 import com.yilvtzj.R;
-import com.yilvtzj.activity.friend.SearchFriendActivity;
-import com.yilvtzj.activity.mine.LoginActivity;
-import com.yilvtzj.activity.mine.MyQrActivity;
-import com.yilvtzj.activity.mine.SetActivity;
+import com.yilvtzj.activity.LoginActivity;
+import com.yilvtzj.activity.MyQrActivity;
+import com.yilvtzj.activity.SearchFriendActivity;
+import com.yilvtzj.activity.SettingActivity;
 import com.yilvtzj.entity.Account;
 
 public class FragmentMine extends Fragment implements OnClickListener {
@@ -53,7 +53,7 @@ public class FragmentMine extends Fragment implements OnClickListener {
 			ActivityUtil.startActivity(new Intent(), getActivity(), SearchFriendActivity.class);
 			break;
 		case R.id.setting:
-			ActivityUtil.startActivity(new Intent(), getActivity(), SetActivity.class);
+			ActivityUtil.startActivity(new Intent(), getActivity(), SettingActivity.class);
 			break;
 		}
 	}

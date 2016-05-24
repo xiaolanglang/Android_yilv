@@ -12,7 +12,8 @@ public class Global {
 	public static final String mimeTypeCss = "text/css";
 	public static final String mimeTypeImg = "image/png";
 	public static final String character = "UTF-8";
-	private static final String SERVLETNAME = "yilv.cgotravel.com";
+	private static final String SERVLETNAME = "m.cgotravel.com";
+	// private static final String SERVLETNAME = "192.168.4.100:8080/yilv";
 	public static final String JSINTERFACE = "jsInterface";
 	public static final String TIANGOU_SERVICE = "";
 	public static Context CONTEXT;
