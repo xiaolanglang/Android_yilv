@@ -21,7 +21,7 @@ import com.yilvtzj.aplication.MyApplication;
 import com.yilvtzj.view.ZoomImageView;
 
 /**
- * 全屏查看页面
+ * 全屏查看图片界面，采用网络的方式加载图片
  * 
  * @author Administrator
  *
@@ -92,7 +92,7 @@ public class FullPageImageViewActivity extends Activity {
 
 			public void get(String uri, ImageView mImageView) {
 				this.mImageView = mImageView;
-				MyApplication.imageLoader.displayImage(uri, mImageView, mImageLoadingListener);
+				MyApplication.universalImageLoader.displayImage(uri, mImageView, mImageLoadingListener);
 			}
 
 			public View getmProgress_View() {
